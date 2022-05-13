@@ -9,7 +9,8 @@ Welcome to weaklens's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
+   
+   instructions
 
 
 Indices and tables
