@@ -4,7 +4,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Introduction"
+    "# Day 1 - Introduction"
    ]
   },
   {
@@ -20,14 +20,19 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# plotting"
+    "## working on sciserver"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
    "source": [
-    "# finding the pairs"
+    "## reading and plotting the data"
    ]
   },
   {

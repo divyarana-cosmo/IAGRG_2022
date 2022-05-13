@@ -11,6 +11,7 @@ Welcome to weaklens's documentation!
    :caption: Contents:
    
    instructions
+   pair_cnts
    get_signals
 
 
