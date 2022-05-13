@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'weaklens'
+project = 'Weak Lensing'
 copyright = '2022, Divya Rana'
 author = 'Divya Rana'
 
