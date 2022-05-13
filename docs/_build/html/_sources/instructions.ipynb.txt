@@ -20,7 +20,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## Working on Sciserver"
+    "## Working on SciServer"
    ]
   },
   {
