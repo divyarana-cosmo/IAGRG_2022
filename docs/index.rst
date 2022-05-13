@@ -11,6 +11,7 @@ Welcome to weaklens's documentation!
    :caption: Contents:
    
    instructions
+   get_signals
 
 
 Indices and tables
