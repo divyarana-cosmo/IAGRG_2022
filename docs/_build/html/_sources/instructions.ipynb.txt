@@ -21,7 +21,7 @@
     "\n",
     "- Navin Chaurasiya, navin@iucaa.in\n",
     "\n",
-    "A quick reference for weak  gravitational lensing is:\n",
+    "A quick references for weak  gravitational lensing are:\n",
     "\n",
     "- Saas-Fee Advanced Course 33: Gravitational Lensing: Strong, Weak & Micro,  https://link.springer.com/book/10.1007/978-3-540-30310-7\n",
     "\n",
