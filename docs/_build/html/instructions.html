@@ -42,7 +42,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Day 1 - Introduction</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Working-on-SciServer">Working on SciServer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Reading-and-Plotting-the-data">Reading and Plotting the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Reading-and-Plotting-the-Data">Reading and Plotting the Data</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pair_cnts.html">Day 2 - Pair Counts</a></li>
@@ -361,13 +361,70 @@ div.rendered_html tbody tr:hover {
 <h2>Working on SciServer<a class="headerlink" href="#Working-on-SciServer" title="Permalink to this headline"></a></h2>
 <p>blah blah</p>
 </div>
-<div class="section" id="Reading-and-Plotting-the-data">
-<h2>Reading and Plotting the data<a class="headerlink" href="#Reading-and-Plotting-the-data" title="Permalink to this headline"></a></h2>
+<div class="section" id="Reading-and-Plotting-the-Data">
+<h2>Reading and Plotting the Data<a class="headerlink" href="#Reading-and-Plotting-the-Data" title="Permalink to this headline"></a></h2>
+<p>We will first learn how to read files using pandas and then we will plot them to have a feel of the overlap between the lenses and sources.</p>
+<ul class="simple">
+<li><p>pandas, <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html">https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html</a></p></li>
+<li><p>numpy, <a class="reference external" href="https://numpy.org/doc/stable/">https://numpy.org/doc/stable/</a></p></li>
+<li><p>matplotlib, <a class="reference external" href="https://matplotlib.org/">https://matplotlib.org/</a></p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#dat = pd.read_csv(&#39;path to the files&#39;, delim_whitespace=1)</span>
+<span class="c1">#dat.keys()</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&lt;matplotlib.lines.Line2D at 0x7f49d9c06ac8&gt;]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/instructions_8_1.png" src="_images/instructions_8_1.png" />
+</div>
+</div>
+<p>We will also get the rough estimation of overlap area between the sources and lens using the python package healpy.</p>
+<ul class="simple">
+<li><p>healpy, <a class="reference external" href="https://healpy.readthedocs.io/en/latest/">https://healpy.readthedocs.io/en/latest/</a></p></li>
+</ul>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#import healpy as hp</span>
+<span class="c1">#nside = 512</span>
+<span class="c1">#ipix = hp.ang2pix(nside, ra, dec, lonlat=1)</span>
 </pre></div>
 </div>
 </div>
