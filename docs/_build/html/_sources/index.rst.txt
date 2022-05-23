@@ -11,7 +11,7 @@ Welcome to Weak Lensing's Documentation!
    :caption: Contents:
    
    instructions
-   pair_cnts
+   pair_counting
    get_signals
 
 
