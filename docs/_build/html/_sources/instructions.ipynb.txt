@@ -129,7 +129,12 @@
     "\n",
     "- numpy, https://numpy.org/doc/stable/\n",
     "\n",
-    "- matplotlib,  https://matplotlib.org/"
+    "- matplotlib,  https://matplotlib.org/\n",
+    "\n",
+    "**Please not that in the below codes put the right sciserver paths. For our case the file paths are** \n",
+    "\n",
+    "- lenses, /home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/redmapper.dat\n",
+    "- sources, /home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/"
    ]
   },
   {
@@ -197,6 +202,8 @@
     "from glob import glob\n",
     "# we have given you many many files for sources, below code will capture a list of path for the files\n",
     "# It looks for the file ending '.dat'\n",
+    "#putting the path of the sources catalog\n",
+    "\n",
     "sflist = glob('../../weakpipe/DataStore/hsc/*.dat')\n",
     "\n",
     "for fil in sflist:\n",
