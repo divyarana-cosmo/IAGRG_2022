@@ -50,10 +50,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#A-visual-sanity-check-for-execution-of-find_neighbour_points-function">A visual sanity check for execution of <code class="docutils literal notranslate"><span class="pre">find_neighbour_points</span></code> function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Using-k-d-tree-algorithm-to-query-the-neighbour-points-within-a-given-distance">Using k-d tree algorithm to query the neighbour points within a given distance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#We’ll-use-the-spatial.cKDTree-package-from-scipy.">We’ll use the <code class="docutils literal notranslate"><span class="pre">spatial.cKDTree</span></code> package from <code class="docutils literal notranslate"><span class="pre">scipy</span></code>.</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#Write-a-wrapper-code-using-cKDTree-to-find-out-the-neighbours-of-a-given-set1-of-objects-(coordinates)-from-a-catalog-of-other-objects,-set2">Write a wrapper code using cKDTree to find out the neighbours of a given <code class="docutils literal notranslate"><span class="pre">set1</span></code> of objects (coordinates) from a catalog of other objects, <code class="docutils literal notranslate"><span class="pre">set2</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Testing-conversion-of-(ra,dec)-to-(x,y,z)">Testing conversion of (ra,dec) to (x,y,z)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#A-sanity-check">A sanity check</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Demo-objects-for-which-we’ll-compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm">Demo objects for which we’ll compare the output of our brute force algorithm with cKDTree algorithm</a></li>
 </ul>
 </li>
@@ -415,7 +412,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "0251cf2a707b40b9bb3867f461afe390", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "00a96797cce04de594ac7ff68cfd3eb7", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -463,7 +460,9 @@ ra,dec,z,col_3,col_4,col_5
 </div>
 </div>
 <p># a brief look of what dataFrame has for us-</p>
-<p>Data from - <code class="docutils literal notranslate"><span class="pre">HSC</span> <span class="pre">survey</span></code> ra,dec - coordinates in units of degrees. z - photometric redshifts of the objects.</p>
+<p>Data from - <code class="docutils literal notranslate"><span class="pre">HSC</span> <span class="pre">survey</span></code></p>
+<p>ra,dec - coordinates in units of degrees.</p>
+<p>z - photometric redshifts of the objects.</p>
 <p>col_1,col_2,col_3 - extra columns which have to be ignored</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -637,8 +636,15 @@ ra,dec,z,col_3,col_4,col_5
 </div>
 <div class="section" id="Visualising-the-coordinate-space-of-input-data">
 <h2>Visualising the coordinate space of input data<a class="headerlink" href="#Visualising-the-coordinate-space-of-input-data" title="Permalink to this headline"></a></h2>
-<p># write a python code to plot <code class="docutils literal notranslate"><span class="pre">dec(on</span> <span class="pre">Y-axis)</span> <span class="pre">vs</span> <span class="pre">ra(on</span> <span class="pre">X-axis)</span></code> of the objects passed in the dataFrame</p>
-<p># this plot will look very dense, so in order to visually see the points distributed on the (ra,dec) plane, downsample the number of points by 100 and again plot. In order to downsample the points, use <code class="docutils literal notranslate"><span class="pre">numpy.random.choise()</span></code> function.</p>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Exercise:</p>
+<ul>
+<li><p>write a python code to plot dec(on Y-axis) vs ra(on X-axis) of the objects passed in the dataFrame.</p>
+<p>This plot will look very dense, so in order to visually see the points distributed on the (ra,dec) plane, downsample the number of points by 100 and again plot.</p>
+</li>
+<li><p>In order to downsample the points, use <code class="docutils literal notranslate"><span class="pre">numpy.random.choise()</span></code> function.</p></li>
+</ul>
+</div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
@@ -683,8 +689,9 @@ ra,dec,z,col_3,col_4,col_5
 <p>get <span class="math notranslate nohighlight">\(\theta\)</span></p>
 <p>Using: <span class="math notranslate nohighlight">\(\mathrm{arc\_distance}=s=r \times \theta\)</span>, obtain the distance between the two ra,dec values. Since <span class="math notranslate nohighlight">\(r_1=r_2=1\)</span>,</p>
 <p><span class="math notranslate nohighlight">\(\Rightarrow s=\theta\)</span> (radians)</p>
-<p># <code class="docutils literal notranslate"><span class="pre">Using</span> <span class="pre">the</span> <span class="pre">above</span> <span class="pre">formula</span></code> -</p>
-<p>Implement a function which takes tuples of (ra,dec) of two objects and returns the distance between them on the Unit sphere. Your code should return the <code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">in</span> <span class="pre">units</span> <span class="pre">of</span> <span class="pre">arc</span> <span class="pre">seconds</span> <span class="pre">and</span> <span class="pre">not</span> <span class="pre">in</span> <span class="pre">radians</span></code>.</p>
+<div class="admonition note">
+<p>Exercise: Using the above formula - Implement a function which takes tuples of (ra,dec) of two objects and returns the distance between them on the Unit sphere. Your code should return the result in units of arc seconds and not in radians.</p>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
@@ -740,9 +747,14 @@ distance: 23.7466131834144 arcsec
 <div class="section" id="Brute-force-search-for-neighbour-objects-within-a-specified-distance">
 <h2><code class="docutils literal notranslate"><span class="pre">Brute</span> <span class="pre">force</span> <span class="pre">search</span> <span class="pre">for</span> <span class="pre">neighbour</span> <span class="pre">objects</span></code> within a specified distance<a class="headerlink" href="#Brute-force-search-for-neighbour-objects-within-a-specified-distance" title="Permalink to this headline"></a></h2>
 <p>time complexity ~ <span class="math notranslate nohighlight">\(\mathcal{O}(n^2)\)</span></p>
-<p># write a function <code class="docutils literal notranslate"><span class="pre">find_neighbour_points</span></code> that uses (ra,dec) coordinates of an object, and within some given <code class="docutils literal notranslate"><span class="pre">rmax</span></code> distance, finds its neighbour points in the given dataFrame catalog.</p>
-<p># Using this code you should be able to find neighbours of each object in the dataFrame - within the same dataFrame.</p>
-<p>Say the <span class="math notranslate nohighlight">\(1^{st}\)</span> object in the dataFrame has 5 objects within say <code class="docutils literal notranslate"><span class="pre">rrmax</span></code>=15 arcsec, then you should be able to print/store the <code class="docutils literal notranslate"><span class="pre">indices</span></code> and <code class="docutils literal notranslate"><span class="pre">distances</span></code> of these neighbours.</p>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Exercise: - write a function <code class="docutils literal notranslate"><span class="pre">find_neighbour_points</span></code> that uses (ra,dec) coordinates of an object, and within some given <code class="docutils literal notranslate"><span class="pre">rmax</span></code> distance, finds its neighbour points in the given dataFrame catalog.</p>
+<ul>
+<li><p>Using this code you should be able to find neighbours of each object in the dataFrame - within the same dataFrame.</p>
+<p>Say the <span class="math notranslate nohighlight">\(1^{st}\)</span> object in the dataFrame has 5 objects within say rmax=15 arcsec, then you should be able to print/store the <code class="docutils literal notranslate"><span class="pre">indices</span></code> and <code class="docutils literal notranslate"><span class="pre">distances</span></code> of these neighbours.</p>
+</li>
+</ul>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
@@ -784,8 +796,9 @@ distance: 23.7466131834144 arcsec
 </div>
 <div class="section" id="Testing-the-above-function-find_neighbour_points-(brute-force-search)">
 <h2>Testing the above function <code class="docutils literal notranslate"><span class="pre">find_neighbour_points</span></code> (brute force search)<a class="headerlink" href="#Testing-the-above-function-find_neighbour_points-(brute-force-search)" title="Permalink to this headline"></a></h2>
-<p>Search within a ball of radius <code class="docutils literal notranslate"><span class="pre">rmax</span></code> of 50 objects in the catalog within itself, say for <code class="docutils literal notranslate"><span class="pre">rmax</span></code>(default value)=15 arcsec.</p>
-<p>We’re only using 50 points in order to reduce the compute time, but the code has no such limitation.</p>
+<div class="admonition note">
+<p>Exercise: - Search within a ball of radius <code class="docutils literal notranslate"><span class="pre">rmax</span></code> of 50 objects in the catalog within itself, say for <code class="docutils literal notranslate"><span class="pre">rmax</span></code>(default value)=15 arcsec. We’re only using 50 points in order to reduce the compute time, but the code has no such limitation. - Access the above result and print the neighbour object’s indices,distances and coordinates of few objects.</p>
+</div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
@@ -858,8 +871,8 @@ object index, neighbours indices list, neighbours distances list
 47 [] []
 48 [] []
 49 [] []
-CPU times: user 136 ms, sys: 8.79 ms, total: 145 ms
-Wall time: 140 ms
+CPU times: user 130 ms, sys: 13.1 ms, total: 143 ms
+Wall time: 135 ms
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -900,8 +913,9 @@ Accessing the neighbour coordinates of the 15th object:
 <hr class="docutils" />
 <div class="section" id="A-visual-sanity-check-for-execution-of-find_neighbour_points-function">
 <h2>A visual sanity check for execution of <code class="docutils literal notranslate"><span class="pre">find_neighbour_points</span></code> function<a class="headerlink" href="#A-visual-sanity-check-for-execution-of-find_neighbour_points-function" title="Permalink to this headline"></a></h2>
-<p>Let’s plot the coordinates of the neighbours of some test point.</p>
-<p>This exercise can help us visually inspect whether our neighbour search code gave us reasonable results or not.</p>
+<div class="admonition note">
+<p>Exercise: - Plot the coordinates of the neighbours of any one test point. This exercise can help us visually inspect whether our neighbour search code gave us reasonable results or not. - Along with plotting, also print the distances of each of these neighbours and visually confirm that the nearest looking object on the plot indead has the smallest distance from the test point, and similarly check for other neighbour points.</p>
+</div>
 <p>I’m plotting the neighbours of <span class="math notranslate nohighlight">\(15^{th}\)</span> point from the catalog. And also printing their <code class="docutils literal notranslate"><span class="pre">indices</span></code> and <code class="docutils literal notranslate"><span class="pre">distances</span></code> to compare the stored distances by eye!</p>
 <p>Point marked as <span class="math notranslate nohighlight">\(\star\)</span> is the <span class="math notranslate nohighlight">\(15^{th}\)</span> point. Other points are its neighbours.</p>
 <div class="nbinput docutils container">
@@ -948,7 +962,7 @@ Accessing the neighbour coordinates of the 15th object:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/pair_counting_29_0.png" src="_images/pair_counting_29_0.png" />
+<img alt="_images/pair_counting_31_0.png" src="_images/pair_counting_31_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -981,11 +995,19 @@ index--&gt; distance            color
 </pre></div>
 </div>
 </div>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Exercise:</p>
+<ul>
+<li><p>Write a code using cKDTree to find out the neighbours of a given <code class="docutils literal notranslate"><span class="pre">set1</span></code> of objects (coordinates) from a catalog of other <code class="docutils literal notranslate"><span class="pre">set2</span></code> objects.</p>
+<p>Write this code in a <code class="docutils literal notranslate"><span class="pre">class</span> <span class="pre">structure</span></code> where it takes-in arrays of <code class="docutils literal notranslate"><span class="pre">ra,dec</span></code> of the catalog objects (set2) and</p>
+<ul class="simple">
+<li><p>converts (ra,dec) to (x,y,z) of cartesian coordinates,</p></li>
+<li><p>creates k-d tree of the <code class="docutils literal notranslate"><span class="pre">set2</span></code> catalog objects using (x,y,z),</p></li>
+<li><p>queries for the neighbour points of - each object in the <code class="docutils literal notranslate"><span class="pre">set1</span></code>, and returns the indices in <code class="docutils literal notranslate"><span class="pre">set2</span></code>.</p></li>
+</ul>
+</li>
+</ul>
 </div>
-</div>
-<div class="section" id="Write-a-wrapper-code-using-cKDTree-to-find-out-the-neighbours-of-a-given-set1-of-objects-(coordinates)-from-a-catalog-of-other-objects,-set2">
-<h2>Write a wrapper code using cKDTree to find out the neighbours of a given <code class="docutils literal notranslate"><span class="pre">set1</span></code> of objects (coordinates) from a catalog of other objects, <code class="docutils literal notranslate"><span class="pre">set2</span></code><a class="headerlink" href="#Write-a-wrapper-code-using-cKDTree-to-find-out-the-neighbours-of-a-given-set1-of-objects-(coordinates)-from-a-catalog-of-other-objects,-set2" title="Permalink to this headline"></a></h2>
-<p># Write this code in a <code class="docutils literal notranslate"><span class="pre">class</span> <span class="pre">structure</span></code> where it takes-in arrays of <code class="docutils literal notranslate"><span class="pre">ra,dec</span></code> of the catalog objects (set2) and - converts (ra,dec) to (x,y,z) of cartesian coordinates. - creates k-d tree of the catalog objects using (x,y,x) - queries for the neighbour points of each object in the <code class="docutils literal notranslate"><span class="pre">set1</span></code> using its ra,dec</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
@@ -1045,8 +1067,10 @@ index--&gt; distance            color
 </pre></div>
 </div>
 </div>
-<div class="section" id="Testing-conversion-of-(ra,dec)-to-(x,y,z)">
-<h3>Testing conversion of (ra,dec) to (x,y,z)<a class="headerlink" href="#Testing-conversion-of-(ra,dec)-to-(x,y,z)" title="Permalink to this headline"></a></h3>
+</div>
+<div class="section" id="A-sanity-check">
+<h3>A sanity check<a class="headerlink" href="#A-sanity-check" title="Permalink to this headline"></a></h3>
+<p>Testing conversion of (ra,dec) to (x,y,z)</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
@@ -1092,7 +1116,12 @@ array([[ 0.8553461 ,  0.50608675, -0.11072151],
 </div>
 <div class="section" id="Demo-objects-for-which-we’ll-compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm">
 <h3>Demo objects for which we’ll compare the output of our brute force algorithm with cKDTree algorithm<a class="headerlink" href="#Demo-objects-for-which-we’ll-compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm" title="Permalink to this headline"></a></h3>
-<p># Take the same bunch of objects for which we already have run our brute force search method, and feed them into the wrapper code of k-d tree written above, and find out their neighbour points within the same <code class="docutils literal notranslate"><span class="pre">rmax</span></code>(default value)=15 arcsec.</p>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Exercise:</p>
+<ul class="simple">
+<li><p>Take the same bunch of objects for which we already have run our brute force search method, and feed them into the wrapper code of k-d tree written above, and find out their neighbour points within the same <code class="docutils literal notranslate"><span class="pre">rmax</span></code>(default value)=15 arcsec.</p></li>
+</ul>
+</div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
@@ -1103,7 +1132,7 @@ array([[ 0.8553461 ,  0.50608675, -0.11072151],
 
 <span class="n">demox</span><span class="p">,</span> <span class="n">demoy</span><span class="p">,</span> <span class="n">demoz</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">RA_DEC_to_xyz</span><span class="p">(</span><span class="n">demo_ra</span><span class="p">,</span> <span class="n">demo_dec</span><span class="p">)</span>
 <span class="n">demoobj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">demox</span><span class="p">,</span><span class="n">demoy</span><span class="p">,</span><span class="n">demoz</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;indices of test objects in set2(catalog):&quot;</span><span class="p">,</span><span class="n">demo_ids</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;I had chosen following indices from set2(catalog) as my test objects:&quot;&quot;&quot;</span><span class="p">,</span><span class="n">demo_ids</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;coordinate of test objects:&quot;</span><span class="p">,</span><span class="n">demoobj</span><span class="p">)</span>
 
 <span class="c1"># we want to look within `rmax` arcsec --&gt; convert `rmax` from (arcsec) angle to length units</span>
@@ -1119,7 +1148,7 @@ array([[ 0.8553461 ,  0.50608675, -0.11072151],
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-indices of test objects in set2(catalog): [15]
+I had chosen following indices from set2(catalog) as my test objects: [15]
 coordinate of test objects: [[ 0.85581232  0.50543305 -0.11010311]]
 </pre></div></div>
 </div>
@@ -1185,8 +1214,8 @@ array([list([14, 15, 16, 44])], dtype=object)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 1.66 s, sys: 74 ms, total: 1.74 s
-Wall time: 1.73 s
+CPU times: user 1.62 s, sys: 80.7 ms, total: 1.7 s
+Wall time: 1.7 s
 </pre></div></div>
 </div>
 <p>Reminder: full catalog has about 2,20,000 objects… and k-d tree found neighbours for each one of them in 1-2 seconds.</p>
@@ -1204,8 +1233,8 @@ Wall time: 1.73 s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 54.2 s, sys: 0 ns, total: 54.2 s
-Wall time: 54.2 s
+CPU times: user 54.8 s, sys: 0 ns, total: 54.8 s
+Wall time: 54.8 s
 </pre></div></div>
 </div>
 </div>
