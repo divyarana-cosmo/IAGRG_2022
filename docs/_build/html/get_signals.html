@@ -47,8 +47,12 @@
 <li class="toctree-l2"><a class="reference internal" href="#Required-Steps">Required Steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Reading-data-from-the-catalog-and-appying-the-selection-cuts.">Reading data from the catalog and appying the selection cuts.</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Computing-the-tangential-shear-e_{\rm-t}-and-inverse-critical-density-\Sigma^{-1}_{\rm-crit}">Computing the tangential shear <span class="math notranslate nohighlight">\(e_{\rm t}\)</span> and inverse critical density <span class="math notranslate nohighlight">\(\Sigma^{-1}_{\rm crit}\)</span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#\Delta-\Sigma-(R)-measurements-using-cKDTree-and-writing-the-output-to-a-file."><span class="math notranslate nohighlight">\(\Delta \Sigma (R)\)</span> measurements using cKDTree and writing the output to a file.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#$:nbsphinx-math:Delta-`:nbsphinx-math:Sigma-`$-measurements-using-cKDTree-and-writing-the-output-to-a-file.">$:nbsphinx-math:<cite>Delta `:nbsphinx-math:</cite>Sigma `$ measurements using cKDTree and writing the output to a file.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Decription-of-algorithm-used-in-the-code-below-(run_pipe)-to-get-the-signal-\Delta-\Sigma.">Decription of algorithm used in the code below (run_pipe) to get the signal <span class="math notranslate nohighlight">\(\Delta \Sigma\)</span>.</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#Plotting-the-weak-lensing-signal">Plotting the weak lensing signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#The-bias-corrected-measurements">The bias corrected measurements</a></li>
 </ul>
 </li>
 </ul>
@@ -350,6 +354,7 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Day-3---Get-the-Weak-Lensing-Signals">
 <h1>Day 3 - Get the Weak Lensing Signals<a class="headerlink" href="#Day-3---Get-the-Weak-Lensing-Signals" title="Permalink to this headline"></a></h1>
 <p>In this session, we will use the things described in the last two sessions and make a weak lensing measurement pipeline for ourselves. We will start with writing out the different steps required to get the pipeline ready. We then code up each of them as individual functions, which will be called in our main code.</p>
+<p>We are here studying the matter distribution around SDSS redmapper galaxy clusters as described in - arXiv:1303.3562 by the weak lensing technique using shape catalog data from HSC S16A data - arXiv:1705.06745. We suggest readers to have a look at these references to have a better understanding of data provided to them.</p>
 <p><strong>We highly suggest readers to make a separate notebook for this session as it will be useful for later use.</strong></p>
 <p><strong>In the codes below I have left some black spaces indicated using ??. Please fill up the ?? in the code below and make sure you are doing it with right equations and conversions.</strong></p>
 <div class="section" id="Required-Steps">
@@ -535,17 +540,55 @@ def get_et(lra, ldec, sra, sdec, se1, se2):
 </ul>
 </div>
 </div>
-<div class="section" id="\Delta-\Sigma-(R)-measurements-using-cKDTree-and-writing-the-output-to-a-file.">
-<h2><span class="math notranslate nohighlight">\(\Delta \Sigma (R)\)</span> measurements using cKDTree and writing the output to a file.<a class="headerlink" href="#\Delta-\Sigma-(R)-measurements-using-cKDTree-and-writing-the-output-to-a-file." title="Permalink to this headline"></a></h2>
-<p>Our aim in this section isto write the main function to measure weak lensing signal <span class="math notranslate nohighlight">\(\Delta \Sigma (R)\)</span>. As discussed in the lectures the <span class="math notranslate nohighlight">\(\Delta \Sigma (R)\)</span> as given by</p>
+<div class="section" id="$:nbsphinx-math:Delta-`:nbsphinx-math:Sigma-`$-measurements-using-cKDTree-and-writing-the-output-to-a-file.">
+<h2>$:nbsphinx-math:<cite>Delta `:nbsphinx-math:</cite>Sigma <a href="#id1"><span class="problematic" id="id2">`</span></a>$ measurements using cKDTree and writing the output to a file.<a class="headerlink" href="#$:nbsphinx-math:Delta-`:nbsphinx-math:Sigma-`$-measurements-using-cKDTree-and-writing-the-output-to-a-file." title="Permalink to this headline"></a></h2>
+<p>Our aim in this section is to write the main function to measure weak lensing signal <span class="math notranslate nohighlight">\(\Delta \Sigma (R)\)</span>. As discussed in the lectures the <span class="math notranslate nohighlight">\(\Delta \Sigma (R)\)</span> for a comoving projected radial bin <span class="math notranslate nohighlight">\(R\)</span> as given by</p>
 <div class="math notranslate nohighlight">
 \[\Delta \Sigma (R) = \frac{\sum_{ls} w_{\rm ls} e_{t,ls} (\Sigma^{-1}_{\rm crit})^{-1}}{2\mathcal{R} \sum_{ls} w_{\rm ls}}\]</div>
-<p>where <span class="math notranslate nohighlight">\(w_{ls}\)</span> is the source-lense weights given as <span class="math notranslate nohighlight">\(w_{ls} = w_l w_s \Sigma^{-2}_{\rm crit}\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(w_{ls}\)</span> is the source-lense weights given as <span class="math notranslate nohighlight">\(w_{ls} = w_l w_s \Sigma^{-2}_{\rm crit}\)</span> and the <span class="math notranslate nohighlight">\(\mathcal{R}\)</span> is the responsivity given as <span class="math notranslate nohighlight">\(\mathcal{R} = 1 - \frac{\sum_{\rm ls} w_{ls} e^2_{\rm rms}}{\sum_{\rm ls} w_{ls}}\)</span>. The <span class="math notranslate nohighlight">\(e_{\rm rms}\)</span> is the intrinsic shape dispersion given by the shape catalog for individual galaxies.</p>
+<div class="section" id="Decription-of-algorithm-used-in-the-code-below-(run_pipe)-to-get-the-signal-\Delta-\Sigma.">
+<h3>Decription of algorithm used in the code below (run_pipe) to get the signal <span class="math notranslate nohighlight">\(\Delta \Sigma\)</span>.<a class="headerlink" href="#Decription-of-algorithm-used-in-the-code-below-(run_pipe)-to-get-the-signal-\Delta-\Sigma." title="Permalink to this headline"></a></h3>
+<ol class="arabic simple">
+<li><p>Global Input Parameters:</p>
+<ol class="arabic simple">
+<li><p><strong>Omegam</strong> : Omega matter - will be used in cosmological distance calculation, default = 0.315</p></li>
+<li><p><strong>rmin</strong> : Minimum projected radius - will be used for setting projected radial range, default = 0.2</p></li>
+<li><p><strong>rmax</strong> : Maximum projected radius - will be used for setting projected radial range, default = 2.0</p></li>
+<li><p><strong>nbins</strong> : number of projected radial bins - use to setup the logarithmic binning, default = 10</p></li>
+<li><p><strong>zdiff</strong> : a small offset added to lense redshift to select cleaner background sources <span class="math notranslate nohighlight">\(z_s &gt; (z_l + {\rm zdiff})\)</span>, default = 0.4</p></li>
+<li><p><strong>outputfile</strong>: dat file name for the output, default = ‘iagrg_dsigma.dat’</p></li>
+</ol>
+</li>
+<li><p><strong>Initialize the astropy cosmo then getting projected radial binning array ready</strong></p></li>
+<li><p>We are computing the numerators and denominators for the signals separately and they have to be initialize first:</p>
+<ol class="arabic simple">
+<li><p><strong>sumdsig_num</strong> : array for <span class="math notranslate nohighlight">\(\Delta\Sigma\)</span> numerator</p></li>
+<li><p><strong>sumdsigsq_num</strong>: array for estimating the shape noise (covered in lectures) numerators</p></li>
+<li><p><strong>sumwls</strong> : array for summed lense-source weights</p></li>
+<li><p><strong>sumwls_resp</strong> : array for <span class="math notranslate nohighlight">\(\Delta\Sigma\)</span> numerator(we can push the 1 into summed w_ls - look at the expression)</p></li>
+</ol>
+</li>
+<li><p>Collect lenses data and convert the position (ra,dec) –&gt; (x,y,z) using the above defined functions. Then use these x,y,z to get a lens tree using <strong>cKDtree</strong>.</p></li>
+<li><p>We also need to set a <strong>maximum search radius</strong> for the <strong>query_ball_point</strong> (refer to day-2 tutorials). The maximum is theratio between maximum projected radius rmax and minimum comoving distance to our lense sample - <strong>rmax/(comoving_distance(zlmin))</strong>, zlmin - minimum lense redshift.</p></li>
+<li><p>Now we use glob package to collect the file paths to our many many files. We loop over these path and read each file using the <strong>read_source</strong> function define above.</p></li>
+<li><p>Then we take the source ra, dec and convert them to x,y,z so that we can <strong>query</strong> around each source using lense tree and collect lenses within <strong>maximum search radius</strong>. This will give us a list of ids of lenses for each sources.</p></li>
+<li><p>Once we have a list of indices of lenses for all galaxies in the file. We then loop over the galaxies in individual file to compute the array of <strong>comoving projected radial distance</strong> for the each galaxy with it’s lenses that we got in the last step. Here we also put a cut that for a given lense-source pair with the source redshift <span class="math notranslate nohighlight">\(z_s\)</span> and lense redshift <span class="math notranslate nohighlight">\(z_l\)</span> , <span class="math notranslate nohighlight">\(z_s &gt; z_l +\)</span> zdiff and we also skip sources which doesn’t have any lense around them.</p></li>
+<li><p>The projected distance array from last step then used to look for corresponding bin number in our binning scheme as described in the Global parameters. Then we use the above equations along with the above defined functions to get the values of array defined in step 3.</p></li>
+<li><p>As said in step 6, we run step 7-9 for all the source files in our directory and then write the resultant output in a file named by the Global Parameters.</p></li>
+</ol>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def run_pipe(Omegam=0.315, rmin=0.2, rmax=2.0, nbins=10, zdiff=0.4):
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def run_pipe(Omegam=0.315, rmin=0.2, rmax=2.0, nbins=10, zdiff=0.4, outputfile = &#39;iagrg_dsigma.dat&#39;):
     #set the cosmology with omegaM parameter
     cc = FlatLambdaCDM(H0=100, Om0=Omegam) # fixing H0=100 to set units in Mpc h-1
 
@@ -554,7 +597,7 @@ def get_et(lra, ldec, sra, sdec, se1, se2):
     rmax  =  rmax
     nbins = nbins #10 radial bins for our case
     rbins = np.logspace(np.log10(rmin), np.log10(rmax), nbins + 1)
-    rdiff = np.log10(rbins[1]*1.0/rbins[0])
+    rdiff = np.log10(rbins[1]*1.0/rbins[0]) # difference in log binning
 
     # initializing arrays for signal compuations
     sumdsig_num   = np.zeros(len(rbins[:-1]))
@@ -663,7 +706,7 @@ def get_et(lra, ldec, sra, sdec, se1, se2):
 
         print(ifil)
 
-    outputfile = &#39;iagrg_dsigma.dat&#39;
+    outputfile = outputfile
     fout = open(outputfile, &quot;w&quot;)
     fout.write(&quot;# 0:rmin/2+rmax/2 1:DeltaSigma  2:SN_ErrDeltaSigma\n&quot;)
     for i in range(len(rbins[:-1])):
@@ -690,6 +733,7 @@ def get_et(lra, ldec, sra, sdec, se1, se2):
 </div>
 </div>
 </div>
+</div>
 <div class="section" id="Plotting-the-weak-lensing-signal">
 <h2>Plotting the weak lensing signal<a class="headerlink" href="#Plotting-the-weak-lensing-signal" title="Permalink to this headline"></a></h2>
 <div class="nbinput nblast docutils container">
@@ -705,6 +749,19 @@ def get_et(lra, ldec, sra, sdec, se1, se2):
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\Delta\Sigma [{\rm h M_\odot pc^{-2}}]$&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="The-bias-corrected-measurements">
+<h2>The bias corrected measurements<a class="headerlink" href="#The-bias-corrected-measurements" title="Permalink to this headline"></a></h2>
+<p>For doing a bias corrected measurements one has to do add few more things in our <span class="math notranslate nohighlight">\(\Delta \Sigma\)</span> expression. Interested reader can check this expression for <span class="math notranslate nohighlight">\(\Delta \Sigma\)</span> in arXiv:2107.05641 and can modify the above code to get the bias corrected measurements.</p>
+<p>Please note that within each source file we have already provided you the data coloumns required to do these computations.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
