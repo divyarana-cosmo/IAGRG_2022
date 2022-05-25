@@ -18,8 +18,7 @@
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Day 2 - Finding neighbours" href="pair_counting.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,10 +37,9 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="instructions.html">Day 1 - Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pair_counting.html">Day 2 - Finding neighbours</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Day 3 - Get the Weak Lensing Signals</a></li>
 </ul>
 
         </div>
@@ -340,6 +338,227 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="Day-3---Get-the-Weak-Lensing-Signals">
 <h1>Day 3 - Get the Weak Lensing Signals<a class="headerlink" href="#Day-3---Get-the-Weak-Lensing-Signals" title="Permalink to this headline"></a></h1>
+<div class="section" id="Reading-data-from-the-catalog-and-appying-the-selection-cuts.">
+<h2>Reading data from the catalog and appying the selection cuts.<a class="headerlink" href="#Reading-data-from-the-catalog-and-appying-the-selection-cuts." title="Permalink to this headline"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">lens_select</span><span class="p">(</span><span class="n">zmin</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">lammin</span><span class="o">=</span><span class="mi">55</span><span class="p">,</span> <span class="n">lammax</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="c1">#please check the file path properly</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./DataStore/redmapper.dat&#39;</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1">#sample selection cut</span>
+    <span class="n">idx</span>  <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;lambda&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="n">lammin</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;lambda&#39;</span><span class="p">]</span><span class="o">&lt;=</span><span class="n">lammax</span><span class="p">)</span>
+    <span class="n">idx</span>  <span class="o">=</span> <span class="n">idx</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;zred&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="n">zmin</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;zred&#39;</span><span class="p">]</span><span class="o">&lt;=</span><span class="n">zmax</span><span class="p">)</span>
+    <span class="n">ra</span>   <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ra&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">dec</span>  <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">zred</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;zred&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="c1">#as we have no weights to apply we set them to unity</span>
+    <span class="n">wgt</span>  <span class="o">=</span> <span class="n">ra</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">ra</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;number of lenses=</span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">len</span>(ra))
+    <span class="k">return</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">zred</span><span class="p">,</span> <span class="n">wgt</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">read_sources</span><span class="p">(</span><span class="n">ifil</span><span class="p">):</span>
+    <span class="c1"># various columns in sources</span>
+    <span class="c1"># ragal, decgal, e1gal, e2gal, wgal, rms_egal, mgal, c1gal, c2gal, R2gal, zphotgal</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">ifil</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">zphotgal</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># sanity checks on the sources data</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>  <span class="p">(</span><span class="n">zphotgal</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">datagal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span><span class="mi">7</span><span class="p">))</span>
+    <span class="n">datagal</span><span class="p">[:,:</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,:</span><span class="mi">6</span><span class="p">]</span>
+    <span class="n">datagal</span><span class="p">[:,</span><span class="mi">6</span><span class="p">]</span>  <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># collects only -  ragal, decgal, e1gal, e2gal, wgal, rms_egal, zphotgal</span>
+    <span class="k">return</span> <span class="n">datagal</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Computing-the-tangential-shear-e_{\rm-t}-and-inverse-critical-density-\Sigma^{-1}_{\rm-crit}">
+<h2>Computing the tangential shear <span class="math notranslate nohighlight">\(e_{\rm t}\)</span> and inverse critical density <span class="math notranslate nohighlight">\(\Sigma^{-1}_{\rm crit}\)</span><a class="headerlink" href="#Computing-the-tangential-shear-e_{\rm-t}-and-inverse-critical-density-\Sigma^{-1}_{\rm-crit}" title="Permalink to this headline"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_et</span><span class="p">(</span><span class="n">lra</span><span class="p">,</span> <span class="n">ldec</span><span class="p">,</span> <span class="n">sra</span><span class="p">,</span> <span class="n">sdec</span><span class="p">,</span> <span class="n">se1</span><span class="p">,</span> <span class="n">se2</span><span class="p">):</span>
+    <span class="n">lra</span>  <span class="o">=</span> <span class="n">lra</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span>
+    <span class="n">ldec</span> <span class="o">=</span> <span class="n">ldec</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span>
+    <span class="n">sra</span>  <span class="o">=</span> <span class="n">sra</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span>
+    <span class="n">sdec</span> <span class="o">=</span> <span class="n">sdec</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span>
+
+    <span class="n">c_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ldec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">sdec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lra</span> <span class="o">-</span> <span class="n">sra</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ldec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">sdec</span><span class="p">)</span>
+    <span class="n">s_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">c_theta</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># phi to get the compute the tangential shear</span>
+    <span class="n">c_phi</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ldec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">sra</span> <span class="o">-</span> <span class="n">lra</span><span class="p">)</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">s_theta</span>
+    <span class="n">s_phi</span>   <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ldec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">sdec</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ldec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">sra</span> <span class="o">-</span> <span class="n">lra</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">sdec</span><span class="p">))</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">s_theta</span>
+    <span class="c1"># tangential shear</span>
+    <span class="n">e_t</span>     <span class="o">=</span> <span class="o">-</span> <span class="n">se1</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">c_phi</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">se2</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">c_phi</span> <span class="o">*</span> <span class="n">s_phi</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">e_t</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_sigma_crit_inv</span><span class="p">(</span><span class="n">lzred</span><span class="p">,</span> <span class="n">szred</span><span class="p">,</span> <span class="n">cc</span><span class="p">):</span>
+    <span class="c1"># some important constants for the sigma crit computations</span>
+    <span class="n">gee</span> <span class="o">=</span> <span class="mf">4.301e-9</span> <span class="c1">#km^2 Mpc M_sun^-1 s^-2 gravitational constant</span>
+    <span class="n">cee</span> <span class="o">=</span> <span class="mf">3e5</span> <span class="c1">#km s^-1</span>
+    <span class="c1"># sigma_crit_calculations for a given lense-source pair</span>
+    <span class="n">sigm_crit_inv</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">angular_diameter_distance</span><span class="p">(</span><span class="n">lzred</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="n">cc</span><span class="o">.</span><span class="n">angular_diameter_distance_z1z2</span><span class="p">(</span><span class="n">lzred</span><span class="p">,</span> <span class="n">szred</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">lzred</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">cc</span><span class="o">.</span><span class="n">angular_diameter_distance</span><span class="p">(</span><span class="n">szred</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+    <span class="n">sigm_crit_inv</span> <span class="o">=</span> <span class="n">sigm_crit_inv</span> <span class="o">*</span> <span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">gee</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">cee</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">sigm_crit_inv</span> <span class="o">=</span> <span class="mf">1e12</span><span class="o">*</span><span class="n">sigm_crit_inv</span> <span class="c1">#esd&#39;s are in pc not in Mpc</span>
+
+    <span class="k">return</span> <span class="n">sigm_crit_inv</span>
+<br/></pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="\Delta-\Sigma-(R)-measurements-and-writing-the-output-to-a-file">
+<h2><span class="math notranslate nohighlight">\(\Delta \Sigma (R)\)</span> measurements and writing the output to a file<a class="headerlink" href="#\Delta-\Sigma-(R)-measurements-and-writing-the-output-to-a-file" title="Permalink to this headline"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_pipe</span><span class="p">(</span><span class="n">Omegam</span><span class="o">=</span><span class="mf">0.315</span><span class="p">,</span> <span class="n">rmin</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">rmax</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">zdiff</span><span class="o">=</span><span class="mf">0.4</span><span class="p">):</span>
+    <span class="c1">#set the cosmology with omegaM parameter</span>
+    <span class="n">cc</span> <span class="o">=</span> <span class="n">FlatLambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="n">Omegam</span><span class="p">)</span> <span class="c1"># fixing H0=100 to set units in Mpc h-1</span>
+
+    <span class="c1"># set the projected radial binning</span>
+    <span class="n">rmin</span>  <span class="o">=</span>  <span class="n">rmin</span>
+    <span class="n">rmax</span>  <span class="o">=</span>  <span class="n">rmax</span>
+    <span class="n">nbins</span> <span class="o">=</span> <span class="n">nbins</span> <span class="c1">#10 radial bins for our case</span>
+    <span class="n">rbins</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">rmin</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">rmax</span><span class="p">),</span> <span class="n">nbins</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">rdiff</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">rbins</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">rbins</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># initializing arrays for signal compuations</span>
+    <span class="n">sumdsig_num</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rbins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">sumdsigsq_num</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rbins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">sumwls</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rbins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">sumwls_resp</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rbins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="c1"># getting the lenses data</span>
+    <span class="n">lra</span><span class="p">,</span> <span class="n">ldec</span><span class="p">,</span> <span class="n">lred</span><span class="p">,</span> <span class="n">lwgt</span> <span class="o">=</span> <span class="n">lens_select</span><span class="p">()</span>
+
+    <span class="c1"># convert lense ra and dec into x,y,z cartesian coordinates</span>
+    <span class="n">lx</span><span class="p">,</span> <span class="n">ly</span><span class="p">,</span> <span class="n">lz</span> <span class="o">=</span> <span class="n">get_xyz</span><span class="p">(</span><span class="n">lra</span><span class="p">,</span> <span class="n">ldec</span><span class="p">)</span>
+
+    <span class="c1"># putting kd tree around the lenses</span>
+    <span class="n">lens_tree</span> <span class="o">=</span> <span class="n">KDTree</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">lx</span><span class="p">,</span> <span class="n">ly</span><span class="p">,</span> <span class="n">lz</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;lenses tree is ready</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># setting maximum search radius</span>
+    <span class="n">dcommin</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">comoving_distance</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">lred</span><span class="p">))</span><span class="o">.</span><span class="n">value</span>
+    <span class="n">dismax</span>  <span class="o">=</span> <span class="p">(</span><span class="n">rmax</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="p">(</span><span class="n">dcommin</span><span class="p">))</span>
+
+    <span class="c1"># lets first catch the file list for sources</span>
+    <span class="n">sflist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;./DataStore/hsc/*.dat&#39;</span><span class="p">))</span>
+
+    <span class="c1"># Ready to pounce on the source data</span>
+    <span class="k">for</span> <span class="n">ifil</span> <span class="ow">in</span> <span class="n">sflist</span><span class="p">:</span>
+        <span class="c1"># catching the source data matrix</span>
+        <span class="c1"># please have a check for the columns names</span>
+        <span class="n">datagal</span> <span class="o">=</span> <span class="n">read_sources</span><span class="p">(</span><span class="n">ifil</span><span class="p">)</span>
+        <span class="n">Ngal</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">datagal</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># total number of galaxies in the source file</span>
+        <span class="c1"># first two entries are ra and dec for the sources</span>
+        <span class="n">allragal</span>  <span class="o">=</span> <span class="n">datagal</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">alldecgal</span> <span class="o">=</span> <span class="n">datagal</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># ra and dec to x,y,z for sources</span>
+        <span class="n">allsx</span><span class="p">,</span> <span class="n">allsy</span><span class="p">,</span> <span class="n">allsz</span> <span class="o">=</span> <span class="n">get_xyz</span><span class="p">(</span><span class="n">allragal</span><span class="p">,</span> <span class="n">alldecgal</span><span class="p">)</span>
+        <span class="c1"># query in a ball around individual sources and collect the lenses ids with a maximum radius</span>
+        <span class="n">slidx</span> <span class="o">=</span> <span class="n">lens_tree</span><span class="o">.</span><span class="n">query_ball_point</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">([</span><span class="n">allsx</span><span class="p">,</span> <span class="n">allsy</span><span class="p">,</span> <span class="n">allsz</span><span class="p">]),</span> <span class="n">dismax</span><span class="p">)</span>
+        <span class="c1"># various columns in sources</span>
+        <span class="c1"># ragal, decgal, e1gal, e2gal, wgal, rms_egal, mgal, c1gal, c2gal, R2gal, zphotgal</span>
+        <span class="c1"># looping over all the galaxies</span>
+        <span class="k">for</span> <span class="n">igal</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ngal</span><span class="p">):</span>
+            <span class="n">ragal</span>    <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">decgal</span>   <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">e1gal</span>    <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">e2gal</span>    <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">wgal</span>     <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+            <span class="n">rms_egal</span> <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+            <span class="n">zphotgal</span> <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
+
+            <span class="c1"># array of lenses indices</span>
+            <span class="n">lidx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">slidx</span><span class="p">[</span><span class="n">igal</span><span class="p">])</span>
+            <span class="c1"># removing sources which doesn&#39;t have any lenses around them</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lidx</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># selecting a cleaner background</span>
+            <span class="n">zcut</span> <span class="o">=</span> <span class="p">(</span><span class="n">lred</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">zphotgal</span> <span class="o">-</span> <span class="n">zdiff</span><span class="p">))</span> <span class="c1">#only taking the foreground lenses</span>
+            <span class="c1"># again skipping the onces which doesn&#39;t satisfy the above criteria</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">zcut</span><span class="p">)</span><span class="o">==</span><span class="mf">0.0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="c1"># collecting the  data of lenses around individual source</span>
+            <span class="n">lidx</span>   <span class="o">=</span> <span class="n">lidx</span><span class="p">[</span><span class="n">zcut</span><span class="p">]</span> <span class="c1"># this will catch the array indices for our lenses</span>
+            <span class="n">sra</span>    <span class="o">=</span> <span class="n">ragal</span>
+            <span class="n">sdec</span>   <span class="o">=</span> <span class="n">decgal</span>
+
+            <span class="n">l_ra</span>   <span class="o">=</span> <span class="n">lra</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span>
+            <span class="n">l_dec</span>  <span class="o">=</span> <span class="n">ldec</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span>
+            <span class="n">l_zred</span> <span class="o">=</span> <span class="n">lred</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span>
+            <span class="n">l_wgt</span>  <span class="o">=</span> <span class="n">lwgt</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span>
+
+            <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">,</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">get_xyz</span><span class="p">(</span><span class="n">sra</span><span class="p">,</span><span class="n">sdec</span><span class="p">)</span> <span class="c1"># individual galaxy ra,dec--&gt;x,y,z</span>
+            <span class="n">lx</span><span class="p">,</span> <span class="n">ly</span><span class="p">,</span> <span class="n">lz</span> <span class="o">=</span> <span class="n">get_xyz</span><span class="p">(</span><span class="n">l_ra</span><span class="p">,</span><span class="n">l_dec</span><span class="p">)</span> <span class="c1"># individual galaxy ra,dec--&gt;x,y,z</span>
+
+            <span class="c1"># getting the radial separations for a lense source pair</span>
+            <span class="n">sl_sep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">lx</span> <span class="o">-</span> <span class="n">sx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">ly</span> <span class="o">-</span> <span class="n">sy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">lz</span> <span class="o">-</span> <span class="n">sz</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">sl_sep</span> <span class="o">=</span> <span class="n">sl_sep</span> <span class="o">*</span> <span class="n">cc</span><span class="o">.</span><span class="n">comoving_distance</span><span class="p">(</span><span class="n">l_zred</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">for</span> <span class="n">ll</span><span class="p">,</span><span class="n">sep</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sl_sep</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">sep</span><span class="o">&lt;</span><span class="n">rmin</span> <span class="ow">or</span> <span class="n">sep</span><span class="o">&gt;</span><span class="n">rmax</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">rb</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">sep</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">rmin</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="o">/</span><span class="n">rdiff</span><span class="p">)</span>
+
+                <span class="c1"># get tangantial components given positions and shapes</span>
+                <span class="n">e_t</span> <span class="o">=</span> <span class="n">get_et</span><span class="p">(</span><span class="n">lra</span> <span class="o">=</span> <span class="n">l_ra</span><span class="p">[</span><span class="n">ll</span><span class="p">],</span> <span class="n">ldec</span> <span class="o">=</span> <span class="n">l_dec</span><span class="p">[</span><span class="n">ll</span><span class="p">],</span> <span class="n">sra</span> <span class="o">=</span> <span class="n">sra</span><span class="p">,</span> <span class="n">sdec</span> <span class="o">=</span> <span class="n">sdec</span><span class="p">,</span> <span class="n">se1</span> <span class="o">=</span> <span class="n">e1gal</span><span class="p">,</span>  <span class="n">se2</span> <span class="o">=</span> <span class="n">e2gal</span><span class="p">)</span>
+
+                <span class="c1"># sigma_crit_calculations for a given lense-source pair</span>
+                <span class="n">sigm_crit_inv</span> <span class="o">=</span> <span class="n">get_sigma_crit_inv</span><span class="p">(</span><span class="n">l_zred</span><span class="p">[</span><span class="n">ll</span><span class="p">],</span> <span class="n">zphotgal</span><span class="p">,</span> <span class="n">cc</span><span class="p">)</span>
+
+                <span class="c1"># following equations given in the surhud&#39;s lectures</span>
+                <span class="n">w_ls</span>    <span class="o">=</span> <span class="n">l_wgt</span><span class="p">[</span><span class="n">ll</span><span class="p">]</span> <span class="o">*</span> <span class="n">wgal</span> <span class="o">*</span> <span class="p">(</span><span class="n">sigm_crit_inv</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+                <span class="n">w_ls_by_av_sigc_inv</span> <span class="o">=</span> <span class="n">l_wgt</span><span class="p">[</span><span class="n">ll</span><span class="p">]</span> <span class="o">*</span> <span class="n">wgal</span> <span class="o">*</span> <span class="n">sigm_crit_inv</span>
+
+                <span class="c1"># separate numerator and denominator computation</span>
+                <span class="n">sumdsig_num</span><span class="p">[</span><span class="n">rb</span><span class="p">]</span>   <span class="o">+=</span> <span class="n">w_ls_by_av_sigc_inv</span>  <span class="o">*</span> <span class="n">e_t</span>
+                <span class="n">sumdsigsq_num</span><span class="p">[</span><span class="n">rb</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">w_ls_by_av_sigc_inv</span> <span class="o">*</span> <span class="n">e_t</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+                <span class="n">sumwls</span><span class="p">[</span><span class="n">rb</span><span class="p">]</span>        <span class="o">+=</span> <span class="n">w_ls</span>
+                <span class="n">sumwls_resp</span><span class="p">[</span><span class="n">rb</span><span class="p">]</span>   <span class="o">+=</span> <span class="n">w_ls</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">rms_egal</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">ifil</span><span class="p">)</span>
+
+    <span class="n">outputfile</span> <span class="o">=</span> <span class="s1">&#39;iagrg_dsigma.dat_no_res&#39;</span>
+    <span class="n">fout</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# 0:rmin/2+rmax/2 1:DeltaSigma  2:SN_ErrDeltaSigma</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rbins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])):</span>
+        <span class="n">rrmin</span> <span class="o">=</span> <span class="n">rbins</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">rrmax</span> <span class="o">=</span> <span class="n">rbins</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">Resp</span> <span class="o">=</span> <span class="n">sumwls_resp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">sumwls</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%le</span><span class="se">\t</span><span class="si">%le</span><span class="se">\t</span><span class="si">%le</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">rrmin</span><span class="o">/</span><span class="mf">2.0</span><span class="o">+</span><span class="n">rrmax</span><span class="o">/</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">sumdsig_num</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">sumwls</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="mf">2.</span><span class="o">/</span><span class="n">Resp</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sumdsigsq_num</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">sumwls</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="mf">2.</span><span class="o">/</span><span class="n">Resp</span><span class="p">))</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#OK&quot;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Plotting-the-weak-lensing-signal">
+<h2>Plotting the weak lensing signal<a class="headerlink" href="#Plotting-the-weak-lensing-signal" title="Permalink to this headline"></a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -349,13 +568,12 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 </div>
+</div>
 
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="pair_counting.html" class="btn btn-neutral float-left" title="Day 2 - Finding neighbours" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-    </div>
+          <footer>
 
   <hr/>
 
