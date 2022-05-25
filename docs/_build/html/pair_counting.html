@@ -54,7 +54,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#Compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm-on-dew-Demo-objects">Compare the output of our brute force algorithm with cKDTree algorithm on dew Demo objects</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Compare-the-computer-time-required-by-our-brute-force-algorithm-vs-the-k-d-tree-algorithm">Compare the computer time required by our brute force algorithm vs the k-d tree algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Compare-the-computer-time-required-by-our-brute-force-algorithm-vs-the-k-d-tree-algorithm">Compare the computer time required by our brute force algorithm vs the k-d tree algorithm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Congratulations!-Now-you-have-learnt-to--">Congratulations! Now you have learnt to -</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="get_signals.html">Day 3 - Get the Weak Lensing Signals</a></li>
@@ -402,17 +405,29 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
 <script>$("div.input").hide()</script></div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "f66d9d8d777649dbb6562e35187a06f4", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "bd7954a0572a466ebe6449d5c8a1b165", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<script>$("div.input").show()</script></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<script>$("div.input").hide()</script></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -810,10 +825,10 @@ distance: 23.7466131834144 arcsec
 <div class="admonition note">
 <p class="admonition-title fa fa-exclamation-circle">Exercise:</p>
 <ul>
-<li><p>Search within a ball of radius <code class="docutils literal notranslate"><span class="pre">rmax</span></code> of 50 objects in the catalog within itself, say for <code class="docutils literal notranslate"><span class="pre">rmax</span></code>(default value)=15 arcsec.</p>
-<p>We’re only using 50points in order to reduce the compute time, but the code has no such limitation.</p>
+<li><p>Using the first 50 objects in the catalog, Search for their neighbours within a ball of radius <code class="docutils literal notranslate"><span class="pre">rmax</span></code>, say for <code class="docutils literal notranslate"><span class="pre">rmax</span></code>(default value)=15 arcsec.</p>
+<p><strong>Note:</strong> We’re only using 50 points in order to reduce the compute time, but the code has no such limitation. If you run your code for a large number of points, it will take more time to finish that’s all.</p>
 </li>
-<li><p>Access the above result and print the neighbour object’s indices,distances and coordinates of few objects.</p></li>
+<li><p>Access the above result and print indices,distances and coordinates of the neighbours of few objects.</p></li>
 </ul>
 </div>
 <div class="nbinput docutils container">
@@ -888,8 +903,8 @@ object index, neighbours indices list, neighbours distances list
 47 [] []
 48 [] []
 49 [] []
-CPU times: user 73.3 ms, sys: 5.39 ms, total: 78.7 ms
-Wall time: 75.3 ms
+CPU times: user 58.2 ms, sys: 5.39 ms, total: 63.6 ms
+Wall time: 74 ms
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1071,6 +1086,7 @@ index--&gt; distance            color
     <span class="c1"># within some distance `rmax` arcsec .</span>
 
     <span class="k">def</span> <span class="nf">query_within_rmax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">rmax</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Searching for </span><span class="si">{ra.size}</span><span class="s2"> number of objects in the catalog with rmax=</span><span class="si">{rmax}</span><span class="s2"> arcsec.&quot;</span><span class="p">)</span>
         <span class="c1">#convert rmax from arcsec to distance units</span>
         <span class="n">rmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">*</span><span class="n">rmax</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">arcsec_to_rad</span>
 
@@ -1161,9 +1177,9 @@ array([[ 0.8553461 ,  0.50608675, -0.11072151],
 
 <span class="c1"># we want to look within `rmax` arcsec --&gt; convert `rmax` from (arcsec) angle to length units</span>
 
-<span class="n">rmax</span> <span class="o">=</span> <span class="mi">15</span> <span class="o">*</span> <span class="n">arcsec_to_rad</span>
-<span class="c1"># print()</span>
-<span class="c1"># print(f&quot;rmax={rmax} in radians:&quot;,rmax)</span>
+<span class="n">rmax</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;rmax=</span><span class="si">{rmax}</span><span class="s2"> arcsec in radians ---&gt;&quot;</span><span class="p">,</span><span class="n">rmax</span><span class="o">*</span> <span class="n">arcsec_to_rad</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1174,6 +1190,8 @@ array([[ 0.8553461 ,  0.50608675, -0.11072151],
 <div class="highlight"><pre>
 I had chosen following indices from set2(catalog) as my test objects: [15]
 coordinate of test objects: [[ 0.85581232  0.50543305 -0.11010311]]
+
+rmax=15 arcsec in radians ---&gt; 7.27220521664304e-05
 </pre></div></div>
 </div>
 <p># Initialize class and set up the tree</p>
@@ -1194,13 +1212,21 @@ Initializing with sphere of radius, r=1.
 </pre></div></div>
 </div>
 <p># Query the neighbours of demo objects</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">idx</span><span class="o">=</span><span class="n">code_tree</span><span class="o">.</span><span class="n">query_within_rmax</span><span class="p">(</span><span class="n">demo_ra</span><span class="p">,</span> <span class="n">demo_dec</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Searching for 1 number of objects in the catalog with rmax=15 arcsec.
+</pre></div></div>
 </div>
 <p># Go back to brute force output and compare this result…. does it match?</p>
 <div class="nbinput docutils container">
@@ -1238,8 +1264,9 @@ array([list([14, 15, 16, 44])], dtype=object)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 1.76 s, sys: 29.4 ms, total: 1.79 s
-Wall time: 986 ms
+Searching for 220622 number of objects in the catalog with rmax=15 arcsec.
+CPU times: user 1.65 s, sys: 36.3 ms, total: 1.69 s
+Wall time: 1.12 s
 </pre></div></div>
 </div>
 <p>Reminder: full catalog has about 2,20,000 objects… and k-d tree found neighbours for each one of them in 1-2 seconds.</p>
@@ -1257,9 +1284,18 @@ Wall time: 986 ms
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 20.3 s, sys: 137 ms, total: 20.4 s
-Wall time: 20.4 s
+CPU times: user 20.9 s, sys: 224 ms, total: 21.1 s
+Wall time: 21.2 s
 </pre></div></div>
+</div>
+<div class="section" id="Congratulations!-Now-you-have-learnt-to--">
+<h3>Congratulations! Now you have learnt to -<a class="headerlink" href="#Congratulations!-Now-you-have-learnt-to--" title="Permalink to this headline"></a></h3>
+<ul class="simple">
+<li><p>Now you know how to use <code class="docutils literal notranslate"><span class="pre">cKDTree</span></code> to find out neighbours of a given <code class="docutils literal notranslate"><span class="pre">set1</span></code> of objects into some other <code class="docutils literal notranslate"><span class="pre">set2</span></code> of objects.</p></li>
+<li><p>Count the number of neighbours of any given object in <code class="docutils literal notranslate"><span class="pre">set1</span></code>.</p></li>
+<li><p>Access the results of cKDTree and identify neighbours of each obejct in <code class="docutils literal notranslate"><span class="pre">set1</span></code> into the <code class="docutils literal notranslate"><span class="pre">set2</span></code>.</p></li>
+<li><p>Access the coordinates and distances of each neighbour of every point in <code class="docutils literal notranslate"><span class="pre">set1</span></code>.</p></li>
+</ul>
 </div>
 </div>
 </div>
