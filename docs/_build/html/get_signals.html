@@ -18,7 +18,8 @@
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Day 2 - Finding neighbours" href="pair_counting.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -37,9 +38,17 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="instructions.html">Day 1 - Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pair_counting.html">Day 2 - Finding neighbours</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Day 3 - Get the Weak Lensing Signals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Required-Steps">Required Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Reading-data-from-the-catalog-and-appying-the-selection-cuts.">Reading data from the catalog and appying the selection cuts.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Computing-the-tangential-shear-e_{\rm-t}-and-inverse-critical-density-\Sigma^{-1}_{\rm-crit}">Computing the tangential shear <span class="math notranslate nohighlight">\(e_{\rm t}\)</span> and inverse critical density <span class="math notranslate nohighlight">\(\Sigma^{-1}_{\rm crit}\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#\Delta-\Sigma-(R)-measurements-using-cKDTree-and-writing-the-output-to-a-file."><span class="math notranslate nohighlight">\(\Delta \Sigma (R)\)</span> measurements using cKDTree and writing the output to a file.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Plotting-the-weak-lensing-signal">Plotting the weak lensing signal</a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -338,15 +347,29 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="Day-3---Get-the-Weak-Lensing-Signals">
 <h1>Day 3 - Get the Weak Lensing Signals<a class="headerlink" href="#Day-3---Get-the-Weak-Lensing-Signals" title="Permalink to this headline"></a></h1>
+<p>In this session, we will use the things described in the last two sessions and make a weak lensing measurement pipeline for ourselves. We will start with writing out the different steps required to get the pipeline ready. We then code up each of them as individual functions, which will be called in our main code.</p>
+<p><strong>We highly suggest readers to make a separate notebook for this session as it will be useful for later use.</strong></p>
+<p><strong>In the codes below I have left some black spaces indicated using ??. Please fill up the ?? in the code below and make sure you are doing it with right equations and conversions.</strong></p>
+<div class="section" id="Required-Steps">
+<h2>Required Steps<a class="headerlink" href="#Required-Steps" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>Reading data from the catalog and appying the selection cuts.</p></li>
+<li><p>Computing the tangential shear <span class="math notranslate nohighlight">\(e_{\rm t}\)</span> and inverse critical density <span class="math notranslate nohighlight">\(\Sigma^{-1}_{\rm crit}\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Delta \Sigma (R)\)</span> measurements using cKDTree and writing the output to a file.</p></li>
+<li><p>Plotting the weak lensing signal.</p></li>
+</ul>
+</div>
 <div class="section" id="Reading-data-from-the-catalog-and-appying-the-selection-cuts.">
 <h2>Reading data from the catalog and appying the selection cuts.<a class="headerlink" href="#Reading-data-from-the-catalog-and-appying-the-selection-cuts." title="Permalink to this headline"></a></h2>
+<p>We are going to use the selection cuts on lensing sample in the day-1 session. The below code can be use for other cuts too but for now lets stick to defaults as given below.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">lens_select</span><span class="p">(</span><span class="n">zmin</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">lammin</span><span class="o">=</span><span class="mi">55</span><span class="p">,</span> <span class="n">lammax</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># selection cut on the lens sample</span>
+<span class="k">def</span> <span class="nf">lens_select</span><span class="p">(</span><span class="n">zmin</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">lammin</span><span class="o">=</span><span class="mi">55</span><span class="p">,</span> <span class="n">lammax</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
     <span class="c1">#please check the file path properly</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./DataStore/redmapper.dat&#39;</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/redmapper.dat&#39;</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="c1">#sample selection cut</span>
     <span class="n">idx</span>  <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;lambda&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="n">lammin</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;lambda&#39;</span><span class="p">]</span><span class="o">&lt;=</span><span class="n">lammax</span><span class="p">)</span>
     <span class="n">idx</span>  <span class="o">=</span> <span class="n">idx</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;zred&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="n">zmin</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;zred&#39;</span><span class="p">]</span><span class="o">&lt;=</span><span class="n">zmax</span><span class="p">)</span>
@@ -360,8 +383,16 @@ div.rendered_html tbody tr:hover {
 <br/></pre></div>
 </div>
 </div>
+<p>Similar we define a function for sources and collect the data from it. Please note that there are many columns in source file but for now we are only using some of them. Here we are only using</p>
+<ul class="simple">
+<li><p>ra_gal, decgal : ra and dec for the sources</p></li>
+<li><p>e1gal, e2gal: decribes the shapes of the sources</p></li>
+<li><p>wgal, rms_egal: weights and Intrinsic shape dispersion per component</p></li>
+<li><p>zphotgal: redshift of the sources</p></li>
+</ul>
+<p>For now we will neglect the data in other columns. As it is used for correcting the biases for our measurements and we will decribe how to use them at the end of this session.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">read_sources</span><span class="p">(</span><span class="n">ifil</span><span class="p">):</span>
@@ -382,49 +413,111 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="section" id="Computing-the-tangential-shear-e_{\rm-t}-and-inverse-critical-density-\Sigma^{-1}_{\rm-crit}">
 <h2>Computing the tangential shear <span class="math notranslate nohighlight">\(e_{\rm t}\)</span> and inverse critical density <span class="math notranslate nohighlight">\(\Sigma^{-1}_{\rm crit}\)</span><a class="headerlink" href="#Computing-the-tangential-shear-e_{\rm-t}-and-inverse-critical-density-\Sigma^{-1}_{\rm-crit}" title="Permalink to this headline"></a></h2>
+<p>Now we will follow the formalism described in Prof Surhud More’s lectures. We will first code up function to compute tangential component of the ellipticity given the positions for the lenses (<span class="math notranslate nohighlight">\(\alpha_l\)</span>, <span class="math notranslate nohighlight">\(\delta_l\)</span>) and sources(<span class="math notranslate nohighlight">\(\alpha_s\)</span>, <span class="math notranslate nohighlight">\(\delta_s\)</span>) along with the shape measurements (<span class="math notranslate nohighlight">\(e_1\)</span>,<span class="math notranslate nohighlight">\(e_2\)</span>) for the sources.</p>
+<p>We will first compute angle <span class="math notranslate nohighlight">\(\theta\)</span> between a given lens-source pair.</p>
+<div class="math notranslate nohighlight">
+\[\cos \theta = \cos \delta_l \cos \delta_s \cos(\alpha_l - \alpha_s) + \sin\delta_l \sin \delta_s\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta_{l,s}\)</span> and <span class="math notranslate nohighlight">\(\alpha_{l,s}\)</span> are ra and dec for lens(l) and source(s). The tangential component of ellipticity <span class="math notranslate nohighlight">\(e_t\)</span> is given as</p>
+<div class="math notranslate nohighlight">
+\[\sin \phi = \frac{-\sin \delta_l \cos \delta_s + \cos \delta_l \sin \delta_s  \cos(\alpha_s - \alpha_l)}{|\sin\theta|}\]</div>
+<div class="math notranslate nohighlight">
+\[\cos \phi =  \frac{\cos\delta_l \sin(\alpha_s - \alpha_l)}{|\sin\theta|}\]</div>
+<p>For more info refer to Lecture Notes here - <a class="reference external" href="https://surhudm.github.io/Weaklensing_IAGRG/Weak_gravitational_lensing.html#Tangential-shear-computation">https://surhudm.github.io/Weaklensing_IAGRG/Weak_gravitational_lensing.html#Tangential-shear-computation</a></p>
+<p>Coding up these equations requires trigonometric functions from numpy package. Please check them out.</p>
+<ul class="simple">
+<li><p>sin : <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html">https://numpy.org/doc/stable/reference/generated/numpy.sin.html</a></p></li>
+<li><p>cos : <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos">https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos</a></p></li>
+</ul>
+<p><strong>Please note that these functions by default uses angles in radians and here we are working with catalog data with (ra,dec) in degrees. So, we need to do the needful conversion first</strong></p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_et</span><span class="p">(</span><span class="n">lra</span><span class="p">,</span> <span class="n">ldec</span><span class="p">,</span> <span class="n">sra</span><span class="p">,</span> <span class="n">sdec</span><span class="p">,</span> <span class="n">se1</span><span class="p">,</span> <span class="n">se2</span><span class="p">):</span>
-    <span class="n">lra</span>  <span class="o">=</span> <span class="n">lra</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span>
-    <span class="n">ldec</span> <span class="o">=</span> <span class="n">ldec</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span>
-    <span class="n">sra</span>  <span class="o">=</span> <span class="n">sra</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span>
-    <span class="n">sdec</span> <span class="o">=</span> <span class="n">sdec</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># lra, ldec - lenses position
+# sra, sdec - sources position
+# se1 and se2 - source ellipticities
+def get_et(lra, ldec, sra, sdec, se1, se2):
+    # angle_in_radian = angle_in_degrees * np.pi/180
+    lra  = lra*np.pi/180
+    # fill up the blanks
+    ldec = ??
+    sra  = ??
+    sdec = ??
+    # c_theta - cos_theta, s_theta - sin_theta
+    # use the equations above and complete the expressions
+    c_theta = np.cos(ldec)*np.cos(sdec) * ?? + np.sin(ldec)*np.sin(sdec)
+    s_theta = np.sqrt(1-c_theta**2)
 
-    <span class="n">c_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ldec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">sdec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lra</span> <span class="o">-</span> <span class="n">sra</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ldec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">sdec</span><span class="p">)</span>
-    <span class="n">s_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">c_theta</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    # phi to get the compute the tangential shear
+    c_phi   = ?? *1.0/s_theta
+    s_phi   = (-np.sin(ldec)*np.cos(sdec) + ?? )*1.0/s_theta
+    # tangential shear
+    e_t     = - se1*(2*c_phi**2 -1) - se2*(2*c_phi * s_phi)
 
-    <span class="c1"># phi to get the compute the tangential shear</span>
-    <span class="n">c_phi</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ldec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">sra</span> <span class="o">-</span> <span class="n">lra</span><span class="p">)</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">s_theta</span>
-    <span class="n">s_phi</span>   <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ldec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">sdec</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ldec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">sra</span> <span class="o">-</span> <span class="n">lra</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">sdec</span><span class="p">))</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">s_theta</span>
-    <span class="c1"># tangential shear</span>
-    <span class="n">e_t</span>     <span class="o">=</span> <span class="o">-</span> <span class="n">se1</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">c_phi</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">se2</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">c_phi</span> <span class="o">*</span> <span class="n">s_phi</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">e_t</span>
+    return e_t
 <br/></pre></div>
 </div>
 </div>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Exercise:</p>
+<ul class="simple">
+<li><p>Tell what are you getting the output for <span class="math notranslate nohighlight">\(e_t\)</span> if you use input lra=0.0, ldec=0.0, sra=0.123, sdec=0.045, se1 = 4.5e-2, se2 = 1.7e-2.</p></li>
+<li><p>running command : <strong>print(get_et(lra=0.0, ldec=0.0, sra=0.123, sdec=0.045, se1 = 4.5e-2, se2 = 1.7e-2))</strong> in the next cell below the function defination cell. Please add cell below using the insert option on the top.</p></li>
+</ul>
+</div>
+<p>we will now move on to writing a function to get <span class="math notranslate nohighlight">\(\Sigma^{-1}_{\rm crit} (z_l,z_s)\)</span> given the lense redshift (<span class="math notranslate nohighlight">\(z_l\)</span>) and source redshift (<span class="math notranslate nohighlight">\(z_s\)</span>) and it also needs a instance of astropy class (cc). Remember we need to create a instance for the astropy cosmo class given the input cosmological parameters. In the current code structure we will initiate the astopy cosmo class in our main code.</p>
+<p>To review you can refer to Day-1 docs page to see how astropy is used to get cosmological distances. Please note that here we are working in comoving coordinates to do the signal computations so the corresponding <span class="math notranslate nohighlight">\(\Sigma^{-1}_{\rm crit} (z_l,z_s)\)</span> is given as</p>
+<div class="math notranslate nohighlight">
+\[\Sigma^{-1}_{\rm crit}(z_l,z_s) = \frac{4\pi G}{c^2} \frac{d_{\rm ang}(z_l) d_{\rm ang}(z_l, z_s) (1 + z_l)^2} {d_{\rm ang}(z_s)}\]</div>
+<p>where <span class="math notranslate nohighlight">\(d_{\rm ang}(z)\)</span> is the angular diameter distance for redshift <span class="math notranslate nohighlight">\(z\)</span>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_sigma_crit_inv</span><span class="p">(</span><span class="n">lzred</span><span class="p">,</span> <span class="n">szred</span><span class="p">,</span> <span class="n">cc</span><span class="p">):</span>
-    <span class="c1"># some important constants for the sigma crit computations</span>
-    <span class="n">gee</span> <span class="o">=</span> <span class="mf">4.301e-9</span> <span class="c1">#km^2 Mpc M_sun^-1 s^-2 gravitational constant</span>
-    <span class="n">cee</span> <span class="o">=</span> <span class="mf">3e5</span> <span class="c1">#km s^-1</span>
-    <span class="c1"># sigma_crit_calculations for a given lense-source pair</span>
-    <span class="n">sigm_crit_inv</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">angular_diameter_distance</span><span class="p">(</span><span class="n">lzred</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="n">cc</span><span class="o">.</span><span class="n">angular_diameter_distance_z1z2</span><span class="p">(</span><span class="n">lzred</span><span class="p">,</span> <span class="n">szred</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">lzred</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">cc</span><span class="o">.</span><span class="n">angular_diameter_distance</span><span class="p">(</span><span class="n">szred</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
-    <span class="n">sigm_crit_inv</span> <span class="o">=</span> <span class="n">sigm_crit_inv</span> <span class="o">*</span> <span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">gee</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">cee</span><span class="o">**</span><span class="mi">2</span>
-    <span class="n">sigm_crit_inv</span> <span class="o">=</span> <span class="mf">1e12</span><span class="o">*</span><span class="n">sigm_crit_inv</span> <span class="c1">#esd&#39;s are in pc not in Mpc</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def get_sigma_crit_inv(lzred, szred, cc):
+    # some important constants for the sigma crit computations
+    gee = 4.301e-9 #km^2 Mpc M_sun^-1 s^-2 gravitational constant
+    cee = 3e5 #km s^-1
+    # sigma_crit_calculations for a given lense-source pair
+    sigm_crit_inv = ?? * cc.angular_diameter_distance_z1z2(lzred, szred).value * (1.0 + lzred)**?? * 1.0/cc.angular_diameter_distance(szred).value
+    sigm_crit_inv = sigm_crit_inv * 4*np.pi*gee*1.0/cee**2
+    sigm_crit_inv = 1e12*sigm_crit_inv #esd&#39;s are in pc not in Mpc
 
-    <span class="k">return</span> <span class="n">sigm_crit_inv</span>
+    return sigm_crit_inv
 <br/></pre></div>
 </div>
 </div>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Exercise:</p>
+<ul class="simple">
+<li><p>In the cell below the function defination, first initiate the cosmo class from astropy using “<strong>cc = FlatLambdaCDM(H0=100, Om0=0.999)</strong>”.</p></li>
+<li><p>running command : <strong>print(get_sigma_crit_inv(lzred=0.33, szred=0.8, cc=cc))</strong></p></li>
+</ul>
 </div>
-<div class="section" id="\Delta-\Sigma-(R)-measurements-and-writing-the-output-to-a-file">
-<h2><span class="math notranslate nohighlight">\(\Delta \Sigma (R)\)</span> measurements and writing the output to a file<a class="headerlink" href="#\Delta-\Sigma-(R)-measurements-and-writing-the-output-to-a-file" title="Permalink to this headline"></a></h2>
+<p>Remember how to convert from ra,dec (degrees) to x,y,z coordinates.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def get_xyz(ra, dec):
+    ra = ra*np.pi/??
+    dec = dec*??
+    x = np.cos(dec)*np.cos(ra)
+    y = np.cos(??)*np.sin(??)
+    z = np.sin(dec)
+    return x, y, z
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Exercise:</p>
+<ul class="simple">
+<li><p>Tell the output of : <strong>print(get_xyz(30, 60))</strong></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="\Delta-\Sigma-(R)-measurements-using-cKDTree-and-writing-the-output-to-a-file.">
+<h2><span class="math notranslate nohighlight">\(\Delta \Sigma (R)\)</span> measurements using cKDTree and writing the output to a file.<a class="headerlink" href="#\Delta-\Sigma-(R)-measurements-using-cKDTree-and-writing-the-output-to-a-file." title="Permalink to this headline"></a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -573,7 +666,9 @@ div.rendered_html tbody tr:hover {
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pair_counting.html" class="btn btn-neutral float-left" title="Day 2 - Finding neighbours" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
 
   <hr/>
 
