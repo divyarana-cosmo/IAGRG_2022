@@ -13,6 +13,7 @@ Welcome to IAGRG 2022 Weak Lensing Tutorial's Documentation!
    instructions
    iagrg_day_1_hands_on
    pair_counting
+   pair_counting_solutions
    get_signals
 
 Indices and tables

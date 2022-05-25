@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Day 2 - Finding neighbours" href="pair_counting.html" /> 
+    <link rel="prev" title="Day 2 Hands-On Session" href="pair_counting_solutions.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,8 +40,9 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="instructions.html">Day 1 - Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="iagrg_day_1_hands_on.html">Day-1 Hands-On Sessions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iagrg_day_1_hands_on.html">Day 1 Hands-On Session</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pair_counting.html">Day 2 - Finding neighbours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pair_counting_solutions.html">Day 2 Hands-On Session</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Day 3 - Get the Weak Lensing Signals</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Required-Steps">Required Steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Reading-data-from-the-catalog-and-appying-the-selection-cuts.">Reading data from the catalog and appying the selection cuts.</a></li>
@@ -536,134 +537,155 @@ def get_et(lra, ldec, sra, sdec, se1, se2):
 </div>
 <div class="section" id="\Delta-\Sigma-(R)-measurements-using-cKDTree-and-writing-the-output-to-a-file.">
 <h2><span class="math notranslate nohighlight">\(\Delta \Sigma (R)\)</span> measurements using cKDTree and writing the output to a file.<a class="headerlink" href="#\Delta-\Sigma-(R)-measurements-using-cKDTree-and-writing-the-output-to-a-file." title="Permalink to this headline"></a></h2>
+<p>Our aim in this section isto write the main function to measure weak lensing signal <span class="math notranslate nohighlight">\(\Delta \Sigma (R)\)</span>. As discussed in the lectures the <span class="math notranslate nohighlight">\(\Delta \Sigma (R)\)</span> as given by</p>
+<div class="math notranslate nohighlight">
+\[\Delta \Sigma (R) = \frac{\sum_{ls} w_{\rm ls} e_{t,ls} (\Sigma^{-1}_{\rm crit})^{-1}}{2\mathcal{R} \sum_{ls} w_{\rm ls}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(w_{ls}\)</span> is the source-lense weights given as <span class="math notranslate nohighlight">\(w_{ls} = w_l w_s \Sigma^{-2}_{\rm crit}\)</span></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_pipe</span><span class="p">(</span><span class="n">Omegam</span><span class="o">=</span><span class="mf">0.315</span><span class="p">,</span> <span class="n">rmin</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">rmax</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">zdiff</span><span class="o">=</span><span class="mf">0.4</span><span class="p">):</span>
-    <span class="c1">#set the cosmology with omegaM parameter</span>
-    <span class="n">cc</span> <span class="o">=</span> <span class="n">FlatLambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="n">Omegam</span><span class="p">)</span> <span class="c1"># fixing H0=100 to set units in Mpc h-1</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def run_pipe(Omegam=0.315, rmin=0.2, rmax=2.0, nbins=10, zdiff=0.4):
+    #set the cosmology with omegaM parameter
+    cc = FlatLambdaCDM(H0=100, Om0=Omegam) # fixing H0=100 to set units in Mpc h-1
 
-    <span class="c1"># set the projected radial binning</span>
-    <span class="n">rmin</span>  <span class="o">=</span>  <span class="n">rmin</span>
-    <span class="n">rmax</span>  <span class="o">=</span>  <span class="n">rmax</span>
-    <span class="n">nbins</span> <span class="o">=</span> <span class="n">nbins</span> <span class="c1">#10 radial bins for our case</span>
-    <span class="n">rbins</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">rmin</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">rmax</span><span class="p">),</span> <span class="n">nbins</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">rdiff</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">rbins</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">rbins</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    # set the projected radial binning
+    rmin  =  rmin
+    rmax  =  rmax
+    nbins = nbins #10 radial bins for our case
+    rbins = np.logspace(np.log10(rmin), np.log10(rmax), nbins + 1)
+    rdiff = np.log10(rbins[1]*1.0/rbins[0])
 
-    <span class="c1"># initializing arrays for signal compuations</span>
-    <span class="n">sumdsig_num</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rbins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
-    <span class="n">sumdsigsq_num</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rbins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
-    <span class="n">sumwls</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rbins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
-    <span class="n">sumwls_resp</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rbins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    # initializing arrays for signal compuations
+    sumdsig_num   = np.zeros(len(rbins[:-1]))
+    sumdsigsq_num = np.zeros(len(rbins[:-1]))
+    sumwls        = np.zeros(len(rbins[:-1]))
+    sumwls_resp   = np.zeros(len(rbins[:-1]))
 
-    <span class="c1"># getting the lenses data</span>
-    <span class="n">lra</span><span class="p">,</span> <span class="n">ldec</span><span class="p">,</span> <span class="n">lred</span><span class="p">,</span> <span class="n">lwgt</span> <span class="o">=</span> <span class="n">lens_select</span><span class="p">()</span>
+    # getting the lenses data
+    lra, ldec, lred, lwgt = ??
+    # convert lense ra and dec into x,y,z cartesian coordinates
+    lx, ly, lz = ??
+    # putting kd tree around the lenses
+    lens_tree = ??
+    print(&#39;lenses tree is ready\n&#39;)
 
-    <span class="c1"># convert lense ra and dec into x,y,z cartesian coordinates</span>
-    <span class="n">lx</span><span class="p">,</span> <span class="n">ly</span><span class="p">,</span> <span class="n">lz</span> <span class="o">=</span> <span class="n">get_xyz</span><span class="p">(</span><span class="n">lra</span><span class="p">,</span> <span class="n">ldec</span><span class="p">)</span>
+    # setting maximum search radius
+    dcommin = cc.comoving_distance(np.min(lred)).value
+    dismax  = (rmax*1.0/(dcommin))
 
-    <span class="c1"># putting kd tree around the lenses</span>
-    <span class="n">lens_tree</span> <span class="o">=</span> <span class="n">KDTree</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">lx</span><span class="p">,</span> <span class="n">ly</span><span class="p">,</span> <span class="n">lz</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    # lets first catch the file list for sources
+    sflist = np.sort(glob.glob(&#39;/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/*.dat&#39;))
 
+    # Ready to pounce on the source data
+    for ifil in sflist:
+        # source data in datagal array  using read source function
+        datagal = ??
+        Ngal = len(datagal[:,0])  # total number of galaxies in the source file
 
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;lenses tree is ready</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        # first two entries are ra and dec for the sources
+        allragal  = datagal[:,0]
+        alldecgal = datagal[:,1]
 
-    <span class="c1"># setting maximum search radius</span>
-    <span class="n">dcommin</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">comoving_distance</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">lred</span><span class="p">))</span><span class="o">.</span><span class="n">value</span>
-    <span class="n">dismax</span>  <span class="o">=</span> <span class="p">(</span><span class="n">rmax</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="p">(</span><span class="n">dcommin</span><span class="p">))</span>
+        # ra and dec to x,y,z for sources
+        allsx, allsy, allsz = ??
 
-    <span class="c1"># lets first catch the file list for sources</span>
-    <span class="n">sflist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;./DataStore/hsc/*.dat&#39;</span><span class="p">))</span>
+        # query in a ball around individual sources and collect the lenses ids with a maximum radius
+        slidx = lens_tree.query_ball_point(np.transpose([allsx, allsy, allsz]), dismax)
 
-    <span class="c1"># Ready to pounce on the source data</span>
-    <span class="k">for</span> <span class="n">ifil</span> <span class="ow">in</span> <span class="n">sflist</span><span class="p">:</span>
-        <span class="c1"># catching the source data matrix</span>
-        <span class="c1"># please have a check for the columns names</span>
-        <span class="n">datagal</span> <span class="o">=</span> <span class="n">read_sources</span><span class="p">(</span><span class="n">ifil</span><span class="p">)</span>
-        <span class="n">Ngal</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">datagal</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># total number of galaxies in the source file</span>
-        <span class="c1"># first two entries are ra and dec for the sources</span>
-        <span class="n">allragal</span>  <span class="o">=</span> <span class="n">datagal</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">alldecgal</span> <span class="o">=</span> <span class="n">datagal</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
-        <span class="c1"># ra and dec to x,y,z for sources</span>
-        <span class="n">allsx</span><span class="p">,</span> <span class="n">allsy</span><span class="p">,</span> <span class="n">allsz</span> <span class="o">=</span> <span class="n">get_xyz</span><span class="p">(</span><span class="n">allragal</span><span class="p">,</span> <span class="n">alldecgal</span><span class="p">)</span>
-        <span class="c1"># query in a ball around individual sources and collect the lenses ids with a maximum radius</span>
-        <span class="n">slidx</span> <span class="o">=</span> <span class="n">lens_tree</span><span class="o">.</span><span class="n">query_ball_point</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">([</span><span class="n">allsx</span><span class="p">,</span> <span class="n">allsy</span><span class="p">,</span> <span class="n">allsz</span><span class="p">]),</span> <span class="n">dismax</span><span class="p">)</span>
-        <span class="c1"># various columns in sources</span>
-        <span class="c1"># ragal, decgal, e1gal, e2gal, wgal, rms_egal, mgal, c1gal, c2gal, R2gal, zphotgal</span>
-        <span class="c1"># looping over all the galaxies</span>
-        <span class="k">for</span> <span class="n">igal</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ngal</span><span class="p">):</span>
-            <span class="n">ragal</span>    <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">decgal</span>   <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">e1gal</span>    <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
-            <span class="n">e2gal</span>    <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
-            <span class="n">wgal</span>     <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
-            <span class="n">rms_egal</span> <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
-            <span class="n">zphotgal</span> <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
+        # looping over all the galaxies
+        for igal in range(Ngal):
+            ragal    = datagal[igal,0]
+            decgal   = datagal[igal,1]
+            e1gal    = datagal[igal,2]
+            e2gal    = datagal[igal,3]
+            wgal     = datagal[igal,4]
+            rms_egal = datagal[igal,5]
+            zphotgal = datagal[igal,6]
 
-            <span class="c1"># array of lenses indices</span>
-            <span class="n">lidx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">slidx</span><span class="p">[</span><span class="n">igal</span><span class="p">])</span>
-            <span class="c1"># removing sources which doesn&#39;t have any lenses around them</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lidx</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
-                <span class="k">continue</span>
+            # array of lenses indices
+            lidx = np.array(slidx[igal])
 
-            <span class="c1"># selecting a cleaner background</span>
-            <span class="n">zcut</span> <span class="o">=</span> <span class="p">(</span><span class="n">lred</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">zphotgal</span> <span class="o">-</span> <span class="n">zdiff</span><span class="p">))</span> <span class="c1">#only taking the foreground lenses</span>
-            <span class="c1"># again skipping the onces which doesn&#39;t satisfy the above criteria</span>
-            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">zcut</span><span class="p">)</span><span class="o">==</span><span class="mf">0.0</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="c1"># collecting the  data of lenses around individual source</span>
-            <span class="n">lidx</span>   <span class="o">=</span> <span class="n">lidx</span><span class="p">[</span><span class="n">zcut</span><span class="p">]</span> <span class="c1"># this will catch the array indices for our lenses</span>
-            <span class="n">sra</span>    <span class="o">=</span> <span class="n">ragal</span>
-            <span class="n">sdec</span>   <span class="o">=</span> <span class="n">decgal</span>
+            # skip sources which doesn&#39;t have any lenses around them
+            if len(lidx)==0:
+                continue
 
-            <span class="n">l_ra</span>   <span class="o">=</span> <span class="n">lra</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span>
-            <span class="n">l_dec</span>  <span class="o">=</span> <span class="n">ldec</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span>
-            <span class="n">l_zred</span> <span class="o">=</span> <span class="n">lred</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span>
-            <span class="n">l_wgt</span>  <span class="o">=</span> <span class="n">lwgt</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span>
+            # selecting a cleaner background
+            zcut = (lred[lidx] &lt; (zphotgal - zdiff)) #only taking the foreground lenses
 
-            <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">,</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">get_xyz</span><span class="p">(</span><span class="n">sra</span><span class="p">,</span><span class="n">sdec</span><span class="p">)</span> <span class="c1"># individual galaxy ra,dec--&gt;x,y,z</span>
-            <span class="n">lx</span><span class="p">,</span> <span class="n">ly</span><span class="p">,</span> <span class="n">lz</span> <span class="o">=</span> <span class="n">get_xyz</span><span class="p">(</span><span class="n">l_ra</span><span class="p">,</span><span class="n">l_dec</span><span class="p">)</span> <span class="c1"># individual galaxy ra,dec--&gt;x,y,z</span>
+            # again skipping the onces which doesn&#39;t satisfy the above criteria
+            if np.sum(zcut)==0.0:
+                continue
 
-            <span class="c1"># getting the radial separations for a lense source pair</span>
-            <span class="n">sl_sep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">lx</span> <span class="o">-</span> <span class="n">sx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">ly</span> <span class="o">-</span> <span class="n">sy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">lz</span> <span class="o">-</span> <span class="n">sz</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-            <span class="n">sl_sep</span> <span class="o">=</span> <span class="n">sl_sep</span> <span class="o">*</span> <span class="n">cc</span><span class="o">.</span><span class="n">comoving_distance</span><span class="p">(</span><span class="n">l_zred</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
-            <span class="k">for</span> <span class="n">ll</span><span class="p">,</span><span class="n">sep</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sl_sep</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">sep</span><span class="o">&lt;</span><span class="n">rmin</span> <span class="ow">or</span> <span class="n">sep</span><span class="o">&gt;</span><span class="n">rmax</span><span class="p">:</span>
-                    <span class="k">continue</span>
-                <span class="n">rb</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">sep</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">rmin</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="o">/</span><span class="n">rdiff</span><span class="p">)</span>
+            # collecting the  data of lenses around individual source
+            lidx   = lidx[zcut] # this will catch the array indices for our lenses
+            sra    = ragal
+            sdec   = decgal
 
-                <span class="c1"># get tangantial components given positions and shapes</span>
-                <span class="n">e_t</span> <span class="o">=</span> <span class="n">get_et</span><span class="p">(</span><span class="n">lra</span> <span class="o">=</span> <span class="n">l_ra</span><span class="p">[</span><span class="n">ll</span><span class="p">],</span> <span class="n">ldec</span> <span class="o">=</span> <span class="n">l_dec</span><span class="p">[</span><span class="n">ll</span><span class="p">],</span> <span class="n">sra</span> <span class="o">=</span> <span class="n">sra</span><span class="p">,</span> <span class="n">sdec</span> <span class="o">=</span> <span class="n">sdec</span><span class="p">,</span> <span class="n">se1</span> <span class="o">=</span> <span class="n">e1gal</span><span class="p">,</span>  <span class="n">se2</span> <span class="o">=</span> <span class="n">e2gal</span><span class="p">)</span>
+            l_ra   = lra[lidx]
+            l_dec  = ldec[lidx]
+            l_zred = lred[lidx]
+            l_wgt  = lwgt[lidx]
 
-                <span class="c1"># sigma_crit_calculations for a given lense-source pair</span>
-                <span class="n">sigm_crit_inv</span> <span class="o">=</span> <span class="n">get_sigma_crit_inv</span><span class="p">(</span><span class="n">l_zred</span><span class="p">[</span><span class="n">ll</span><span class="p">],</span> <span class="n">zphotgal</span><span class="p">,</span> <span class="n">cc</span><span class="p">)</span>
+            sx, sy, sz = ?? # individual galaxy sra,sdec--&gt;sx,sy,sz
+            lx, ly, lz = ?? # individual galaxy lra,ldec--&gt;lx,ly,lz
 
-                <span class="c1"># following equations given in the surhud&#39;s lectures</span>
-                <span class="n">w_ls</span>    <span class="o">=</span> <span class="n">l_wgt</span><span class="p">[</span><span class="n">ll</span><span class="p">]</span> <span class="o">*</span> <span class="n">wgal</span> <span class="o">*</span> <span class="p">(</span><span class="n">sigm_crit_inv</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-                <span class="n">w_ls_by_av_sigc_inv</span> <span class="o">=</span> <span class="n">l_wgt</span><span class="p">[</span><span class="n">ll</span><span class="p">]</span> <span class="o">*</span> <span class="n">wgal</span> <span class="o">*</span> <span class="n">sigm_crit_inv</span>
+            # getting the radial separations for a lense source pair
+            sl_sep = np.sqrt((lx - sx)**2 + (ly - sy)**2 + (lz - sz)**2)
+            sl_sep = sl_sep * cc.comoving_distance(l_zred).value
 
-                <span class="c1"># separate numerator and denominator computation</span>
-                <span class="n">sumdsig_num</span><span class="p">[</span><span class="n">rb</span><span class="p">]</span>   <span class="o">+=</span> <span class="n">w_ls_by_av_sigc_inv</span>  <span class="o">*</span> <span class="n">e_t</span>
-                <span class="n">sumdsigsq_num</span><span class="p">[</span><span class="n">rb</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">w_ls_by_av_sigc_inv</span> <span class="o">*</span> <span class="n">e_t</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-                <span class="n">sumwls</span><span class="p">[</span><span class="n">rb</span><span class="p">]</span>        <span class="o">+=</span> <span class="n">w_ls</span>
-                <span class="n">sumwls_resp</span><span class="p">[</span><span class="n">rb</span><span class="p">]</span>   <span class="o">+=</span> <span class="n">w_ls</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">rms_egal</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            # here we are binning the separation in projected radial bins
+            # ll will enumerate the lenses
+            for ll,sep in enumerate(sl_sep):
 
-        <span class="nb">print</span><span class="p">(</span><span class="n">ifil</span><span class="p">)</span>
+                #check whether separation sits inside our projected radial range
+                if sep&lt;rmin or sep&gt;rmax:
+                    continue
 
-    <span class="n">outputfile</span> <span class="o">=</span> <span class="s1">&#39;iagrg_dsigma.dat_no_res&#39;</span>
-    <span class="n">fout</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
-    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# 0:rmin/2+rmax/2 1:DeltaSigma  2:SN_ErrDeltaSigma</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rbins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])):</span>
-        <span class="n">rrmin</span> <span class="o">=</span> <span class="n">rbins</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">rrmax</span> <span class="o">=</span> <span class="n">rbins</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">Resp</span> <span class="o">=</span> <span class="n">sumwls_resp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">sumwls</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                # finding the corresponding radial bins for separations
+                rb = int(np.log10(sep*1.0/rmin)*1/rdiff)
 
-        <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%le</span><span class="se">\t</span><span class="si">%le</span><span class="se">\t</span><span class="si">%le</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">rrmin</span><span class="o">/</span><span class="mf">2.0</span><span class="o">+</span><span class="n">rrmax</span><span class="o">/</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">sumdsig_num</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">sumwls</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="mf">2.</span><span class="o">/</span><span class="n">Resp</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sumdsigsq_num</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">sumwls</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="mf">2.</span><span class="o">/</span><span class="n">Resp</span><span class="p">))</span>
-    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#OK&quot;</span><span class="p">)</span>
-    <span class="n">fout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                # get tangantial components given positions and shapes
+                e_t = ??(lra = l_ra[ll], ldec = l_dec[ll], sra = ??, sdec = ??, se1 = ??,  se2 = ??)
 
-    <span class="k">return</span> <span class="mi">0</span>
+                # sigma_crit_calculations for a given lense-source pair with cc as astropy cosmo instance
+                sigm_crit_inv = ??(l_zred[ll], ??, cc)
+
+                # following equations given in the surhud&#39;s lectures
+                w_ls    = l_wgt[ll] * wgal * (??)**??
+                w_ls_by_av_sigc_inv = l_wgt[ll] * ?? * sigm_crit_inv
+
+                # separate numerator and denominator computation
+                sumdsig_num[rb]   += w_ls_by_av_sigc_inv  * e_t
+                sumdsigsq_num[rb] += (w_ls_by_av_sigc_inv * e_t)**2
+                sumwls[rb]        += w_ls
+                sumwls_resp[rb]   += w_ls * (1-rms_egal**2)
+
+        print(ifil)
+
+    outputfile = &#39;iagrg_dsigma.dat&#39;
+    fout = open(outputfile, &quot;w&quot;)
+    fout.write(&quot;# 0:rmin/2+rmax/2 1:DeltaSigma  2:SN_ErrDeltaSigma\n&quot;)
+    for i in range(len(rbins[:-1])):
+        rrmin = rbins[i]
+        rrmax = rbins[i+1]
+        Resp       = sumwls_resp[i]*1.0/sumwls[i]
+        dsigma     = sumdsig_num[i]*1.0/sumwls[i]/2./Resp # follow from the equation above
+        dsigma_err = np.sqrt(sumdsigsq_num[i])*1.0/sumwls[i]/2./Resp
+
+        fout.write(&quot;%le\t%le\t%le\n&quot;%(rrmin/2.0+rrmax/2.0, dsigma, dsigma_err))
+    fout.write(&quot;#OK&quot;)
+    fout.close()
+
+    return 0
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run_pipe</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -674,7 +696,15 @@ def get_et(lra, ldec, sra, sdec, se1, se2):
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;iagrg_dsigma.dat&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">dat</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dat</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">yerr</span><span class="o">=</span><span class="n">dat</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Data&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$R[{\rm h^{-1}Mpc}]$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\Delta\Sigma [{\rm h M_\odot pc^{-2}}]$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -685,7 +715,7 @@ def get_et(lra, ldec, sra, sdec, se1, se2):
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="pair_counting.html" class="btn btn-neutral float-left" title="Day 2 - Finding neighbours" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pair_counting_solutions.html" class="btn btn-neutral float-left" title="Day 2 Hands-On Session" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
