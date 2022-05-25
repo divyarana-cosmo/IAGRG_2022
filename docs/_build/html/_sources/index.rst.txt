@@ -12,7 +12,6 @@ Welcome to Weak Lensing's Documentation!
    
    instructions
    pair_counting
-   get_signals
 
 
 Indices and tables
