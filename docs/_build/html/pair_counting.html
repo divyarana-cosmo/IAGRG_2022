@@ -45,13 +45,13 @@
 <li class="toctree-l2"><a class="reference internal" href="#Reading-the-lens/source-catalog">Reading the lens/source catalog</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Visualising-the-coordinate-space-of-input-data">Visualising the coordinate space of input data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#On-sky-distance-between-two-points-on-the-surface-of-a-unit-sphere"><code class="docutils literal notranslate"><span class="pre">On-sky</span> <span class="pre">distance</span></code> between two points on the surface of a unit sphere</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Brute-force-search-for-neighbour-objects-within-a-specified-distance"><code class="docutils literal notranslate"><span class="pre">Brute</span> <span class="pre">force</span> <span class="pre">search</span> <span class="pre">for</span> <span class="pre">neighbour</span> <span class="pre">objects</span></code> within a specified distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Brute-force-search-for-neighbour-objects-within-a-specified-distance">Brute force search for neighbour objects within a specified distance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Testing-the-above-function-find_neighbour_points-(brute-force-search)">Testing the above function <code class="docutils literal notranslate"><span class="pre">find_neighbour_points</span></code> (brute force search)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#A-visual-sanity-check-for-execution-of-find_neighbour_points-function">A visual sanity check for execution of <code class="docutils literal notranslate"><span class="pre">find_neighbour_points</span></code> function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Using-k-d-tree-algorithm-to-query-the-neighbour-points-within-a-given-distance">Using k-d tree algorithm to query the neighbour points within a given distance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#We’ll-use-the-spatial.cKDTree-package-from-scipy.">We’ll use the <code class="docutils literal notranslate"><span class="pre">spatial.cKDTree</span></code> package from <code class="docutils literal notranslate"><span class="pre">scipy</span></code>.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#A-sanity-check">A sanity check</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Demo-objects-for-which-we’ll-compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm">Demo objects for which we’ll compare the output of our brute force algorithm with cKDTree algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm-on-dew-Demo-objects">Compare the output of our brute force algorithm with cKDTree algorithm on dew Demo objects</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#Compare-the-computer-time-required-by-our-brute-force-algorithm-vs-the-k-d-tree-algorithm">Compare the computer time required by our brute force algorithm vs the k-d tree algorithm</a></li>
@@ -412,7 +412,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "00a96797cce04de594ac7ff68cfd3eb7", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "f66d9d8d777649dbb6562e35187a06f4", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -431,7 +431,8 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>head -n <span class="m">5</span> /home/idies/workspace/Storage/navin/persistent/demo_objects.csv
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># !head -n 5 /home/idies/workspace/Storage/navin/persistent/demo_objects.csv</span>
+<span class="o">!</span>head -n <span class="m">5</span> demo_objects.csv
 <span class="c1"># !wc -l /home/idies/workspace/Storage/navin/persistent/demo_objects.csv</span>
 </pre></div>
 </div>
@@ -455,7 +456,9 @@ ra,dec,z,col_3,col_4,col_5
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#reading lens file</span>
 
 <span class="c1">#tries to read everthing in the file</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/home/idies/workspace/Storage/navin/persistent/demo_objects.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="c1"># df = pd.read_csv(f&quot;/home/idies/workspace/Storage/navin/persistent/demo_objects.csv&quot;, sep=&#39;,&#39;)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;demo_objects.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -558,7 +561,8 @@ ra,dec,z,col_3,col_4,col_5
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;/home/idies/workspace/Storage/navin/persistent/demo_objects.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># df = pd.read_csv(f&quot;/home/idies/workspace/Storage/navin/persistent/demo_objects.csv&quot;, sep=&#39;,&#39;, usecols=[0,1,2])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;demo_objects.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -657,7 +661,7 @@ ra,dec,z,col_3,col_4,col_5
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;ra (deg)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;dec (deg)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Plot looks too dense.</span><span class="se">\n</span><span class="s2">let&#39;s reduce the density of points and have another look.&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Plot looks too dense.&quot;</span><span class="p">)</span>
 
 <span class="c1">#Randomly picking up points to plots to reduce the density of points</span>
 <span class="n">Number_of_points</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">size</span>
@@ -669,6 +673,7 @@ ra,dec,z,col_3,col_4,col_5
 <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">random_indices</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">random_indices</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;ra (deg)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;dec (deg)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Density of points reduced by </span><span class="si">%d</span><span class="s2">.&quot;</span><span class="o">%</span><span class="k">down_sample_by</span>)
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -690,7 +695,12 @@ ra,dec,z,col_3,col_4,col_5
 <p>Using: <span class="math notranslate nohighlight">\(\mathrm{arc\_distance}=s=r \times \theta\)</span>, obtain the distance between the two ra,dec values. Since <span class="math notranslate nohighlight">\(r_1=r_2=1\)</span>,</p>
 <p><span class="math notranslate nohighlight">\(\Rightarrow s=\theta\)</span> (radians)</p>
 <div class="admonition note">
-<p>Exercise: Using the above formula - Implement a function which takes tuples of (ra,dec) of two objects and returns the distance between them on the Unit sphere. Your code should return the result in units of arc seconds and not in radians.</p>
+<p class="admonition-title fa fa-exclamation-circle">Exercise: Using the above formula</p>
+<ul>
+<li><p>Implement a function which takes tuples of (ra,dec) of two objects and returns the distance between them on the Unit sphere.</p>
+<p>Your code should return the result in units of arc seconds and <strong>NOT</strong> in radians.</p>
+</li>
+</ul>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -712,7 +722,7 @@ ra,dec,z,col_3,col_4,col_5
 <br/></pre></div>
 </div>
 </div>
-<p>Running and testing the distance computation code:</p>
+<p># Running and testing the distance computation code:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
@@ -745,11 +755,12 @@ distance: 23.7466131834144 arcsec
 </div>
 </div>
 <div class="section" id="Brute-force-search-for-neighbour-objects-within-a-specified-distance">
-<h2><code class="docutils literal notranslate"><span class="pre">Brute</span> <span class="pre">force</span> <span class="pre">search</span> <span class="pre">for</span> <span class="pre">neighbour</span> <span class="pre">objects</span></code> within a specified distance<a class="headerlink" href="#Brute-force-search-for-neighbour-objects-within-a-specified-distance" title="Permalink to this headline"></a></h2>
+<h2>Brute force search for neighbour objects within a specified distance<a class="headerlink" href="#Brute-force-search-for-neighbour-objects-within-a-specified-distance" title="Permalink to this headline"></a></h2>
 <p>time complexity ~ <span class="math notranslate nohighlight">\(\mathcal{O}(n^2)\)</span></p>
 <div class="admonition note">
-<p class="admonition-title fa fa-exclamation-circle">Exercise: - write a function <code class="docutils literal notranslate"><span class="pre">find_neighbour_points</span></code> that uses (ra,dec) coordinates of an object, and within some given <code class="docutils literal notranslate"><span class="pre">rmax</span></code> distance, finds its neighbour points in the given dataFrame catalog.</p>
+<p class="admonition-title fa fa-exclamation-circle">Exercise:</p>
 <ul>
+<li><p>write a function <code class="docutils literal notranslate"><span class="pre">find_neighbour_points</span></code> that uses (ra,dec) coordinates of an object, and within some given <code class="docutils literal notranslate"><span class="pre">rmax</span></code> distance, finds its neighbour points in the given dataFrame catalog.</p></li>
 <li><p>Using this code you should be able to find neighbours of each object in the dataFrame - within the same dataFrame.</p>
 <p>Say the <span class="math notranslate nohighlight">\(1^{st}\)</span> object in the dataFrame has 5 objects within say rmax=15 arcsec, then you should be able to print/store the <code class="docutils literal notranslate"><span class="pre">indices</span></code> and <code class="docutils literal notranslate"><span class="pre">distances</span></code> of these neighbours.</p>
 </li>
@@ -797,7 +808,13 @@ distance: 23.7466131834144 arcsec
 <div class="section" id="Testing-the-above-function-find_neighbour_points-(brute-force-search)">
 <h2>Testing the above function <code class="docutils literal notranslate"><span class="pre">find_neighbour_points</span></code> (brute force search)<a class="headerlink" href="#Testing-the-above-function-find_neighbour_points-(brute-force-search)" title="Permalink to this headline"></a></h2>
 <div class="admonition note">
-<p>Exercise: - Search within a ball of radius <code class="docutils literal notranslate"><span class="pre">rmax</span></code> of 50 objects in the catalog within itself, say for <code class="docutils literal notranslate"><span class="pre">rmax</span></code>(default value)=15 arcsec. We’re only using 50 points in order to reduce the compute time, but the code has no such limitation. - Access the above result and print the neighbour object’s indices,distances and coordinates of few objects.</p>
+<p class="admonition-title fa fa-exclamation-circle">Exercise:</p>
+<ul>
+<li><p>Search within a ball of radius <code class="docutils literal notranslate"><span class="pre">rmax</span></code> of 50 objects in the catalog within itself, say for <code class="docutils literal notranslate"><span class="pre">rmax</span></code>(default value)=15 arcsec.</p>
+<p>We’re only using 50points in order to reduce the compute time, but the code has no such limitation.</p>
+</li>
+<li><p>Access the above result and print the neighbour object’s indices,distances and coordinates of few objects.</p></li>
+</ul>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
@@ -871,8 +888,8 @@ object index, neighbours indices list, neighbours distances list
 47 [] []
 48 [] []
 49 [] []
-CPU times: user 130 ms, sys: 13.1 ms, total: 143 ms
-Wall time: 135 ms
+CPU times: user 73.3 ms, sys: 5.39 ms, total: 78.7 ms
+Wall time: 75.3 ms
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -914,7 +931,11 @@ Accessing the neighbour coordinates of the 15th object:
 <div class="section" id="A-visual-sanity-check-for-execution-of-find_neighbour_points-function">
 <h2>A visual sanity check for execution of <code class="docutils literal notranslate"><span class="pre">find_neighbour_points</span></code> function<a class="headerlink" href="#A-visual-sanity-check-for-execution-of-find_neighbour_points-function" title="Permalink to this headline"></a></h2>
 <div class="admonition note">
-<p>Exercise: - Plot the coordinates of the neighbours of any one test point. This exercise can help us visually inspect whether our neighbour search code gave us reasonable results or not. - Along with plotting, also print the distances of each of these neighbours and visually confirm that the nearest looking object on the plot indead has the smallest distance from the test point, and similarly check for other neighbour points.</p>
+<p class="admonition-title fa fa-exclamation-circle">Exercise:</p>
+<ul class="simple">
+<li><p>Plot the coordinates of the neighbours of any one test point. This exercise can help us visually inspect whether our neighbour search code gave us reasonable results or not.</p></li>
+<li><p>Along with plotting, also print the distances of each of these neighbours and visually confirm that the nearest looking object on the plot indead has the smallest distance from the test point, and similarly check for other neighbour points.</p></li>
+</ul>
 </div>
 <p>I’m plotting the neighbours of <span class="math notranslate nohighlight">\(15^{th}\)</span> point from the catalog. And also printing their <code class="docutils literal notranslate"><span class="pre">indices</span></code> and <code class="docutils literal notranslate"><span class="pre">distances</span></code> to compare the stored distances by eye!</p>
 <p>Point marked as <span class="math notranslate nohighlight">\(\star\)</span> is the <span class="math notranslate nohighlight">\(15^{th}\)</span> point. Other points are its neighbours.</p>
@@ -1114,12 +1135,15 @@ array([[ 0.8553461 ,  0.50608675, -0.11072151],
 </pre></div></div>
 </div>
 </div>
-<div class="section" id="Demo-objects-for-which-we’ll-compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm">
-<h3>Demo objects for which we’ll compare the output of our brute force algorithm with cKDTree algorithm<a class="headerlink" href="#Demo-objects-for-which-we’ll-compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm" title="Permalink to this headline"></a></h3>
+<div class="section" id="Compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm-on-dew-Demo-objects">
+<h3>Compare the output of our brute force algorithm with cKDTree algorithm on dew Demo objects<a class="headerlink" href="#Compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm-on-dew-Demo-objects" title="Permalink to this headline"></a></h3>
 <div class="admonition note">
 <p class="admonition-title fa fa-exclamation-circle">Exercise:</p>
-<ul class="simple">
-<li><p>Take the same bunch of objects for which we already have run our brute force search method, and feed them into the wrapper code of k-d tree written above, and find out their neighbour points within the same <code class="docutils literal notranslate"><span class="pre">rmax</span></code>(default value)=15 arcsec.</p></li>
+<ul>
+<li><p>Take the same bunch of objects for which we already have run our brute force search method,</p>
+<p>feed them into the wrapper code of k-d tree written above,</p>
+<p>find out their neighbour points within the same <code class="docutils literal notranslate"><span class="pre">rmax</span></code>(default value)=15 arcsec.</p>
+</li>
 </ul>
 </div>
 <div class="nbinput docutils container">
@@ -1214,8 +1238,8 @@ array([list([14, 15, 16, 44])], dtype=object)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 1.62 s, sys: 80.7 ms, total: 1.7 s
-Wall time: 1.7 s
+CPU times: user 1.76 s, sys: 29.4 ms, total: 1.79 s
+Wall time: 986 ms
 </pre></div></div>
 </div>
 <p>Reminder: full catalog has about 2,20,000 objects… and k-d tree found neighbours for each one of them in 1-2 seconds.</p>
@@ -1233,8 +1257,8 @@ Wall time: 1.7 s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 54.8 s, sys: 0 ns, total: 54.8 s
-Wall time: 54.8 s
+CPU times: user 20.3 s, sys: 137 ms, total: 20.4 s
+Wall time: 20.4 s
 </pre></div></div>
 </div>
 </div>
