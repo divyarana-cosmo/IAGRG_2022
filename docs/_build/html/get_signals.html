@@ -47,7 +47,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#Required-Steps">Required Steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Reading-data-from-the-catalog-and-appying-the-selection-cuts.">Reading data from the catalog and appying the selection cuts.</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Computing-the-tangential-shear-e_{\rm-t}-and-inverse-critical-density-\Sigma^{-1}_{\rm-crit}">Computing the tangential shear <span class="math notranslate nohighlight">\(e_{\rm t}\)</span> and inverse critical density <span class="math notranslate nohighlight">\(\Sigma^{-1}_{\rm crit}\)</span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#$:nbsphinx-math:Delta-`:nbsphinx-math:Sigma-`$-measurements-using-cKDTree-and-writing-the-output-to-a-file.">$:nbsphinx-math:<cite>Delta `:nbsphinx-math:</cite>Sigma `$ measurements using cKDTree and writing the output to a file.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#\Delta-\Sigma-measurements-using-cKDTree-and-writing-the-output-to-a-file."><span class="math notranslate nohighlight">\(\Delta \Sigma\)</span> measurements using cKDTree and writing the output to a file.</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Decription-of-algorithm-used-in-the-code-below-(run_pipe)-to-get-the-signal-\Delta-\Sigma.">Decription of algorithm used in the code below (run_pipe) to get the signal <span class="math notranslate nohighlight">\(\Delta \Sigma\)</span>.</a></li>
 </ul>
 </li>
@@ -540,8 +540,8 @@ def get_et(lra, ldec, sra, sdec, se1, se2):
 </ul>
 </div>
 </div>
-<div class="section" id="$:nbsphinx-math:Delta-`:nbsphinx-math:Sigma-`$-measurements-using-cKDTree-and-writing-the-output-to-a-file.">
-<h2>$:nbsphinx-math:<cite>Delta `:nbsphinx-math:</cite>Sigma <a href="#id1"><span class="problematic" id="id2">`</span></a>$ measurements using cKDTree and writing the output to a file.<a class="headerlink" href="#$:nbsphinx-math:Delta-`:nbsphinx-math:Sigma-`$-measurements-using-cKDTree-and-writing-the-output-to-a-file." title="Permalink to this headline"></a></h2>
+<div class="section" id="\Delta-\Sigma-measurements-using-cKDTree-and-writing-the-output-to-a-file.">
+<h2><span class="math notranslate nohighlight">\(\Delta \Sigma\)</span> measurements using cKDTree and writing the output to a file.<a class="headerlink" href="#\Delta-\Sigma-measurements-using-cKDTree-and-writing-the-output-to-a-file." title="Permalink to this headline"></a></h2>
 <p>Our aim in this section is to write the main function to measure weak lensing signal <span class="math notranslate nohighlight">\(\Delta \Sigma (R)\)</span>. As discussed in the lectures the <span class="math notranslate nohighlight">\(\Delta \Sigma (R)\)</span> for a comoving projected radial bin <span class="math notranslate nohighlight">\(R\)</span> as given by</p>
 <div class="math notranslate nohighlight">
 \[\Delta \Sigma (R) = \frac{\sum_{ls} w_{\rm ls} e_{t,ls} (\Sigma^{-1}_{\rm crit})^{-1}}{2\mathcal{R} \sum_{ls} w_{\rm ls}}\]</div>
