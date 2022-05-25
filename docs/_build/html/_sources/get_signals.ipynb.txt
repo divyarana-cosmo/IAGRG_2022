@@ -540,7 +540,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "For doing a bias corrected measurements one has to do add few more things in our $\\Delta \\Sigma$ expression. Interested reader can check this expression for $\\Delta \\Sigma$ in arXiv:2107.05641 and can modify the above code to get the bias corrected measurements.\n",
+    "For doing a bias corrected measurements one has to add few more things in our $\\Delta \\Sigma$ expression. Interested reader can check this expression for $\\Delta \\Sigma$ in arXiv:2107.05641 and can modify the above code to get the bias corrected measurements.\n",
     "\n",
     "Please note that within each source file we have already provided you the data coloumns required to do these computations. \n"
    ]
