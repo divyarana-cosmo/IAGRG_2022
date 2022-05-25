@@ -25,7 +25,9 @@
     "\n",
     "- Saas-Fee Advanced Course 33: Gravitational Lensing: Strong, Weak & Micro,  https://link.springer.com/book/10.1007/978-3-540-30310-7\n",
     "\n",
-    "- Also the arxiv version,  https://arxiv.org/abs/astro-ph/0509252"
+    "- Also the arxiv version,  https://arxiv.org/abs/astro-ph/0509252\n",
+    "\n",
+    "The lecture notes by Prof Surhud More for IAGRG 2022 for weak lensing is available on - https://surhudm.github.io/Weaklensing_IAGRG/index.html"
    ]
   },
   {
