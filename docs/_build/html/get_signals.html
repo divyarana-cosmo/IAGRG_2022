@@ -40,6 +40,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="instructions.html">Day 1 - Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iagrg_day_1_hands_on.html">Day-1 Hands-On Sessions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pair_counting.html">Day 2 - Finding neighbours</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Day 3 - Get the Weak Lensing Signals</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Required-Steps">Required Steps</a></li>
@@ -419,6 +420,8 @@ div.rendered_html tbody tr:hover {
 \[\cos \theta = \cos \delta_l \cos \delta_s \cos(\alpha_l - \alpha_s) + \sin\delta_l \sin \delta_s\]</div>
 <p>where <span class="math notranslate nohighlight">\(\delta_{l,s}\)</span> and <span class="math notranslate nohighlight">\(\alpha_{l,s}\)</span> are ra and dec for lens(l) and source(s). The tangential component of ellipticity <span class="math notranslate nohighlight">\(e_t\)</span> is given as</p>
 <div class="math notranslate nohighlight">
+\[e_t = - e_1 \cos 2\phi - e_2 \sin 2\phi\]</div>
+<div class="math notranslate nohighlight">
 \[\sin \phi = \frac{-\sin \delta_l \cos \delta_s + \cos \delta_l \sin \delta_s  \cos(\alpha_s - \alpha_l)}{|\sin\theta|}\]</div>
 <div class="math notranslate nohighlight">
 \[\cos \phi =  \frac{\cos\delta_l \sin(\alpha_s - \alpha_l)}{|\sin\theta|}\]</div>
@@ -438,21 +441,21 @@ div.rendered_html tbody tr:hover {
 # se1 and se2 - source ellipticities
 def get_et(lra, ldec, sra, sdec, se1, se2):
     # angle_in_radian = angle_in_degrees * np.pi/180
-    lra  = lra*np.pi/180
+    lra  = ??
     # fill up the blanks
     ldec = ??
     sra  = ??
     sdec = ??
-    # c_theta - cos_theta, s_theta - sin_theta
+    # c_theta = cos_theta, s_theta = sin_theta
     # use the equations above and complete the expressions
-    c_theta = np.cos(ldec)*np.cos(sdec) * ?? + np.sin(ldec)*np.sin(sdec)
+    c_theta = np.cos(??)*np.cos(sdec) * ?? + np.sin(ldec)*np.sin(??)
     s_theta = np.sqrt(1-c_theta**2)
 
     # phi to get the compute the tangential shear
     c_phi   = ?? *1.0/s_theta
     s_phi   = (-np.sin(ldec)*np.cos(sdec) + ?? )*1.0/s_theta
     # tangential shear
-    e_t     = - se1*(2*c_phi**2 -1) - se2*(2*c_phi * s_phi)
+    e_t     = - se1*(??) - se2*(??)
 
     return e_t
 <br/></pre></div>
