@@ -467,13 +467,13 @@ Text(0, 0.5, &#39;$\\rho(r)$&#39;)
 </div>
 <p>As we want to compare our halo mass estimates with that of the study done on same clusters but with SDSS shape catalog following - <a class="reference external" href="https://arxiv.org/abs/1707.01907">arXiv:1707.01907</a>. So, similar to this work we are also looking cluster masses in units of <span class="math notranslate nohighlight">\(10^{14} {\rm h^{-1} Mpc}\)</span>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">log_M200m</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
     <span class="n">log_M200m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">log_M200m</span><span class="p">)</span> <span class="o">+</span> <span class="mi">14</span> <span class="c1"># we are looking in units of 10^14</span>
     <span class="n">hp</span> <span class="o">=</span> <span class="n">halo</span><span class="p">(</span><span class="n">log_M200m</span><span class="p">,</span> <span class="n">c</span><span class="p">);</span>
-    <span class="n">esd</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">esd</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="mf">1e12</span> <span class="c1"># remember we are working with pc not Mpc</span>
+    <span class="n">esd</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">esd</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="mf">1e12</span> <span class="c1"># remember we are working with in Mpc but the measurements are in pc, we need a conversion</span>
     <span class="k">return</span> <span class="n">esd</span>
 <br/></pre></div>
 </div>

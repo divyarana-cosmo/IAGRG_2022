@@ -454,10 +454,9 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># !head -n 5 /home/idies/workspace/Storage/navin/persistent/demo_objects.csv</span>
-<span class="o">!</span>head -n <span class="m">5</span> not_shared/demo_objects.csv
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># !head -n 5 /home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/demo_objects.csv</span>
 
-<span class="c1"># !wc -l /home/idies/workspace/Storage/navin/persistent/demo_objects.csv</span>
+<span class="c1"># !wc -l /home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/demo_objects.csv</span>
 </pre></div>
 </div>
 </div>
@@ -480,7 +479,7 @@ ra,dec,z,col_3,col_4,col_5
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#reading lens file</span>
 
 <span class="c1">#tries to read everthing in the file</span>
-<span class="n">path</span><span class="o">=</span><span class="s2">&quot;not_shared/demo_objects.csv&quot;</span>
+<span class="n">path</span><span class="o">=</span><span class="s2">&quot;/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/demo_objects.csv&quot;</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 </pre></div>
@@ -585,7 +584,7 @@ ra,dec,z,col_3,col_4,col_5
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># df = pd.read_csv(f&quot;/home/idies/workspace/Storage/navin/persistent/demo_objects.csv&quot;, sep=&#39;,&#39;, usecols=[0,1,2])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># df = pd.read_csv(f&quot;/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore//demo_objects.csv&quot;, sep=&#39;,&#39;, usecols=[0,1,2])</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
 </pre></div>
 </div>

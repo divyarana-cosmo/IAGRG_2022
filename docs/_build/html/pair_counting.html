@@ -442,9 +442,9 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>head -n <span class="m">5</span> /home/idies/workspace/Storage/navin/persistent/demo_objects.csv
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>head -n <span class="m">5</span> /home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/demo_objects.csv
 
-<span class="c1"># !wc -l /home/idies/workspace/Storage/navin/persistent/demo_objects.csv</span>
+<span class="c1"># !wc -l /home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/demo_objects.csv</span>
 </pre></div>
 </div>
 </div>
@@ -467,7 +467,7 @@ ra,dec,z,col_3,col_4,col_5
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#reading lens file</span>
 
 <span class="c1">#tries to read everthing in the file</span>
-<span class="n">path</span><span class="o">=</span><span class="s2">&quot;/home/idies/workspace/Storage/navin/persistent/demo_objects.csv&quot;</span>
+<span class="n">path</span><span class="o">=</span><span class="s2">&quot;/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/demo_objects.csv&quot;</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 </pre></div>
@@ -696,7 +696,7 @@ randomly picked indices:
 </div>
 <div class="section" id="On-sky-distance-between-two-points-on-the-surface-of-a-unit-sphere">
 <h2><code class="docutils literal notranslate"><span class="pre">On-sky</span> <span class="pre">distance</span></code> between two points on the surface of a unit sphere<a class="headerlink" href="#On-sky-distance-between-two-points-on-the-surface-of-a-unit-sphere" title="Permalink to this headline"></a></h2>
-<p><a class="no-scaled-link reference internal" href="_images/Equitorial_coord_sys.jpg"><img alt="35794a640dae45568d5a2efdd09157d9" class="no-scaled-link" src="_images/Equitorial_coord_sys.jpg" style="width: 400px; height: 300px;" /></a></p>
+<p><a class="no-scaled-link reference internal" href="_images/Equitorial_coord_sys.jpg"><img alt="a4364d0099494193bee8b2f98ff7af33" class="no-scaled-link" src="_images/Equitorial_coord_sys.jpg" style="width: 400px; height: 300px;" /></a></p>
 <p><span class="math notranslate nohighlight">\(\vec{r_i} = r_i(\sin\theta \cos\phi \ \hat{x}+ \sin\theta \sin\phi \ \hat{y} + \cos\theta \ \hat{z})\)</span>, <span class="math notranslate nohighlight">\(\hspace{0.5cm}\)</span>for <span class="math notranslate nohighlight">\(\mathrm{i \in (1,2)}\)</span>.</p>
 <p><span class="math notranslate nohighlight">\(\cos(\theta)=\frac{\vec{r_1}\cdot\vec{r_2}}{r_1 r_2}\)</span></p>
 <p>set <span class="math notranslate nohighlight">\(r_1=r_2=1\)</span></p>
@@ -739,7 +739,7 @@ randomly picked indices:
 <p># print the (ra,dec) tuples of first two objects in the above list</p>
 <p># compute and print the distance between these two objects,</p>
 <p>I get the following:</p>
-<p><a class="no-scaled-link reference internal" href="_images/onsky_distance_test.png"><img alt="a7b4217586c64008ac0bd7d13e508870" class="no-scaled-link" src="_images/onsky_distance_test.png" style="width: 300px; height: 70px;" /></a></p>
+<p><a class="no-scaled-link reference internal" href="_images/onsky_distance_test.png"><img alt="ec0ef1015bee41cba67649618db33a07" class="no-scaled-link" src="_images/onsky_distance_test.png" style="width: 300px; height: 70px;" /></a></p>
 </div>
 <div class="section" id="Brute-force-search-for-neighbour-objects-within-a-specified-distance">
 <h2>Brute force search for neighbour objects within a specified distance<a class="headerlink" href="#Brute-force-search-for-neighbour-objects-within-a-specified-distance" title="Permalink to this headline"></a></h2>
@@ -950,8 +950,8 @@ Accessing the neighbour coordinates of the 15th object:
 </div>
 <p>I’m plotting the neighbours of <span class="math notranslate nohighlight">\(15^{th}\)</span> point from the catalog. And also printing their <code class="docutils literal notranslate"><span class="pre">indices</span></code> and <code class="docutils literal notranslate"><span class="pre">distances</span></code> to compare the stored distances by eye!</p>
 <p>Point marked as <span class="math notranslate nohighlight">\(\star\)</span> is the <span class="math notranslate nohighlight">\(15^{th}\)</span> point. Other points are its neighbours.</p>
-<p><a class="no-scaled-link reference internal" href="_images/neighbours_of_15th_obj.png"><img alt="ccdb0bd3731d4d92984c98809481a40a" class="no-scaled-link" src="_images/neighbours_of_15th_obj.png" style="width: 500px; height: 400px;" /></a></p>
-<p><a class="no-scaled-link reference internal" href="_images/neighbours_printed.png"><img alt="836b4e8243684370928b0e9632c12382" class="no-scaled-link" src="_images/neighbours_printed.png" style="width: 300px; height: 80px;" /></a></p>
+<p><a class="no-scaled-link reference internal" href="_images/neighbours_of_15th_obj.png"><img alt="37c90e9716e34c1089a9c2f636fa1494" class="no-scaled-link" src="_images/neighbours_of_15th_obj.png" style="width: 500px; height: 400px;" /></a></p>
+<p><a class="no-scaled-link reference internal" href="_images/neighbours_printed.png"><img alt="3da25692d8ec4d00a762d822ed4fcf2f" class="no-scaled-link" src="_images/neighbours_printed.png" style="width: 300px; height: 80px;" /></a></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
@@ -1096,7 +1096,7 @@ Accessing the neighbour coordinates of the 15th object:
 </pre></div>
 </div>
 </div>
-<p><a class="no-scaled-link reference internal" href="_images/coordinate_conversion_test.png"><img alt="6a0ea3e0ac0341cba60c2bc6db5ab4d4" class="no-scaled-link" src="_images/coordinate_conversion_test.png" style="width: 400px; height: 200px;" /></a></p>
+<p><a class="no-scaled-link reference internal" href="_images/coordinate_conversion_test.png"><img alt="e20d4e220cfa45e698b90b9a47e76961" class="no-scaled-link" src="_images/coordinate_conversion_test.png" style="width: 400px; height: 200px;" /></a></p>
 </div>
 <div class="section" id="Compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm-on-dew-Demo-objects">
 <h3>Compare the output of our brute force algorithm with cKDTree algorithm on dew Demo objects<a class="headerlink" href="#Compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm-on-dew-Demo-objects" title="Permalink to this headline"></a></h3>
