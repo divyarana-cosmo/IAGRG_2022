@@ -19,7 +19,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Day 1 - Introduction" href="instructions.html" /> 
+    <link rel="next" title="Day 2 Hands-On Session" href="pair_counting_solutions.html" />
+    <link rel="prev" title="Day 1 Hands-On Session" href="iagrg_day_1_hands_on.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,6 +41,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="instructions.html">Day 1 - Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iagrg_day_1_hands_on.html">Day 1 Hands-On Session</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Day 2 - Finding neighbours</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Reading-the-lens/source-catalog">Reading the lens/source catalog</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Visualising-the-coordinate-space-of-input-data">Visualising the coordinate space of input data</a></li>
@@ -59,6 +61,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#Congratulations!-Now-you-have-learnt-to--">Congratulations! Now you have learnt to -</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="pair_counting_solutions.html">Day 2 Hands-On Session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_signals.html">Day 3 - Get the Weak Lensing Signals</a></li>
 </ul>
 
         </div>
@@ -692,7 +696,7 @@ randomly picked indices:
 </div>
 <div class="section" id="On-sky-distance-between-two-points-on-the-surface-of-a-unit-sphere">
 <h2><code class="docutils literal notranslate"><span class="pre">On-sky</span> <span class="pre">distance</span></code> between two points on the surface of a unit sphere<a class="headerlink" href="#On-sky-distance-between-two-points-on-the-surface-of-a-unit-sphere" title="Permalink to this headline"></a></h2>
-<p><a class="no-scaled-link reference internal" href="_images/Equitorial_coord_sys.jpg"><img alt="ce8dd4bc4bf64e44b59481a61f6daa09" class="no-scaled-link" src="_images/Equitorial_coord_sys.jpg" style="width: 400px; height: 300px;" /></a></p>
+<p><a class="no-scaled-link reference internal" href="_images/Equitorial_coord_sys.jpg"><img alt="35794a640dae45568d5a2efdd09157d9" class="no-scaled-link" src="_images/Equitorial_coord_sys.jpg" style="width: 400px; height: 300px;" /></a></p>
 <p><span class="math notranslate nohighlight">\(\vec{r_i} = r_i(\sin\theta \cos\phi \ \hat{x}+ \sin\theta \sin\phi \ \hat{y} + \cos\theta \ \hat{z})\)</span>, <span class="math notranslate nohighlight">\(\hspace{0.5cm}\)</span>for <span class="math notranslate nohighlight">\(\mathrm{i \in (1,2)}\)</span>.</p>
 <p><span class="math notranslate nohighlight">\(\cos(\theta)=\frac{\vec{r_1}\cdot\vec{r_2}}{r_1 r_2}\)</span></p>
 <p>set <span class="math notranslate nohighlight">\(r_1=r_2=1\)</span></p>
@@ -735,7 +739,7 @@ randomly picked indices:
 <p># print the (ra,dec) tuples of first two objects in the above list</p>
 <p># compute and print the distance between these two objects,</p>
 <p>I get the following:</p>
-<p><a class="no-scaled-link reference internal" href="_images/onsky_distance_test.png"><img alt="e1d5621deb014336965d867918bf351d" class="no-scaled-link" src="_images/onsky_distance_test.png" style="width: 300px; height: 70px;" /></a></p>
+<p><a class="no-scaled-link reference internal" href="_images/onsky_distance_test.png"><img alt="a7b4217586c64008ac0bd7d13e508870" class="no-scaled-link" src="_images/onsky_distance_test.png" style="width: 300px; height: 70px;" /></a></p>
 </div>
 <div class="section" id="Brute-force-search-for-neighbour-objects-within-a-specified-distance">
 <h2>Brute force search for neighbour objects within a specified distance<a class="headerlink" href="#Brute-force-search-for-neighbour-objects-within-a-specified-distance" title="Permalink to this headline"></a></h2>
@@ -941,13 +945,13 @@ Accessing the neighbour coordinates of the 15th object:
 <p class="admonition-title fa fa-exclamation-circle">Exercise:</p>
 <ul class="simple">
 <li><p>Plot the coordinates of the neighbours of any one test point. This exercise can help us visually inspect whether our neighbour search code gave us reasonable results or not.</p></li>
-<li><p>Along with plotting, also print the distances of each of these neighbours and visually confirm that the nearest looking object on the plot indead has the smallest distance from the test point, and similarly check for other neighbour points.</p></li>
+<li><p>Along with plotting, also print the distances of each of these neighbours and visually confirm that the nearest looking object on the plot indeed has the smallest distance from the test point, and similarly check for other neighbour points.</p></li>
 </ul>
 </div>
 <p>I’m plotting the neighbours of <span class="math notranslate nohighlight">\(15^{th}\)</span> point from the catalog. And also printing their <code class="docutils literal notranslate"><span class="pre">indices</span></code> and <code class="docutils literal notranslate"><span class="pre">distances</span></code> to compare the stored distances by eye!</p>
 <p>Point marked as <span class="math notranslate nohighlight">\(\star\)</span> is the <span class="math notranslate nohighlight">\(15^{th}\)</span> point. Other points are its neighbours.</p>
-<p><a class="no-scaled-link reference internal" href="_images/neighbours_of_15th_obj.png"><img alt="19f7219064db4f5594b45a8decd2a9e6" class="no-scaled-link" src="_images/neighbours_of_15th_obj.png" style="width: 500px; height: 500px;" /></a></p>
-<p><a class="no-scaled-link reference internal" href="_images/neighbours_printed.png"><img alt="e675db6e8d654054995cf4be28a40975" class="no-scaled-link" src="_images/neighbours_printed.png" style="width: 300px; height: 80px;" /></a></p>
+<p><a class="no-scaled-link reference internal" href="_images/neighbours_of_15th_obj.png"><img alt="ccdb0bd3731d4d92984c98809481a40a" class="no-scaled-link" src="_images/neighbours_of_15th_obj.png" style="width: 500px; height: 400px;" /></a></p>
+<p><a class="no-scaled-link reference internal" href="_images/neighbours_printed.png"><img alt="836b4e8243684370928b0e9632c12382" class="no-scaled-link" src="_images/neighbours_printed.png" style="width: 300px; height: 80px;" /></a></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
@@ -1074,7 +1078,11 @@ Accessing the neighbour coordinates of the 15th object:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#initialise the find_neighbours class here without passing any coordinate. So it can&#39;t create any tree.</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Here we are not passing `tra` and `tdec` while initialising the class `find_neighbours`</span>
+<span class="c1"># So these variables take default values of `None`.</span>
+<span class="c1"># We only want to test the coordinate conversion code `RA_DEC_to_xyz`. So it&#39;s ok to not</span>
+<span class="c1"># pass `tra`,`tdec`!</span>
+
 <span class="n">code</span> <span class="o">=</span> <span class="n">find_neighbours</span><span class="p">()</span>
 
 <span class="c1"># a look at the cartesian coordinates</span>
@@ -1084,11 +1092,11 @@ Accessing the neighbour coordinates of the 15th object:
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;shapes of x,y,z arrays:&quot;</span><span class="p">,</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;shapes of (x,y,z) tuple array:&quot;</span><span class="p">,</span> <span class="n">cartesian_coords</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="c1">#field on objects looks close to equator</span>
-<span class="n">cartesian_coords</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cartesian_coords</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<p><a class="no-scaled-link reference internal" href="_images/coordinate_conversion_test.png"><img alt="3c33cc740fe2415ebbb9707b851e348d" class="no-scaled-link" src="_images/coordinate_conversion_test.png" style="width: 400px; height: 200px;" /></a></p>
+<p><a class="no-scaled-link reference internal" href="_images/coordinate_conversion_test.png"><img alt="6a0ea3e0ac0341cba60c2bc6db5ab4d4" class="no-scaled-link" src="_images/coordinate_conversion_test.png" style="width: 400px; height: 200px;" /></a></p>
 </div>
 <div class="section" id="Compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm-on-dew-Demo-objects">
 <h3>Compare the output of our brute force algorithm with cKDTree algorithm on dew Demo objects<a class="headerlink" href="#Compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm-on-dew-Demo-objects" title="Permalink to this headline"></a></h3>
@@ -1170,7 +1178,7 @@ Initializing with sphere of radius, r=1.
 </pre></div>
 </div>
 </div>
-<p>Reminder: full catalog has about 2,20,000 objects… and k-d tree found neighbours for each one of them in 1-2 seconds.</p>
+<p>Reminder: full catalog has about 2,20,000 objects… and k-d tree found neighbours for each one of them in 1-2 seconds. (This time will vary depending on your computer’s ability.)</p>
 <p>Now let’s use the brute force method only for 1000 objects.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -1196,7 +1204,8 @@ Initializing with sphere of radius, r=1.
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="instructions.html" class="btn btn-neutral float-left" title="Day 1 - Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="iagrg_day_1_hands_on.html" class="btn btn-neutral float-left" title="Day 1 Hands-On Session" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pair_counting_solutions.html" class="btn btn-neutral float-right" title="Day 2 Hands-On Session" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -354,7 +354,8 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Day-3---Get-the-Weak-Lensing-Signals">
 <h1>Day 3 - Get the Weak Lensing Signals<a class="headerlink" href="#Day-3---Get-the-Weak-Lensing-Signals" title="Permalink to this headline"></a></h1>
 <p>In this session, we will use the things described in the last two sessions and make a weak lensing measurement pipeline for ourselves. We will start with writing out the different steps required to get the pipeline ready. We then code up each of them as individual functions, which will be called in our main code.</p>
-<p>We are here studying the matter distribution around SDSS redmapper galaxy clusters - arXiv:1303.3562 by the weak lensing technique using shape catalog data from HSC S16A data - arXiv:1705.06745. We suggest readers to have a look at these references to have a better understanding of data provided to them. The readers can also compare their results with the same study done on these clusters using shape catalog from SDSS - arXiv:1707.01907.</p>
+<p>We are here studying the matter distribution around SDSS redmapper galaxy clusters - <a class="reference external" href="https://arxiv.org/abs/1303.3562">arXiv:1303.3562</a> by the weak lensing technique using shape catalog data from HSC S16A data - <a class="reference external" href="https://arxiv.org/abs/1705.06745">arXiv:1705.06745</a>. We suggest readers to have a look at these references to have a better understanding of data provided to them. The readers can also compare their results with the same study done on these clusters using shape catalog from SDSS -
+<a class="reference external" href="https://arxiv.org/abs/1707.01907">arXiv:1707.01907</a>.</p>
 <p><strong>We highly suggest readers to make a separate notebook for this session as it will be useful for later use.</strong></p>
 <p><strong>In the codes below I have left some black spaces indicated using ??. Please fill up the ?? in the code below and make sure you are doing it with right equations and conversions.</strong></p>
 <div class="section" id="Required-Steps">
@@ -446,12 +447,8 @@ div.rendered_html tbody tr:hover {
 \[\sin \phi = \frac{-\sin \delta_l \cos \delta_s + \cos \delta_l \sin \delta_s  \cos(\alpha_s - \alpha_l)}{|\sin\theta|}\]</div>
 <div class="math notranslate nohighlight">
 \[\cos \phi =  \frac{\cos\delta_l \sin(\alpha_s - \alpha_l)}{|\sin\theta|}\]</div>
-<p>For more info refer to Lecture Notes here - <a class="reference external" href="https://surhudm.github.io/Weaklensing_IAGRG/Weak_gravitational_lensing.html#Tangential-shear-computation">https://surhudm.github.io/Weaklensing_IAGRG/Weak_gravitational_lensing.html#Tangential-shear-computation</a></p>
-<p>Coding up these equations requires trigonometric functions from numpy package. Please check them out.</p>
-<ul class="simple">
-<li><p>sin : <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html">https://numpy.org/doc/stable/reference/generated/numpy.sin.html</a></p></li>
-<li><p>cos : <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos">https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos</a></p></li>
-</ul>
+<p>For more info related to above equations refer to Lecture Notes for <a class="reference external" href="https://surhudm.github.io/Weaklensing_IAGRG/Weak_gravitational_lensing.html#Tangential-shear-computation">Tangential-shear-computation</a></p>
+<p>Coding up these equations requires trigonometric functions from numpy package. Please check them out - <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html">sin</a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos">cos</a></p>
 <p><strong>Please note that these functions by default uses angles in radians and here we are working with catalog data with (ra,dec) in degrees. So, we need to do the needful conversion first</strong></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:

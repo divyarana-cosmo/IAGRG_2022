@@ -362,7 +362,7 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Day-2-Hands-On-Session">
 <h1>Day 2 Hands-On Session<a class="headerlink" href="#Day-2-Hands-On-Session" title="Permalink to this headline"></a></h1>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
@@ -417,7 +417,19 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "0a0d9d4fbc1144d69b152a37393cc85c", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "a4b11878c1f743808bbd161c217a41be", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<script>$("div.input").show()</script></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<script>$("div.input").hide()</script></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -426,7 +438,7 @@ div.rendered_html tbody tr:hover {
 <script>$("div.input").show()</script></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -439,11 +451,12 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Reading-the-lens/source-catalog">
 <h2>Reading the lens/source catalog<a class="headerlink" href="#Reading-the-lens/source-catalog" title="Permalink to this headline"></a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># !head -n 5 /home/idies/workspace/Storage/navin/persistent/demo_objects.csv</span>
-<span class="o">!</span>head -n <span class="m">5</span> demo_objects.csv
+<span class="o">!</span>head -n <span class="m">5</span> not_shared/demo_objects.csv
+
 <span class="c1"># !wc -l /home/idies/workspace/Storage/navin/persistent/demo_objects.csv</span>
 </pre></div>
 </div>
@@ -461,15 +474,15 @@ ra,dec,z,col_3,col_4,col_5
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#reading lens file</span>
 
 <span class="c1">#tries to read everthing in the file</span>
-<span class="c1"># df = pd.read_csv(f&quot;/home/idies/workspace/Storage/navin/persistent/demo_objects.csv&quot;, sep=&#39;,&#39;)</span>
+<span class="n">path</span><span class="o">=</span><span class="s2">&quot;not_shared/demo_objects.csv&quot;</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;demo_objects.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -479,7 +492,7 @@ ra,dec,z,col_3,col_4,col_5
 <p>z - photometric redshifts of the objects.</p>
 <p>col_1,col_2,col_3 - extra columns which have to be ignored</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -487,7 +500,7 @@ ra,dec,z,col_3,col_4,col_5
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -569,16 +582,16 @@ ra,dec,z,col_3,col_4,col_5
 </div>
 <p># select required columns only</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># df = pd.read_csv(f&quot;/home/idies/workspace/Storage/navin/persistent/demo_objects.csv&quot;, sep=&#39;,&#39;, usecols=[0,1,2])</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;demo_objects.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -586,7 +599,7 @@ ra,dec,z,col_3,col_4,col_5
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -661,7 +674,7 @@ ra,dec,z,col_3,col_4,col_5
 </ul>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
@@ -715,7 +728,7 @@ ra,dec,z,col_3,col_4,col_5
 </ul>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rad_to_arcsec</span> <span class="o">=</span> <span class="mf">180.0</span><span class="o">*</span><span class="mf">3600.</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
@@ -735,7 +748,7 @@ ra,dec,z,col_3,col_4,col_5
 </div>
 <p># Running and testing the distance computation code:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># creating tuple of values from ra,dec of each object</span>
@@ -745,7 +758,7 @@ ra,dec,z,col_3,col_4,col_5
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;obj1 0: </span><span class="si">{coords[0]}</span><span class="s2"></span>
@@ -759,8 +772,8 @@ ra,dec,z,col_3,col_4,col_5
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-obj1 0: [30.61173478 -6.3569092 ]
-obj2 1: [30.61078116 -6.35038136]
+obj1 0: (30.611734783139795, -6.3569091978972425)
+obj2 1: (30.61078116389429, -6.350381359287763)
 distance: 23.7466131834144 arcsec
 </pre></div></div>
 </div>
@@ -778,7 +791,7 @@ distance: 23.7466131834144 arcsec
 </ul>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
@@ -851,7 +864,7 @@ distance: 23.7466131834144 arcsec
 </ul>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;object index, neighbours indices list, neighbours distances list &quot;</span><span class="p">)</span>
@@ -922,12 +935,12 @@ object index, neighbours indices list, neighbours distances list
 47 [] []
 48 [] []
 49 [] []
-CPU times: user 35 ms, sys: 522 µs, total: 35.5 ms
-Wall time: 31.3 ms
+CPU times: user 36.4 ms, sys: 443 µs, total: 36.9 ms
+Wall time: 33.2 ms
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nth</span> <span class="o">=</span> <span class="mi">15</span>
@@ -968,13 +981,13 @@ Accessing the neighbour coordinates of the 15th object:
 <p class="admonition-title fa fa-exclamation-circle">Exercise:</p>
 <ul class="simple">
 <li><p>Plot the coordinates of the neighbours of any one test point. This exercise can help us visually inspect whether our neighbour search code gave us reasonable results or not.</p></li>
-<li><p>Along with plotting, also print the distances of each of these neighbours and visually confirm that the nearest looking object on the plot indead has the smallest distance from the test point, and similarly check for other neighbour points.</p></li>
+<li><p>Along with plotting, also print the distances of each of these neighbours and visually confirm that the nearest looking object on the plot indeed has the smallest distance from the test point, and similarly check for other neighbour points.</p></li>
 </ul>
 </div>
 <p>I’m plotting the neighbours of <span class="math notranslate nohighlight">\(15^{th}\)</span> point from the catalog. And also printing their <code class="docutils literal notranslate"><span class="pre">indices</span></code> and <code class="docutils literal notranslate"><span class="pre">distances</span></code> to compare the stored distances by eye!</p>
 <p>Point marked as <span class="math notranslate nohighlight">\(\star\)</span> is the <span class="math notranslate nohighlight">\(15^{th}\)</span> point. Other points are its neighbours.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">demoid</span> <span class="o">=</span> <span class="mi">15</span>
@@ -1002,8 +1015,8 @@ Accessing the neighbour coordinates of the 15th object:
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;ra (deg)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;dec (deg)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="c1"># plt.show()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;neighbours_of_15th_obj.png&quot;</span><span class="p">,</span><span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1">#plt.savefig(&quot;neighbours_of_15th_obj.png&quot;,bbox_inches=&quot;tight&quot;)</span>
 
 <span class="c1"># Now visuall compare the distances</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;index--&gt; distance</span><span class="se">\t\t</span><span class="s2">color&quot;</span><span class="p">)</span>
@@ -1011,6 +1024,13 @@ Accessing the neighbour coordinates of the 15th object:
 <span class="k">for</span> <span class="n">nidx</span><span class="p">,</span><span class="n">dist</span><span class="p">,</span><span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">neighbours</span><span class="p">,</span><span class="n">ndist</span><span class="p">,</span><span class="n">colors</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">nidx</span><span class="p">,</span><span class="s2">&quot;---&gt;&quot;</span><span class="p">,</span><span class="n">dist</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/pair_counting_solutions_31_0.png" src="_images/pair_counting_solutions_31_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1034,7 +1054,7 @@ index--&gt; distance            color
 <h3>We’ll use the <code class="docutils literal notranslate"><span class="pre">spatial.cKDTree</span></code> package from <code class="docutils literal notranslate"><span class="pre">scipy</span></code>.<a class="headerlink" href="#We’ll-use-the-spatial.cKDTree-package-from-scipy." title="Permalink to this headline"></a></h3>
 <p>If you have many points whose neighbors you want to find, you may save substantial amounts of time by putting them in a <code class="docutils literal notranslate"><span class="pre">cKDTree</span></code> and using functions defined on this tree. For example: <code class="docutils literal notranslate"><span class="pre">query_ball_point</span></code></p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">spatial</span>
@@ -1058,7 +1078,7 @@ index--&gt; distance            color
 </ul>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">find_neighbours</span><span class="p">:</span>
@@ -1122,10 +1142,15 @@ index--&gt; distance            color
 <h3>A sanity check<a class="headerlink" href="#A-sanity-check" title="Permalink to this headline"></a></h3>
 <p>Testing conversion of (ra,dec) to (x,y,z)</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">code</span> <span class="o">=</span> <span class="n">find_neighbours</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Here we are not passing `tra` and `tdec` while initialising the class `find_neighbours`</span>
+<span class="c1"># So these variables take default values of `None`.</span>
+<span class="c1"># We only want to test the coordinate conversion code `RA_DEC_to_xyz`. So it&#39;s ok to not</span>
+<span class="c1"># pass `tra`,`tdec`!</span>
+
+<span class="n">code</span> <span class="o">=</span> <span class="n">find_neighbours</span><span class="p">()</span>
 
 <span class="c1"># a look at the cartesian coordinates</span>
 <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">RA_DEC_to_xyz</span><span class="p">(</span><span class="n">coords</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">coords</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
@@ -1149,7 +1174,7 @@ shapes of (x,y,z) tuple array: (220622, 3)
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1176,7 +1201,7 @@ array([[ 0.8553461 ,  0.50608675, -0.11072151],
 </ul>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">demo_ids</span> <span class="o">=</span> <span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="c1">#9,15</span>
@@ -1205,9 +1230,9 @@ I had chosen following indices from set2(catalog) as my test objects: [15]
 coordinate of test objects: [[ 0.85581232  0.50543305 -0.11010311]]
 </pre></div></div>
 </div>
-<p># Initialize class and set up the tree</p>
+<p># This time Initialize class with by passing <code class="docutils literal notranslate"><span class="pre">tra</span></code> and <code class="docutils literal notranslate"><span class="pre">tdec</span></code> arguments and set up the tree</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">code_tree</span> <span class="o">=</span> <span class="n">find_neighbours</span><span class="p">(</span><span class="n">tra</span><span class="o">=</span><span class="n">coords</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">tdec</span><span class="o">=</span><span class="n">coords</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
@@ -1224,7 +1249,7 @@ Initializing with sphere of radius, r=1.
 </div>
 <p># Query the neighbours of demo objects</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">idx</span><span class="o">=</span><span class="n">code_tree</span><span class="o">.</span><span class="n">query_within_rmax</span><span class="p">(</span><span class="n">demo_ra</span><span class="p">,</span> <span class="n">demo_dec</span><span class="p">)</span>
@@ -1241,7 +1266,7 @@ Searching for 1 number of objects in the catalog with rmax=15 arcsec.
 </div>
 <p># Go back to brute force output and compare this result…. does it match?</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">idx</span>
@@ -1249,7 +1274,7 @@ Searching for 1 number of objects in the catalog with rmax=15 arcsec.
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1263,7 +1288,7 @@ array([list([14, 15, 16, 44])], dtype=object)
 <h2>Compare the computer time required by our brute force algorithm vs the k-d tree algorithm<a class="headerlink" href="#Compare-the-computer-time-required-by-our-brute-force-algorithm-vs-the-k-d-tree-algorithm" title="Permalink to this headline"></a></h2>
 <p>First let’s use k-d tree to query neighbours within <code class="docutils literal notranslate"><span class="pre">rmax</span></code>=15 arcsec for each object within the catalog.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> idx=code_tree.query_within_rmax(coords[:,0], coords[:,1])
@@ -1276,14 +1301,14 @@ array([list([14, 15, 16, 44])], dtype=object)
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Searching for 220622 number of objects in the catalog with rmax=15 arcsec.
-CPU times: user 1.65 s, sys: 36.3 ms, total: 1.69 s
-Wall time: 1.12 s
+CPU times: user 556 ms, sys: 15.5 ms, total: 571 ms
+Wall time: 569 ms
 </pre></div></div>
 </div>
-<p>Reminder: full catalog has about 2,20,000 objects… and k-d tree found neighbours for each one of them in 1-2 seconds.</p>
+<p>Reminder: full catalog has about 2,20,000 objects… and k-d tree found neighbours for each one of them in 1-2 seconds. (This time will vary depending on your computer’s ability.)</p>
 <p>Now let’s use the brute force method only for 1000 objects.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> nnids,distances = find_neighbour_points(coords[:1000],rmax=15, verbose=False)
@@ -1295,8 +1320,8 @@ Wall time: 1.12 s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 20.9 s, sys: 224 ms, total: 21.1 s
-Wall time: 21.2 s
+CPU times: user 12.3 s, sys: 0 ns, total: 12.3 s
+Wall time: 12.3 s
 </pre></div></div>
 </div>
 </div>
