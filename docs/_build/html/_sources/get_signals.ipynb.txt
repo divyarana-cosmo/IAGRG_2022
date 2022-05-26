@@ -13,7 +13,7 @@
    "source": [
     "In this session, we will use the things described in the last two sessions and make a weak lensing measurement pipeline for ourselves. We will start with writing out the different steps required to get the pipeline ready. We then code up each of them as individual functions, which will be called in our main code.\n",
     "\n",
-    "We are here studying the matter distribution around SDSS redmapper galaxy clusters as described in - arXiv:1303.3562 by the weak lensing technique using shape catalog data from HSC S16A data - arXiv:1705.06745. We suggest readers to have a look at these references to have a better understanding of data provided to them. \n",
+    "We are here studying the matter distribution around SDSS redmapper galaxy clusters - arXiv:1303.3562 by the weak lensing technique using shape catalog data from HSC S16A data - arXiv:1705.06745. We suggest readers to have a look at these references to have a better understanding of data provided to them. The readers can also compare their results with the same study done on these clusters using shape catalog from SDSS - arXiv:1707.01907.\n",
     "\n",
     "**We highly suggest readers to make a separate notebook for this session as it will be useful for later use.** \n",
     "\n",
