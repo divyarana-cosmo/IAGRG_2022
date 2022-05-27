@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 3 Solutions &mdash; Weak Lensing 2022 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Day 3 - Get the Weak Lensing Signals" href="get_signals.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Weak Lensing
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="instructions.html">Day 1 - Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iagrg_day_1_hands_on.html">Day 1 Solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pair_counting.html">Day 2 - Finding neighbours</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pair_counting_solutions.html">Day 2 Solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get_signals.html">Day 3 - Get the Weak Lensing Signals</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Day 3 Solutions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Weak Lensing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Day 3 Solutions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/iagrg_day_3_hands_on.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="Day-3-Solutions">
+<h1>Day 3 Solutions<a class="headerlink" href="#Day-3-Solutions" title="Permalink to this headline"></a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#loading the required packages</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">cKDTree</span>
+<span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">FlatLambdaCDM</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_xyz</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">):</span>
+    <span class="n">ra</span> <span class="o">=</span> <span class="n">ra</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span>
+    <span class="n">dec</span> <span class="o">=</span> <span class="n">dec</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">dec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ra</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">dec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ra</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">dec</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">get_xyz</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">60</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(0.43301270189221946, 0.25, 0.8660254037844386)
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># selection cut on the lens sample</span>
+<span class="k">def</span> <span class="nf">lens_select</span><span class="p">(</span><span class="n">zmin</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">lammin</span><span class="o">=</span><span class="mi">55</span><span class="p">,</span> <span class="n">lammax</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="c1">#please check the file path properly</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/redmapper.dat&#39;</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1">#sample selection cut</span>
+    <span class="n">idx</span>  <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;lambda&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="n">lammin</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;lambda&#39;</span><span class="p">]</span><span class="o">&lt;=</span><span class="n">lammax</span><span class="p">)</span>
+    <span class="n">idx</span>  <span class="o">=</span> <span class="n">idx</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;zred&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="n">zmin</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;zred&#39;</span><span class="p">]</span><span class="o">&lt;=</span><span class="n">zmax</span><span class="p">)</span>
+    <span class="n">ra</span>   <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ra&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">dec</span>  <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">zred</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;zred&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="c1">#as we have no weights to apply we set them to unity</span>
+    <span class="n">wgt</span>  <span class="o">=</span> <span class="n">ra</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">ra</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;number of lenses=</span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">len</span>(ra))
+    <span class="k">return</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">zred</span><span class="p">,</span> <span class="n">wgt</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">c</span> <span class="o">=</span> <span class="n">lens_select</span><span class="p">()</span>
+<span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+number of lenses=560
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.24233999447142857
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sanity cheaks on the source files</span>
+<span class="k">def</span> <span class="nf">read_sources</span><span class="p">(</span><span class="n">ifil</span><span class="p">):</span>
+    <span class="c1"># various columns in sources</span>
+    <span class="c1"># ragal, decgal, e1gal, e2gal, wgal, rms_egal, mgal, c1gal, c2gal, R2gal, zphotgal</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">ifil</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">zphotgal</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># sanity checks on the sources data</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span>  <span class="p">(</span><span class="n">zphotgal</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">datagal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span><span class="mi">7</span><span class="p">))</span>
+    <span class="n">datagal</span><span class="p">[:,:</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,:</span><span class="mi">6</span><span class="p">]</span>
+    <span class="n">datagal</span><span class="p">[:,</span><span class="mi">6</span><span class="p">]</span>  <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># collects only -  ragal, decgal, e1gal, e2gal, wgal, rms_egal, zphotgal</span>
+    <span class="k">return</span> <span class="n">datagal</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># following surhud&#39;s lectures</span>
+<span class="k">def</span> <span class="nf">get_et</span><span class="p">(</span><span class="n">lra</span><span class="p">,</span> <span class="n">ldec</span><span class="p">,</span> <span class="n">sra</span><span class="p">,</span> <span class="n">sdec</span><span class="p">,</span> <span class="n">se1</span><span class="p">,</span> <span class="n">se2</span><span class="p">):</span>
+    <span class="n">lra</span>  <span class="o">=</span> <span class="n">lra</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span>
+    <span class="n">ldec</span> <span class="o">=</span> <span class="n">ldec</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span>
+    <span class="n">sra</span>  <span class="o">=</span> <span class="n">sra</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span>
+    <span class="n">sdec</span> <span class="o">=</span> <span class="n">sdec</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span>
+
+    <span class="n">c_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ldec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">sdec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lra</span> <span class="o">-</span> <span class="n">sra</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ldec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">sdec</span><span class="p">)</span>
+    <span class="n">s_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">c_theta</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># phi to get the compute the tangential shear</span>
+    <span class="n">c_phi</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ldec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">sra</span> <span class="o">-</span> <span class="n">lra</span><span class="p">)</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">s_theta</span>
+    <span class="n">s_phi</span>   <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ldec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">sdec</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ldec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">sra</span> <span class="o">-</span> <span class="n">lra</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">sdec</span><span class="p">))</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">s_theta</span>
+    <span class="c1"># tangential shear</span>
+    <span class="n">e_t</span>     <span class="o">=</span> <span class="o">-</span> <span class="n">se1</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">c_phi</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">se2</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">c_phi</span> <span class="o">*</span> <span class="n">s_phi</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">e_t</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">get_et</span><span class="p">(</span><span class="n">lra</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ldec</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sra</span><span class="o">=</span><span class="mf">0.123</span><span class="p">,</span> <span class="n">sdec</span><span class="o">=</span><span class="mf">0.045</span><span class="p">,</span> <span class="n">se1</span> <span class="o">=</span> <span class="mf">4.5e-2</span><span class="p">,</span> <span class="n">se2</span> <span class="o">=</span> <span class="mf">1.7e-2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+-0.04534629189830734
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_sigma_crit_inv</span><span class="p">(</span><span class="n">lzred</span><span class="p">,</span> <span class="n">szred</span><span class="p">,</span> <span class="n">cc</span><span class="p">):</span>
+    <span class="c1"># some important constants for the sigma crit computations</span>
+    <span class="n">gee</span> <span class="o">=</span> <span class="mf">4.301e-9</span> <span class="c1">#km^2 Mpc M_sun^-1 s^-2 gravitational constant</span>
+    <span class="n">cee</span> <span class="o">=</span> <span class="mf">3e5</span> <span class="c1">#km s^-1</span>
+    <span class="c1"># sigma_crit_calculations for a given lense-source pair</span>
+    <span class="n">sigm_crit_inv</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">angular_diameter_distance</span><span class="p">(</span><span class="n">lzred</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="n">cc</span><span class="o">.</span><span class="n">angular_diameter_distance_z1z2</span><span class="p">(</span><span class="n">lzred</span><span class="p">,</span> <span class="n">szred</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">lzred</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">cc</span><span class="o">.</span><span class="n">angular_diameter_distance</span><span class="p">(</span><span class="n">szred</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+    <span class="n">sigm_crit_inv</span> <span class="o">=</span> <span class="n">sigm_crit_inv</span> <span class="o">*</span> <span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">gee</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">cee</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">sigm_crit_inv</span> <span class="o">=</span> <span class="mf">1e12</span><span class="o">*</span><span class="n">sigm_crit_inv</span> <span class="c1">#esd&#39;s are in pc not in Mpc</span>
+
+    <span class="k">return</span> <span class="n">sigm_crit_inv</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astropy.cosmology</span> <span class="kn">import</span> <span class="n">FlatLambdaCDM</span>
+<span class="n">cc</span> <span class="o">=</span> <span class="n">FlatLambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="mf">0.999</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">get_sigma_crit_inv</span><span class="p">(</span><span class="n">lzred</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">szred</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">cc</span><span class="o">=</span><span class="n">cc</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.00030436585298495184
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">outputfile</span> <span class="o">=</span> <span class="s1">&#39;/home/idies/workspace/Temporary/divyar/scratch/iagrg_dsigma.dat&#39;</span>
+
+<span class="k">def</span> <span class="nf">run_pipe</span><span class="p">(</span><span class="n">Omegam</span><span class="o">=</span><span class="mf">0.315</span><span class="p">,</span> <span class="n">rmin</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">rmax</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">zdiff</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">outputfile</span> <span class="o">=</span> <span class="n">outputfile</span><span class="p">):</span>
+    <span class="c1">#set the cosmology with omegaM parameter</span>
+    <span class="n">cc</span> <span class="o">=</span> <span class="n">FlatLambdaCDM</span><span class="p">(</span><span class="n">H0</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">Om0</span><span class="o">=</span><span class="n">Omegam</span><span class="p">)</span> <span class="c1"># fixing H0=100 to set units in Mpc h-1</span>
+
+    <span class="c1"># set the projected radial binning</span>
+    <span class="n">rmin</span>  <span class="o">=</span>  <span class="n">rmin</span>
+    <span class="n">rmax</span>  <span class="o">=</span>  <span class="n">rmax</span>
+    <span class="n">nbins</span> <span class="o">=</span> <span class="n">nbins</span> <span class="c1">#10 radial bins for our case</span>
+    <span class="n">rbins</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">rmin</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">rmax</span><span class="p">),</span> <span class="n">nbins</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">rdiff</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">rbins</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">rbins</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># initializing arrays for signal compuations</span>
+    <span class="n">sumdsig_num</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rbins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">sumdsigsq_num</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rbins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">sumwls</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rbins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">sumwls_resp</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rbins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="c1"># getting the lenses data</span>
+    <span class="n">lra</span><span class="p">,</span> <span class="n">ldec</span><span class="p">,</span> <span class="n">lred</span><span class="p">,</span> <span class="n">lwgt</span> <span class="o">=</span> <span class="n">lens_select</span><span class="p">(</span><span class="n">zmin</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">zmax</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">lammin</span><span class="o">=</span><span class="mi">55</span><span class="p">,</span> <span class="n">lammax</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="c1"># convert lense ra and dec into x,y,z cartesian coordinates</span>
+    <span class="n">lx</span><span class="p">,</span> <span class="n">ly</span><span class="p">,</span> <span class="n">lz</span> <span class="o">=</span> <span class="n">get_xyz</span><span class="p">(</span><span class="n">lra</span><span class="p">,</span> <span class="n">ldec</span><span class="p">)</span>
+
+    <span class="c1"># putting kd tree around the lenses</span>
+    <span class="n">lens_tree</span> <span class="o">=</span> <span class="n">cKDTree</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">lx</span><span class="p">,</span> <span class="n">ly</span><span class="p">,</span> <span class="n">lz</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;lenses tree is ready</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># setting maximum search radius</span>
+    <span class="n">dcommin</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">comoving_distance</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">lred</span><span class="p">))</span><span class="o">.</span><span class="n">value</span>
+    <span class="n">dismax</span>  <span class="o">=</span> <span class="p">(</span><span class="n">rmax</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="p">(</span><span class="n">dcommin</span><span class="p">))</span>
+
+    <span class="c1"># lets first catch the file list for sources</span>
+    <span class="n">sflist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/*.dat&#39;</span><span class="p">))</span>
+
+    <span class="c1"># Ready to pounce on the source data</span>
+    <span class="k">for</span> <span class="n">ifil</span> <span class="ow">in</span> <span class="n">sflist</span><span class="p">:</span>
+        <span class="c1"># catching the source data matrix</span>
+        <span class="c1"># please have a check for the columns names</span>
+        <span class="n">datagal</span> <span class="o">=</span> <span class="n">read_sources</span><span class="p">(</span><span class="n">ifil</span><span class="p">)</span>
+        <span class="n">Ngal</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">datagal</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># total number of galaxies in the source file</span>
+        <span class="c1"># first two entries are ra and dec for the sources</span>
+        <span class="n">allragal</span>  <span class="o">=</span> <span class="n">datagal</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">alldecgal</span> <span class="o">=</span> <span class="n">datagal</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># ra and dec to x,y,z for sources</span>
+        <span class="n">allsx</span><span class="p">,</span> <span class="n">allsy</span><span class="p">,</span> <span class="n">allsz</span> <span class="o">=</span> <span class="n">get_xyz</span><span class="p">(</span><span class="n">allragal</span><span class="p">,</span> <span class="n">alldecgal</span><span class="p">)</span>
+        <span class="c1"># query in a ball around individual sources and collect the lenses ids with a maximum radius</span>
+        <span class="n">slidx</span> <span class="o">=</span> <span class="n">lens_tree</span><span class="o">.</span><span class="n">query_ball_point</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">([</span><span class="n">allsx</span><span class="p">,</span> <span class="n">allsy</span><span class="p">,</span> <span class="n">allsz</span><span class="p">]),</span> <span class="n">dismax</span><span class="p">)</span>
+        <span class="c1"># various columns in sources</span>
+        <span class="c1"># ragal, decgal, e1gal, e2gal, wgal, rms_egal, mgal, c1gal, c2gal, R2gal, zphotgal</span>
+        <span class="c1"># looping over all the galaxies</span>
+        <span class="k">for</span> <span class="n">igal</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ngal</span><span class="p">):</span>
+            <span class="n">ragal</span>    <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">decgal</span>   <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">e1gal</span>    <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">e2gal</span>    <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">wgal</span>     <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+            <span class="n">rms_egal</span> <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+            <span class="n">zphotgal</span> <span class="o">=</span> <span class="n">datagal</span><span class="p">[</span><span class="n">igal</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
+
+            <span class="c1"># array of lenses indices</span>
+            <span class="n">lidx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">slidx</span><span class="p">[</span><span class="n">igal</span><span class="p">])</span>
+            <span class="c1"># removing sources which doesn&#39;t have any lenses around them</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lidx</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># selecting a cleaner background</span>
+            <span class="n">zcut</span> <span class="o">=</span> <span class="p">(</span><span class="n">lred</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">zphotgal</span> <span class="o">-</span> <span class="n">zdiff</span><span class="p">))</span> <span class="c1">#only taking the foreground lenses</span>
+            <span class="c1"># again skipping the onces which doesn&#39;t satisfy the above criteria</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">zcut</span><span class="p">)</span><span class="o">==</span><span class="mf">0.0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="c1"># collecting the  data of lenses around individual source</span>
+            <span class="n">lidx</span>   <span class="o">=</span> <span class="n">lidx</span><span class="p">[</span><span class="n">zcut</span><span class="p">]</span> <span class="c1"># this will catch the array indices for our lenses</span>
+            <span class="n">sra</span>    <span class="o">=</span> <span class="n">ragal</span>
+            <span class="n">sdec</span>   <span class="o">=</span> <span class="n">decgal</span>
+
+            <span class="n">l_ra</span>   <span class="o">=</span> <span class="n">lra</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span>
+            <span class="n">l_dec</span>  <span class="o">=</span> <span class="n">ldec</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span>
+            <span class="n">l_zred</span> <span class="o">=</span> <span class="n">lred</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span>
+            <span class="n">l_wgt</span>  <span class="o">=</span> <span class="n">lwgt</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span>
+
+            <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">,</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">get_xyz</span><span class="p">(</span><span class="n">sra</span><span class="p">,</span><span class="n">sdec</span><span class="p">)</span> <span class="c1"># individual galaxy ra,dec--&gt;x,y,z</span>
+            <span class="n">lx</span><span class="p">,</span> <span class="n">ly</span><span class="p">,</span> <span class="n">lz</span> <span class="o">=</span> <span class="n">get_xyz</span><span class="p">(</span><span class="n">l_ra</span><span class="p">,</span><span class="n">l_dec</span><span class="p">)</span> <span class="c1"># individual galaxy ra,dec--&gt;x,y,z</span>
+
+            <span class="c1"># getting the radial separations for a lense source pair</span>
+            <span class="n">sl_sep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">lx</span> <span class="o">-</span> <span class="n">sx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">ly</span> <span class="o">-</span> <span class="n">sy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">lz</span> <span class="o">-</span> <span class="n">sz</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">sl_sep</span> <span class="o">=</span> <span class="n">sl_sep</span> <span class="o">*</span> <span class="n">cc</span><span class="o">.</span><span class="n">comoving_distance</span><span class="p">(</span><span class="n">l_zred</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">for</span> <span class="n">ll</span><span class="p">,</span><span class="n">sep</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sl_sep</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">sep</span><span class="o">&lt;</span><span class="n">rmin</span> <span class="ow">or</span> <span class="n">sep</span><span class="o">&gt;</span><span class="n">rmax</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">rb</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">sep</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">rmin</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="o">/</span><span class="n">rdiff</span><span class="p">)</span>
+
+                <span class="c1"># get tangantial components given positions and shapes</span>
+                <span class="n">e_t</span> <span class="o">=</span> <span class="n">get_et</span><span class="p">(</span><span class="n">lra</span> <span class="o">=</span> <span class="n">l_ra</span><span class="p">[</span><span class="n">ll</span><span class="p">],</span> <span class="n">ldec</span> <span class="o">=</span> <span class="n">l_dec</span><span class="p">[</span><span class="n">ll</span><span class="p">],</span> <span class="n">sra</span> <span class="o">=</span> <span class="n">sra</span><span class="p">,</span> <span class="n">sdec</span> <span class="o">=</span> <span class="n">sdec</span><span class="p">,</span> <span class="n">se1</span> <span class="o">=</span> <span class="n">e1gal</span><span class="p">,</span>  <span class="n">se2</span> <span class="o">=</span> <span class="n">e2gal</span><span class="p">)</span>
+
+                <span class="c1"># sigma_crit_calculations for a given lense-source pair</span>
+                <span class="n">sigm_crit_inv</span> <span class="o">=</span> <span class="n">get_sigma_crit_inv</span><span class="p">(</span><span class="n">l_zred</span><span class="p">[</span><span class="n">ll</span><span class="p">],</span> <span class="n">zphotgal</span><span class="p">,</span> <span class="n">cc</span><span class="p">)</span>
+
+                <span class="c1"># following equations given in the surhud&#39;s lectures</span>
+                <span class="n">w_ls</span>    <span class="o">=</span> <span class="n">l_wgt</span><span class="p">[</span><span class="n">ll</span><span class="p">]</span> <span class="o">*</span> <span class="n">wgal</span> <span class="o">*</span> <span class="p">(</span><span class="n">sigm_crit_inv</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+                <span class="n">w_ls_by_av_sigc_inv</span> <span class="o">=</span> <span class="n">l_wgt</span><span class="p">[</span><span class="n">ll</span><span class="p">]</span> <span class="o">*</span> <span class="n">wgal</span> <span class="o">*</span> <span class="n">sigm_crit_inv</span>
+
+                <span class="c1"># separate numerator and denominator computation</span>
+                <span class="n">sumdsig_num</span><span class="p">[</span><span class="n">rb</span><span class="p">]</span>   <span class="o">+=</span> <span class="n">w_ls_by_av_sigc_inv</span>  <span class="o">*</span> <span class="n">e_t</span>
+                <span class="n">sumdsigsq_num</span><span class="p">[</span><span class="n">rb</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">w_ls_by_av_sigc_inv</span> <span class="o">*</span> <span class="n">e_t</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+                <span class="n">sumwls</span><span class="p">[</span><span class="n">rb</span><span class="p">]</span>        <span class="o">+=</span> <span class="n">w_ls</span>
+                <span class="n">sumwls_resp</span><span class="p">[</span><span class="n">rb</span><span class="p">]</span>   <span class="o">+=</span> <span class="n">w_ls</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">rms_egal</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">ifil</span><span class="p">)</span>
+
+
+    <span class="n">fout</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# 0:rmin/2+rmax/2 1:DeltaSigma 2:SN_ErrDeltaSigma</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rbins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])):</span>
+        <span class="n">rrmin</span> <span class="o">=</span> <span class="n">rbins</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">rrmax</span> <span class="o">=</span> <span class="n">rbins</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">Resp</span> <span class="o">=</span> <span class="n">sumwls_resp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">sumwls</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%le</span><span class="se">\t</span><span class="si">%le</span><span class="se">\t</span><span class="si">%le</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">rrmin</span><span class="o">/</span><span class="mf">2.0</span><span class="o">+</span><span class="n">rrmax</span><span class="o">/</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">sumdsig_num</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">sumwls</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="mf">2.</span><span class="o">/</span><span class="n">Resp</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sumdsigsq_num</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">sumwls</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="mf">2.</span><span class="o">/</span><span class="n">Resp</span><span class="p">))</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;#OK&quot;</span><span class="p">)</span>
+    <span class="n">fout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[61]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run_pipe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+number of lenses=560
+lenses tree is ready
+
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0000.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0001.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0002.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0003.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0004.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0005.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0006.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0007.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0008.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0009.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0010.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0011.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0012.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0013.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0014.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0015.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0016.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0017.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0018.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0019.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0020.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0021.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0022.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0023.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0024.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0025.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0026.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0027.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0028.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0029.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0030.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0031.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0032.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0033.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0034.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0035.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0036.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0037.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0038.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0039.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0040.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0041.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0042.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0043.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0044.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0045.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0046.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0047.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0048.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0049.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0050.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0051.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0052.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0053.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0054.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0055.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0056.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0057.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0058.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0059.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0060.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0061.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0062.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0063.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0064.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0065.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0066.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0067.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0068.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0069.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0070.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0071.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0072.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0073.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0074.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0075.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0076.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0077.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0078.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0079.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0080.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0081.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0082.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0083.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0084.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0085.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0086.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0087.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0088.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0089.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0090.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0091.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0092.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0093.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0094.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0095.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0096.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0097.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0098.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0099.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0100.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0101.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0102.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0103.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0104.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0105.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0106.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0107.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0108.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0109.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0110.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0111.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0112.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0113.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0114.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0115.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0116.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0117.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0118.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0119.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0120.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0121.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0122.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0123.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0124.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0125.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0126.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0127.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0128.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0129.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0130.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0131.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0132.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0133.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0134.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0135.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0136.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0137.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0138.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0139.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0140.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0141.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0142.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0143.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0144.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0145.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0146.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0147.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0148.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0149.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0150.dat
+/home/idies/workspace/Storage/divyar/IAGRG_2022/DataStore/hsc/0151.dat
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[61]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;iagrg_dsigma.dat&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">dat</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dat</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">yerr</span><span class="o">=</span><span class="n">dat</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Data&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$R[{\rm h^{-1}Mpc}]$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\Delta\Sigma [{\rm h M_\odot pc^{-2}}]$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/iagrg_day_3_hands_on_13_0.png" src="_images/iagrg_day_3_hands_on_13_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="get_signals.html" class="btn btn-neutral float-left" title="Day 3 - Get the Weak Lensing Signals" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Divya Rana.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
