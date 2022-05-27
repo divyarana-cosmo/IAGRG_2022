@@ -385,7 +385,7 @@
     "Exercise: \n",
     "    \n",
     "- Compare your halo mass constraints with that of the weak lensing study by using SDSS shape catalog - [arXiv:1707.01907](https://arxiv.org/abs/1707.01907).\n",
-    "- Remember you are studying cluster with redshifts $0.1<z_{\\rm red}<0.33$ and richness $55<\\lambda<100$. So compare the results in the subpanel of fig 1 or fig 2 in [arXiv:1707.01907](https://arxiv.org/abs/1707.01907).    \n",
+    "- Remember you are studying cluster with redshifts $0.1<z_{\\rm red}<0.33$ and richness $55<\\lambda<100$. So compare the results in the subpanel of fig 4 or fig 5 in [arXiv:1707.01907](https://arxiv.org/abs/1707.01907).    \n",
     "\n",
     " \n",
     "</div>"
