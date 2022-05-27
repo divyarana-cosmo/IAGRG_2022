@@ -357,7 +357,7 @@ div.rendered_html tbody tr:hover {
 <li><p><span class="math notranslate nohighlight">\(\langle \Sigma \rangle (R)\)</span> : azimuthally averaged projected mass (dark+baryon) density at <span class="math notranslate nohighlight">\(R\)</span>.</p></li>
 </ul>
 <hr class="docutils" />
-<p>To model the <span class="math notranslate nohighlight">\(\Delta\Sigma(R)\)</span>, we need to compute the surface mass density, from the 3-dimensional model of halo mass density profile given by <strong>Navarro–Frenk–White (NFW) profile</strong> (<a class="reference external" href="https://arxiv.org/abs/astro-ph/9508025">arXiv:astro-ph/9508025</a> by integrating this along the line-of-sight.</p>
+<p>To model the <span class="math notranslate nohighlight">\(\Delta\Sigma(R)\)</span>, we need to compute the surface mass density, from the 3-dimensional model of halo mass density profile given by <strong>Navarro–Frenk–White (NFW) profile</strong> <a class="reference external" href="https://arxiv.org/abs/astro-ph/9508025">arXiv:astro-ph/9508025</a> by integrating this along the line-of-sight.</p>
 <div class="math notranslate nohighlight">
 \[\mathbf{NFW\ profile:} \hspace{0.5 cm} \rho(r) = \frac{\rho_0}{\left(\frac{r}{r_s}\right) \left(1+\frac{r}{r_s}\right)^2}\]</div>
 <div class="math notranslate nohighlight">
@@ -412,11 +412,11 @@ such bins. Plus, the clusters are very bright in the inner regions, due to which
 <p>Here we have defined two classes one consisting of useful <strong>constants</strong> named constants and the <strong>halo</strong> class contains the functions useful for model predictions. The halo class has couple of functions define in it which are described as</p>
 <ul class="simple">
 <li><p><strong>init</strong>: Here we provide initialization parameters for the modelling - for us they are logarithm halo mass <strong>logM200m</strong> and concentration <strong>con_par</strong>. This also sets up other constants required in the other functions.</p></li>
-<li><p><strong>nfw :math:`rho(r)`</strong>: This will give the standard NFW dark matter distribution for given radial bins.</p></li>
-<li><p><strong>sigma_nfw :math:`Sigma (R)`</strong>: This will provide the projected NFW dark matter distribution for given radial bins.</p></li>
-<li><p><strong>avg_sigma_nfw :math:`bar{Sigma}(&lt; R)`</strong>: This will provide the mean projected NFW dark matter distribution within the given radial bins.</p></li>
+<li><p><strong>nfw</strong> <span class="math notranslate nohighlight">\(\rho(r)\)</span>: This will give the standard NFW dark matter distribution for given radial bins.</p></li>
+<li><p><strong>sigma_nfw</strong> <span class="math notranslate nohighlight">\(\Sigma (R)\)</span>: This will provide the projected NFW dark matter distribution for given radial bins.</p></li>
+<li><p><strong>avg_sigma_nfw</strong> <span class="math notranslate nohighlight">\(\bar{\Sigma}(&lt; R)\)</span>: This will provide the mean projected NFW dark matter distribution within the given radial bins.</p></li>
 </ul>
-<p><strong>Please note that the here we are using Halo masses in units of :math:`h^{-1}M_odot` and distances in units of :math:`{rm h^{-1}Mpc}.`</strong></p>
+<p><strong>Please note that the here we are using Halo masses in units of</strong> <span class="math notranslate nohighlight">\(h^{-1}M_\odot\)</span> <strong>and distances in units of</strong> <span class="math notranslate nohighlight">\({\rm h^{-1}Mpc}.\)</span></p>
 <p>Useful functions: <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arccos.html">arccos</a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arccosh.html">arccosh</a></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
