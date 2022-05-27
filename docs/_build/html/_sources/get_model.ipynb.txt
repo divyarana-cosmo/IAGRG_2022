@@ -11,7 +11,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "As this session assumes you have your own weak lensing signal so that you can model them. We understand coding up the lensing measurement part(Day 3 tutorial) is quite tedious. So, presently we will provide you the output file to use it for modelling and getting the halo mass constraits out of it. Similar to day 3 tutorials, the reader has to fill in the blanks (??) in the code snippets.  "
+    "This session assumes that you have your own weak lensing signal in order to model them. We understand coding up the lensing measurement part(Day 3 tutorial) is quite tedious. So in case if you don't have the signal from yesterday's session, we will provide you the output file for modelling and getting the halo mass constraits out of it. Similar to day 3 tutorial, the reader has to fill in the blanks(??) in the code snippets.  "
    ]
   },
   {
