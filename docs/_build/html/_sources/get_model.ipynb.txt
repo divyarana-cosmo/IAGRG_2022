@@ -87,7 +87,7 @@
     "\\end{align*}\n",
     "$$\n",
     "\n",
-    "**Thus these expression show that the whole dark matter distribution can be parametrized in terms of only two free parameters, namely - concentration (c) and Halo mass** ($M_{\\rm 200m}$).\n",
+    "**Thus these expression show that the whole dark matter distribution can be parametrized in terms of only two free parameters, namely - concentration (c) and Halo mass** ($M_{\\rm 200m}$). We suggest the readers to show that these equations are equivalent to the ones described in the lectures.\n",
     "\n",
     "**Note :** Weak gravitational lensing signal probes the total matter distribution around the lens systems (here: galaxy cluster systems). In clusters, the baryonic component only contribute dominantly in the inner regions (small projected radii), where the signal itself is very noisy, resulting in low signal-to-noise ratio. This happens because for smaller projected radii, the radial bin width becomes small due to logarithmic nature of radial binning which reduces the lens-source pair counts in such bins. Plus, the clusters are very bright in the inner regions, due to which a lot of galaxies are not identified by photometric surveys, leading to lack of sources in the inner regions. Thus these signals in the inner regions are not supposed to be very reliable. Thus we altogether ignore the baryonic contribution in the modelling of the weak lensing signals. Moreover, the inner regions don't contribute a lot in the determination of the average halo masses around the lenses.\n",
     "\n",
