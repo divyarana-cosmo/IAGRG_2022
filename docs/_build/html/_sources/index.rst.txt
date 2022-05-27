@@ -16,6 +16,7 @@ Welcome to IAGRG 2022 Weak Lensing Tutorial's Documentation!
    pair_counting_solutions
    get_signals
    iagrg_day_3_hands_on
+   get_model
 
 Indices and tables
 ==================
