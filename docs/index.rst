@@ -17,6 +17,7 @@ Welcome to IAGRG 2022 Weak Lensing Tutorial's Documentation!
    get_signals
    iagrg_day_3_hands_on
    get_model
+   iagrg_day_4_hands_on
 
 Indices and tables
 ==================
