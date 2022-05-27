@@ -39,9 +39,9 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="instructions.html">Day 1 - Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="iagrg_day_1_hands_on.html">Day 1 Hands-On Session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iagrg_day_1_hands_on.html">Day 1 Solutions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pair_counting.html">Day 2 - Finding neighbours</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pair_counting_solutions.html">Day 2 Hands-On Session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pair_counting_solutions.html">Day 2 Solutions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="get_signals.html">Day 3 - Get the Weak Lensing Signals</a></li>
 </ul>
 
@@ -351,81 +351,97 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <p>We will first define the class where we will code up all the useful function in it. We will create a class instance then use them to call these functions for model prediction.</p>
+<p>Here we have defined two classes one consisting of useful <strong>constants</strong> named constants and the <strong>halo</strong> class contains the functions useful for model predictions. The halo class has couple of functions define in it which are described as</p>
+<ul class="simple">
+<li><p><strong>init</strong>: Here we provide initialization parameters for the modelling - for us they are logarithm halo mass <strong>logM200m</strong> and concentration <strong>con_par</strong>. This also sets up other constants required in the other functions.</p></li>
+<li><p><strong>nfw :math:`rho(r)`</strong>: This will give the standard NFW dark matter distribution for given radial bins.</p></li>
+<li><p><strong>sigma_nfw :math:`Sigma (R)`</strong>: This will provide the projected NFW dark matter distribution for given radial bins.</p></li>
+<li><p><strong>avg_sigma_nfw :math:`bar{Sigma}(&lt; R)`</strong>: This will provide the mean projected NFW dark matter distribution within the given radial bins.</p></li>
+</ul>
+<p><strong>Please note that the here we are using Halo masses in units of :math:`h^{-1}M_odot` and distances in units of :math:`{rm h^{-1}Mpc}.`</strong></p>
+<p>Useful functions: <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arccos.html">arccos</a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.arccosh.html">arccosh</a></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># working with the classes</span>
-<span class="c1"># NFW  --&gt; delta_sigma</span>
-<span class="k">class</span> <span class="nc">constants</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Useful constants&quot;&quot;&quot;</span>
-    <span class="n">G</span>     <span class="o">=</span> <span class="mf">4.301e-9</span>    <span class="c1">#km^2 Mpc M_sun^-1 s^-2 gravitational constant</span>
-    <span class="n">H0</span>    <span class="o">=</span> <span class="mf">100.</span>       <span class="c1">#h kms-1 Mpc-1 hubble constant at present</span>
-    <span class="n">omg_m</span> <span class="o">=</span> <span class="mf">0.315</span>   <span class="c1">#omega_matter</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># working with the classes
+# NFW  --&gt; delta_sigma
+class constants:
+    &quot;&quot;&quot;Useful constants&quot;&quot;&quot;
+    G     = 4.301e-9   #km^2 Mpc M_sun^-1 s^-2 gravitational constant
+    H0    = 100.       #h kms-1 Mpc-1 hubble constant at present
+    omg_m = 0.315      #value of omega_matter is consistent with our signal measurement code
 
-<span class="k">class</span> <span class="nc">halo</span><span class="p">(</span><span class="n">constants</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Useful functions for weak lensing signal modelling&quot;&quot;&quot;</span>
+# Here halo class inherits the constants class
+class halo(constants):
+    &quot;&quot;&quot;Useful functions for weak lensing signal modelling&quot;&quot;&quot;
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_M200m</span><span class="p">,</span> <span class="n">con_par</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">m_tot</span>   <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">log_M200m</span> <span class="c1"># h-1 Msun</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">c</span>       <span class="o">=</span> <span class="n">con_par</span>       <span class="c1"># concentration parameter</span>
+    def __init__(self, log_M200m, con_par):
+        self.m_tot   = 10**log_M200m # halo Mass h-1 Msun
+        self.c       = con_par       # concentration parameter
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">rho_crt</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">H0</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span><span class="p">(</span><span class="mf">8.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">)</span> <span class="c1"># rho critical</span>
+        self.rho_crt = 3 * self.H0**2 /(8.0*np.pi*self.G) # rho critical
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">r_200</span>   <span class="o">=</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_tot</span> <span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mi">200</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">rho_crt</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">omg_m</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="mf">3.</span><span class="p">)</span> <span class="c1"># Mpc h-1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rho_0</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="o">**</span><span class="mi">3</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_tot</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_200</span><span class="o">**</span><span class="mi">3</span> <span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">)))</span>
-        <span class="c1">#print(&quot;log_M200m = %s h-1 M_sun, c = %s \n&quot;%(np.log10(self.m_tot), self.c))</span>
+        self.r_200   = (3 * self.m_tot /(4*np.pi*200*self.rho_crt*self.omg_m))**(1./3.) # R200m
 
-    <span class="k">def</span> <span class="nf">nfw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">r</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;given r, this gives nfw profile as per the instantiated parameters&quot;&quot;&quot;</span>
-        <span class="n">r_s</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_200</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">c</span>
-        <span class="n">value</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rho_0</span><span class="o">/</span><span class="p">((</span><span class="n">r</span><span class="o">/</span><span class="n">r_s</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">r</span><span class="o">/</span><span class="n">r_s</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">value</span>
+        # rho_0 is numerator for NFW profile
+        self.rho_0   = self.c**3 * self.m_tot/(4 * np.pi * self.r_200**3 *(np.log(1 + self.c) - self.c/(1 + self.c)))
+        #print(&quot;log_M200m = %s h-1 M_sun, c = %s \n&quot;%(np.log10(self.m_tot), self.c))
 
-    <span class="k">def</span> <span class="nf">sigma_nfw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">r</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;analytical projection of NFW&quot;&quot;&quot;</span>
-        <span class="n">r_s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_200</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">c</span>
-        <span class="n">k</span>   <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">r_s</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">rho_0</span>
-        <span class="n">sig</span> <span class="o">=</span> <span class="mf">0.0</span><span class="o">*</span><span class="n">r</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">i</span><span class="o">/</span><span class="n">r_s</span>
-            <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">arccosh</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="mf">3.</span>
-            <span class="n">sig</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">*</span><span class="n">k</span>
-            <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span>
-        <span class="k">return</span> <span class="n">sig</span>
+    def nfw(self,r):
+        &quot;&quot;&quot;given r, this gives nfw profile as per the instantiated parameters&quot;&quot;&quot;
+        r_s    = self.r_200/self.c
+        value  = self.rho_0/((r/??)*(??+r/??)**??)
+        return value
 
-    <span class="k">def</span> <span class="nf">avg_sigma_nfw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">r</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;analytical average projected of NFW&quot;&quot;&quot;</span>
-        <span class="n">r_s</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_200</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">c</span>
-        <span class="n">k</span>    <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">r_s</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">rho_0</span>
-        <span class="n">sig</span>  <span class="o">=</span> <span class="mf">0.0</span><span class="o">*</span><span class="n">r</span>
-        <span class="n">c</span><span class="o">=</span><span class="mi">0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">i</span><span class="o">/</span><span class="n">r_s</span>
-            <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccosh</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">*</span><span class="mf">2.0</span><span class="o">/</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span>
-            <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">*</span><span class="mf">2.0</span><span class="o">/</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-            <span class="n">sig</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">*</span><span class="n">k</span>
-            <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span>
-        <span class="k">return</span> <span class="n">sig</span>
+    def sigma_nfw(self,r):
+        &quot;&quot;&quot;analytical projection of NFW&quot;&quot;&quot;
+        r_s = self.r_200/self.c
+        k   = 2*r_s*self.rho_0
+        sig = 0.0*r
+        c = 0
+        for i in r:
+            x = i/r_s
+            if x &lt; ??:
+                value = (1 - np.??(1/x)/np.sqrt(1??x**2))/(x**??-1)
+            elif x &gt; ??:
+                value = (1 - np.??(1/x)/np.sqrt(x**2??1))/(x**??-1)
+            else:
+                value = 1./3.
+            sig[c] = value*k
+            c=c+1
+        return sig
 
-    <span class="k">def</span> <span class="nf">esd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">r</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;ESD profile from analytical predictions&quot;&quot;&quot;</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">avg_sigma_nfw</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_nfw</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">val</span>
+    def avg_sigma_nfw(self,r):
+        &quot;&quot;&quot;analytical average projected of NFW&quot;&quot;&quot;
+        r_s  = self.r_200/self.c
+        k    = 2*r_s*self.rho_0
+        sig  = 0.0*r
+        c=0
+        for i in r:
+            x = i/r_s
+            if x &lt; 1:
+                value = np.??cosh(1/x)/np.sqrt(1-x**??) + np.??(x/2.0) #numpy default log is base e.
+                value = value*2.0/x**??
+            elif x &gt; 1:
+                value = np.??cos(1/x)/np.sqrt(x**??-1)  + np.??(x/2.0)
+                value = value*2.0/x**??
+            else:
+                value = 2*(1-np.log(2))
+            sig[c] = value*k
+            c=c+1
+        return sig
+
+    def esd(self,r):
+        &quot;&quot;&quot;ESD profile from analytical predictions&quot;&quot;&quot;
+        val = self.??nfw(r) - self.??nfw(r) #check with the analytical equation up there
+        return val
 <br/></pre></div>
 </div>
+</div>
+<div class="admonition note">
+<p>Exercise: - Create a instance for the halo class for halo having <strong>logM200m = 14</strong> and <strong>con_par = 5</strong> as: hp = halo(14,5)
+- Tell the output of : print(np.log10(hp.m_tot), hp.c, np.log10(hp.rho_crt), hp.r_200, np.log10(hp.rho_0))</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -433,7 +449,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># nfw fits only require two parameters logarithm halo mass log10(M200m) and concentration parameter $c$</span>
 <span class="c1"># Here we are using log10(M200m) = 14, c = 5.</span>
-<span class="n">hp</span> <span class="o">=</span> <span class="n">halo</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">hp</span> <span class="o">=</span> <span class="n">halo</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># halo class instance</span>
 <span class="n">rbin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="mi">30</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">rbin</span><span class="p">,</span> <span class="n">hp</span><span class="o">.</span><span class="n">nfw</span><span class="p">(</span><span class="n">rbin</span><span class="p">),</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
@@ -456,7 +472,7 @@ Text(0, 0.5, &#39;$\\rho(r)$&#39;)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/Untitled_3_1.png" src="_images/Untitled_3_1.png" />
+<img alt="_images/Untitled_6_1.png" src="_images/Untitled_6_1.png" />
 </div>
 </div>
 <div class="admonition note">
@@ -470,14 +486,21 @@ Text(0, 0.5, &#39;$\\rho(r)$&#39;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">log_M200m</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-    <span class="n">log_M200m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">log_M200m</span><span class="p">)</span> <span class="o">+</span> <span class="mi">14</span> <span class="c1"># we are looking in units of 10^14</span>
-    <span class="n">hp</span> <span class="o">=</span> <span class="n">halo</span><span class="p">(</span><span class="n">log_M200m</span><span class="p">,</span> <span class="n">c</span><span class="p">);</span>
-    <span class="n">esd</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">esd</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="mf">1e12</span> <span class="c1"># remember we are working with in Mpc but the measurements are in pc, we need a conversion</span>
-    <span class="k">return</span> <span class="n">esd</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def model(x, log_M200m, c):
+    log_M200m = np.log10(log_M200m) + 14 # we are looking in units of 10^14
+    hp = halo(log_M200m, c);
+    esd = hp.esd(x)/1e?? # remember we are working with in Mpc but the measurements are in pc, we need a conversion
+    return esd
 <br/></pre></div>
 </div>
 </div>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Exercise:</p>
+<ul class="simple">
+<li><p>print the output of : print(model(np.linspace(0.2,2.0,5), 13, 6))</p></li>
+</ul>
+</div>
+<p>Now we will use the above model function to do the fitting to our measurements. At present we are using <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html">curve_fit</a> function from scipy to get the best fit model parameters. More advanced reader can use sophasticated tools like <a class="reference external" href="https://emcee.readthedocs.io/">emcee</a> to do a MCMC on this.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
@@ -506,16 +529,38 @@ Text(0, 0.5, &#39;$\\rho(r)$&#39;)
 <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">p0</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span><span class="mf">0.5</span><span class="p">],</span> <span class="n">sigma</span><span class="o">=</span><span class="n">yerr</span><span class="p">)</span>
 
 <span class="n">log_M200m</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">popt</span>
-<span class="n">sig_logMh</span><span class="p">,</span> <span class="n">sig_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">pcov</span><span class="p">))</span>
+<span class="n">sig_logMh</span><span class="p">,</span> <span class="n">sig_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">pcov</span><span class="p">))</span> <span class="c1"># pcov is the covariance between the parameters</span>
+
+<span class="c1"># rough estimate of chisq</span>
+<span class="n">chisq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y</span><span class="o">-</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">log_M200m</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="n">yerr</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">dof</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">-</span> <span class="mi">2</span> <span class="c1"># 10 datapoints - 2 parameters</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">yerr</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Data&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">log_M200m</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Fit&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">log_M200m</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;Fit, $\chi^2 /{\rm dof} = </span><span class="si">%2.2f</span><span class="s1">/</span><span class="si">%d</span><span class="s1">$&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">chisq</span><span class="p">,</span><span class="n">dof</span><span class="p">))</span>
+
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$M_{\rm 200m} = </span><span class="si">%2.2f</span><span class="s1"> \pm </span><span class="si">%2.2f</span><span class="s1"> \times 10^</span><span class="si">{14}</span><span class="s1"> \,h^{-1} M_\odot,\, c = </span><span class="si">%2.2f</span><span class="s1"> \pm </span><span class="si">%2.2f</span><span class="s1">$&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">log_M200m</span><span class="p">,</span> <span class="n">sig_logMh</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sig_c</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$R[{\rm h^{-1}Mpc}]$&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\Delta\Sigma [{\rm h M_\odot pc^{-2}}]$&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Exercise:</p>
+<ul class="simple">
+<li><p>Compare your halo mass constraints with that of the weak lensing study by using SDSS shape catalog - <a class="reference external" href="https://arxiv.org/abs/1707.01907">arXiv:1707.01907</a>.</p></li>
+<li><p>Remember you are studying cluster with redshifts <span class="math notranslate nohighlight">\(0.1&lt;z_{\rm red}&lt;0.33\)</span> and richness <span class="math notranslate nohighlight">\(55&lt;\lambda&lt;100\)</span>. So compare the results in the subpanel of fig 1 or fig 2 in <a class="reference external" href="https://arxiv.org/abs/1707.01907">arXiv:1707.01907</a>.</p></li>
+</ul>
+</div>
+<p>Given all the machinery to the reader to get the weak lensing signal and model them to constraint halo masses. We encourage reader to try out different cuts on their cluster sample and check the variation in halo masses.</p>
+<p><strong>We want to stress on the point that in the current tutorial we did a very simplistic job both in measurements as well as modelling. Please follow the references given in the tutorials as well as lectures to do a more rigorous analysis.</strong></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
