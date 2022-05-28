@@ -54,7 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#Using-k-d-tree-algorithm-to-query-the-neighbour-points-within-a-given-distance">Using k-d tree algorithm to query the neighbour points within a given distance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#We’ll-use-the-spatial.cKDTree-package-from-scipy.">We’ll use the <code class="docutils literal notranslate"><span class="pre">spatial.cKDTree</span></code> package from <code class="docutils literal notranslate"><span class="pre">scipy</span></code>.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#A-sanity-check">A sanity check</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm-on-dew-Demo-objects">Compare the output of our brute force algorithm with cKDTree algorithm on dew Demo objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm-on-few-Demo-objects">Compare the output of our brute force algorithm with cKDTree algorithm on few Demo objects</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#Compare-the-computer-time-required-by-our-brute-force-algorithm-vs-the-k-d-tree-algorithm">Compare the computer time required by our brute force algorithm vs the k-d tree algorithm</a></li>
@@ -65,6 +65,7 @@
 <li class="toctree-l1"><a class="reference internal" href="get_signals.html">Day 3 - Get the Weak Lensing Signals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="iagrg_day_3_hands_on.html">Day 3 Solutions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="get_model.html">Day 4 - Model the weak lensing signal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iagrg_day_4_hands_on.html">Day 4 Solutions</a></li>
 </ul>
 
         </div>
@@ -698,7 +699,7 @@ randomly picked indices:
 </div>
 <div class="section" id="On-sky-distance-between-two-points-on-the-surface-of-a-unit-sphere">
 <h2><code class="docutils literal notranslate"><span class="pre">On-sky</span> <span class="pre">distance</span></code> between two points on the surface of a unit sphere<a class="headerlink" href="#On-sky-distance-between-two-points-on-the-surface-of-a-unit-sphere" title="Permalink to this headline"></a></h2>
-<p><a class="no-scaled-link reference internal" href="_images/Equitorial_coord_sys.jpg"><img alt="1b96c0e7fa344f89ae7d58fb83d39a44" class="no-scaled-link" src="_images/Equitorial_coord_sys.jpg" style="width: 400px; height: 300px;" /></a></p>
+<p><a class="no-scaled-link reference internal" href="_images/Equitorial_coord_sys.jpg"><img alt="19003dfde0174902aa7e247a9d52d3a7" class="no-scaled-link" src="_images/Equitorial_coord_sys.jpg" style="width: 400px; height: 300px;" /></a></p>
 <p><span class="math notranslate nohighlight">\(\vec{r_i} = r_i(\sin\theta \cos\phi \ \hat{x}+ \sin\theta \sin\phi \ \hat{y} + \cos\theta \ \hat{z})\)</span>, <span class="math notranslate nohighlight">\(\hspace{0.5cm}\)</span>for <span class="math notranslate nohighlight">\(\mathrm{i \in (1,2)}\)</span>.</p>
 <p><span class="math notranslate nohighlight">\(\cos(\theta)=\frac{\vec{r_1}\cdot\vec{r_2}}{r_1 r_2}\)</span></p>
 <p>set <span class="math notranslate nohighlight">\(r_1=r_2=1\)</span></p>
@@ -741,7 +742,7 @@ randomly picked indices:
 <p># print the (ra,dec) tuples of first two objects in the above list</p>
 <p># compute and print the distance between these two objects,</p>
 <p>I get the following:</p>
-<p><a class="no-scaled-link reference internal" href="_images/onsky_distance_test.png"><img alt="e58b387800514681ae6f036982289c40" class="no-scaled-link" src="_images/onsky_distance_test.png" style="width: 300px; height: 70px;" /></a></p>
+<p><a class="no-scaled-link reference internal" href="_images/onsky_distance_test.png"><img alt="bcc645efd0cd45ed831655c5c184f551" class="no-scaled-link" src="_images/onsky_distance_test.png" style="width: 300px; height: 70px;" /></a></p>
 </div>
 <div class="section" id="Brute-force-search-for-neighbour-objects-within-a-specified-distance">
 <h2>Brute force search for neighbour objects within a specified distance<a class="headerlink" href="#Brute-force-search-for-neighbour-objects-within-a-specified-distance" title="Permalink to this headline"></a></h2>
@@ -827,6 +828,7 @@ randomly picked indices:
 <p><strong>Note:</strong> We’re only using 50 points in order to reduce the compute time, but the code has no such limitation. If you run your code for a large number of points, it will take more time to finish that’s all.</p>
 </li>
 <li><p>Access the above result and print indices,distances and coordinates of the neighbours of few objects.</p></li>
+<li><p>Then test out the function <code class="docutils literal notranslate"><span class="pre">query_neighbour_points</span></code> for the same objects you take above. The neighbour matches from <code class="docutils literal notranslate"><span class="pre">query_neighbour_points</span></code> and <code class="docutils literal notranslate"><span class="pre">find_neighbour_points</span></code> must match.</p></li>
 </ul>
 </div>
 <div class="nbinput docutils container">
@@ -952,8 +954,8 @@ Accessing the neighbour coordinates of the 15th object:
 </div>
 <p>I’m plotting the neighbours of <span class="math notranslate nohighlight">\(15^{th}\)</span> point from the catalog. And also printing their <code class="docutils literal notranslate"><span class="pre">indices</span></code> and <code class="docutils literal notranslate"><span class="pre">distances</span></code> to compare the stored distances by eye!</p>
 <p>Point marked as <span class="math notranslate nohighlight">\(\star\)</span> is the <span class="math notranslate nohighlight">\(15^{th}\)</span> point. Other points are its neighbours.</p>
-<p><a class="no-scaled-link reference internal" href="_images/neighbours_of_15th_obj.png"><img alt="5a6bb5a2377c43a589594a40f1c0ae36" class="no-scaled-link" src="_images/neighbours_of_15th_obj.png" style="width: 500px; height: 400px;" /></a></p>
-<p><a class="no-scaled-link reference internal" href="_images/neighbours_printed.png"><img alt="110df2d8643a449c8b1419460accc37f" class="no-scaled-link" src="_images/neighbours_printed.png" style="width: 300px; height: 80px;" /></a></p>
+<p><a class="no-scaled-link reference internal" href="_images/neighbours_of_15th_obj.png"><img alt="09e48f25ecc54da79c3d10b918c4ba62" class="no-scaled-link" src="_images/neighbours_of_15th_obj.png" style="width: 500px; height: 400px;" /></a></p>
+<p><a class="no-scaled-link reference internal" href="_images/neighbours_printed.png"><img alt="7b2b28cbe8e34e4f8951542136933129" class="no-scaled-link" src="_images/neighbours_printed.png" style="width: 300px; height: 80px;" /></a></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
@@ -1098,16 +1100,17 @@ Accessing the neighbour coordinates of the 15th object:
 </pre></div>
 </div>
 </div>
-<p><a class="no-scaled-link reference internal" href="_images/coordinate_conversion_test.png"><img alt="d7218b62b6d5462686b4826b2801fb35" class="no-scaled-link" src="_images/coordinate_conversion_test.png" style="width: 400px; height: 200px;" /></a></p>
+<p><a class="no-scaled-link reference internal" href="_images/coordinate_conversion_test.png"><img alt="6669603a2d2f4c409cab474bef446f4a" class="no-scaled-link" src="_images/coordinate_conversion_test.png" style="width: 400px; height: 200px;" /></a></p>
 </div>
-<div class="section" id="Compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm-on-dew-Demo-objects">
-<h3>Compare the output of our brute force algorithm with cKDTree algorithm on dew Demo objects<a class="headerlink" href="#Compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm-on-dew-Demo-objects" title="Permalink to this headline"></a></h3>
+<div class="section" id="Compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm-on-few-Demo-objects">
+<h3>Compare the output of our brute force algorithm with cKDTree algorithm on few Demo objects<a class="headerlink" href="#Compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm-on-few-Demo-objects" title="Permalink to this headline"></a></h3>
 <div class="admonition note">
 <p class="admonition-title fa fa-exclamation-circle">Exercise:</p>
 <ul>
 <li><p>Take the same bunch of objects for which we already have run our brute force search method,</p>
 <p>feed them into the wrapper code of k-d tree written above,</p>
 <p>find out their neighbour points within the same <code class="docutils literal notranslate"><span class="pre">rmax</span></code>(default value)=15 arcsec.</p>
+<p>The neighbour objects found from both the methods should match!</p>
 </li>
 </ul>
 </div>
