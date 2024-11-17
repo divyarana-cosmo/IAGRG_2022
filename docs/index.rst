@@ -9,19 +9,14 @@ Welcome to Weak Lensing Tutorial's Documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-   
-   instructions
-   pair_counting
-   get_signals
-   get_model
 
-..   iagrg_day_1_hands_on
-..   pair_counting
-..   pair_counting_solutions
-..   get_signals
-..   iagrg_day_3_hands_on
-..   get_model
-..   iagrg_day_4_hands_on
+   iagrg_day_1_hands_on
+   pair_counting
+   pair_counting_solutions
+   get_signals
+   iagrg_day_3_hands_on
+   get_model
+   iagrg_day_4_hands_on
 
 Indices and tables
 ==================
