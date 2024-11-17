@@ -73,7 +73,6 @@
 <li class="toctree-l1"><a class="reference internal" href="get_signals.html">Day 3 - Get the Weak Lensing Signals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="iagrg_day_3_hands_on.html">Day 3 Solutions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="get_model.html">Day 4 - Model the weak lensing signal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="iagrg_day_4_hands_on.html">Day 4 Solutions</a></li>
 </ul>
 
         </div>
@@ -373,7 +372,7 @@ randomly picked indices:
 </section>
 <section id="On-sky-distance-between-two-points-on-the-surface-of-a-unit-sphere">
 <h2><code class="docutils literal notranslate"><span class="pre">On-sky</span> <span class="pre">distance</span></code> between two points on the surface of a unit sphere<a class="headerlink" href="#On-sky-distance-between-two-points-on-the-surface-of-a-unit-sphere" title="Link to this heading"></a></h2>
-<p><img alt="05d227c9433540eabaf2902978ea8159" class="no-scaled-link" src="_images/Equitorial_coord_sys.jpg" style="width: 400px; height: 300px;" /></p>
+<p><img alt="66ec3f3e1a2b4314bea68637f31f1b76" class="no-scaled-link" src="_images/Equitorial_coord_sys.jpg" style="width: 400px; height: 300px;" /></p>
 <p><span class="math notranslate nohighlight">\(\vec{r_i} = r_i(\sin\theta \cos\phi \ \hat{x}+ \sin\theta \sin\phi \ \hat{y} + \cos\theta \ \hat{z})\)</span>, <span class="math notranslate nohighlight">\(\hspace{0.5cm}\)</span>for <span class="math notranslate nohighlight">\(\mathrm{i \in (1,2)}\)</span>.</p>
 <p><span class="math notranslate nohighlight">\(\cos(\theta)=\frac{\vec{r_1}\cdot\vec{r_2}}{r_1 r_2}\)</span></p>
 <p>set <span class="math notranslate nohighlight">\(r_1=r_2=1\)</span></p>
@@ -416,7 +415,7 @@ randomly picked indices:
 <p># print the (ra,dec) tuples of first two objects in the above list</p>
 <p># compute and print the distance between these two objects,</p>
 <p>I get the following:</p>
-<p><img alt="f1aa862e7aed431cae4a34a69f80c52f" class="no-scaled-link" src="_images/onsky_distance_test.png" style="width: 300px; height: 70px;" /></p>
+<p><img alt="f00dd40d7ced4e35a96382bdadc29cc6" class="no-scaled-link" src="_images/onsky_distance_test.png" style="width: 300px; height: 70px;" /></p>
 </section>
 <section id="Brute-force-search-for-neighbour-objects-within-a-specified-distance">
 <h2>Brute force search for neighbour objects within a specified distance<a class="headerlink" href="#Brute-force-search-for-neighbour-objects-within-a-specified-distance" title="Link to this heading"></a></h2>
@@ -628,8 +627,8 @@ Accessing the neighbour coordinates of the 15th object:
 </div>
 <p>I’m plotting the neighbours of <span class="math notranslate nohighlight">\(15^{th}\)</span> point from the catalog. And also printing their <code class="docutils literal notranslate"><span class="pre">indices</span></code> and <code class="docutils literal notranslate"><span class="pre">distances</span></code> to compare the stored distances by eye!</p>
 <p>Point marked as <span class="math notranslate nohighlight">\(\star\)</span> is the <span class="math notranslate nohighlight">\(15^{th}\)</span> point. Other points are its neighbours.</p>
-<p><img alt="87d5a4ccb6114f57bd9146c0701e1a47" class="no-scaled-link" src="_images/neighbours_of_15th_obj.png" style="width: 500px; height: 400px;" /></p>
-<p><img alt="18f2e99c3aaf4d0fa328ff685d3e4509" class="no-scaled-link" src="_images/neighbours_printed.png" style="width: 300px; height: 80px;" /></p>
+<p><img alt="2a1b8e19ca18454886f0ac8662956ce9" class="no-scaled-link" src="_images/neighbours_of_15th_obj.png" style="width: 500px; height: 400px;" /></p>
+<p><img alt="bf462022ee914802bde15b3cf1bc1928" class="no-scaled-link" src="_images/neighbours_printed.png" style="width: 300px; height: 80px;" /></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
@@ -781,7 +780,7 @@ Accessing the neighbour coordinates of the 15th object:
 </pre></div>
 </div>
 </div>
-<p><img alt="d225bb9ea87a47f0abaa3fa1a9355b8c" class="no-scaled-link" src="_images/coordinate_conversion_test.png" style="width: 400px; height: 200px;" /></p>
+<p><img alt="d1e65b5ef9a4457c9d011ed9317b2d8e" class="no-scaled-link" src="_images/coordinate_conversion_test.png" style="width: 400px; height: 200px;" /></p>
 </section>
 <section id="Compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm-on-few-Demo-objects">
 <h3>Compare the output of our brute force algorithm with cKDTree algorithm on few Demo objects<a class="headerlink" href="#Compare-the-output-of-our-brute-force-algorithm-with-cKDTree-algorithm-on-few-Demo-objects" title="Link to this heading"></a></h3>
